@@ -1,0 +1,4 @@
+infrahub-sdk[all]
+nornir_infrahub
+nornir_rich
+nornir-conditional-runner

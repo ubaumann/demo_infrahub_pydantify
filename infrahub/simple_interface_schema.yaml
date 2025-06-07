@@ -1,0 +1,163 @@
+# yaml-language-server: $schema=https://schema.infrahub.app/infrahub/schema/latest.json
+---
+version: "1.0"
+nodes:
+  - name: Interface
+    namespace: Network
+    include_in_menu: true
+    icon: "mdi:ethernet"
+    display_labels:
+      - "name__value"
+    uniqueness_constraints:
+    - ["device", "name__value"]
+    attributes:
+      - name: name
+        kind: Text
+      - name: description
+        kind: Text
+        optional: true
+      - name: management
+        kind: Boolean
+        optional: true
+        description: "Management interface"
+      - name: mode
+        kind: Dropdown
+        choices:
+          - name: access
+            label: Access
+            description: "Access port"
+            color: "#7fbf7f"
+          - name: access_trunk
+            label: Access Trunk
+            description: "Trunk port to host"
+            color: "#7f7fff"
+          - name: trunk
+            label: Trunk
+            description: "Trunk port"
+            color: "#7f7f7f"
+          - name: routed
+            label: Routed
+            description: "Routed port"
+            color: "#ffd27f"
+          - name: shutdown
+            label: Shutdown
+            description: "Shutdown port"
+            color: "#bfbfbf"
+    relationships:
+      - name: device
+        peer: NetworkDevice
+        identifier: "device__interface"
+        optional: false
+        cardinality: one
+        kind: Parent
+      - name: ip_address
+        peer: IpamIPAddress
+        cardinality: one
+        optional: true
+        kind: Attribute
+      - name: access_vlan
+        peer: NetworkL2Domain
+        identifier: "interface__access_vlan"
+        cardinality: one
+        optional: true
+        kind: Attribute
+      - name: trunk_vlans
+        peer: NetworkL2Domain
+        identifier: "interface__trunk_vlan"
+        cardinality: many
+        optional: true
+        kind: Attribute
+  - name: Device
+    namespace: Network
+    display_labels:
+      - "name__value"
+    icon: "mdi:router-network"
+    attributes:
+      - name: name
+        kind: Text
+        unique: true
+      - name: description
+        kind: Text
+        optional: true
+      # connection_options
+      - name: status
+        kind: Dropdown
+        choices:
+          - name: active
+            label: Active
+            description: "Device is active"
+            color: "#7fbf7f"
+          - name: maintenance
+            label: Maintenance
+            description: "Device is in maintenance"
+            color: "#ffd27f"
+          - name: offline
+            label: Offline
+            description: "Device is offline"
+            color: "#bfbfbf"
+    relationships:
+      - name: interfaces
+        identifier: "device__interface"
+        cardinality: many
+        peer: NetworkInterface
+        kind: Component
+  - name: L2Domain
+    namespace: Network
+    label: L2 Domain
+    icon: "mdi:cloud"
+    display_labels:
+      - "name__value"
+      - "vlan__value"
+    attributes:
+      - name: name
+        kind: Text
+      - name: vlan
+        kind: Number
+    relationships:
+      - name: l3domain
+        cardinality: one
+        peer: NetworkL3Domain
+        kind: Attribute
+      - name: access_vlan
+        peer: NetworkInterface
+        identifier: "interface__access_vlan"
+        cardinality: many
+        optional: true
+        kind: Component
+      - name: trunk_vlans
+        peer: NetworkInterface
+        identifier: "interface__trunk_vlan"
+        cardinality: many
+        optional: true
+        kind: Component
+  - name: L3Domain
+    namespace: Network
+    label: L3 Domain
+    icon: "mdi:cloud"
+    display_labels:
+      - "name__value"
+      - "network__value"
+    attributes:
+      - name: name
+        kind: Text
+      - name: network
+        kind: IPNetwork
+    relationships:
+      - name: l2domain
+        cardinality: one
+        peer: NetworkL2Domain
+        kind: Attribute
+  - name: IPPrefix
+    namespace: Ipam
+    include_in_menu: false
+    inherit_from:
+      - "BuiltinIPPrefix"
+    description: "IPv4 or IPv6 network"
+    label: "IP Prefix"
+  - name: IPAddress
+    namespace: Ipam
+    include_in_menu: false
+    inherit_from:
+      - "BuiltinIPAddress"
+    description: "IP Address"
+    label: "IP Address"
