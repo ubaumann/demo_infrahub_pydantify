@@ -1,0 +1,24 @@
+query GetInterfaceDetails {
+  NetworkInterface {
+    edges {
+      node {
+        id
+        name {
+          value
+        }
+        mode {
+          value
+        }
+        vlan {
+          edges {
+            node {
+              vlan_id {
+                value
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

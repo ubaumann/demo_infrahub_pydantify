@@ -8,4 +8,4 @@ help:
 .PHONY: help Makefile
 
 %: Makefile
-	$(MAKE) -C infrahub $@
+	$(MAKE) -C setup $@

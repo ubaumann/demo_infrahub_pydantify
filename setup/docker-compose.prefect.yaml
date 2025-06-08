@@ -1,0 +1,14 @@
+services:
+  prefect-server:
+    image: prefecthq/prefect:3-latest
+    ports:
+      - "4200:4200"
+    command: prefect server start --host 0.0.0.0
+  gitops-worker:
+    image: "${INFRAHUB_DOCKER_IMAGE:-registry.opsmill.io/opsmill/infrahub}:${VERSION:-1.2.12}"
+    command: prefect worker start --type docker --pool gitops-worker --with-healthcheck
+    restart: unless-stopped
+    depends_on:
+      - prefect-server
+    environment:
+      PREFECT_API_URL: http://prefect-server:4200/api

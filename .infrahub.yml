@@ -1,0 +1,28 @@
+---
+queries:
+  - name: GetInterfacefromDevice
+    file_path: "queries/GetInterfacefromDevice.gql"
+  - name: GetInterfaceDetails
+    file_path: "queries/GetInterfaceDetails.gql"
+
+schemas:
+  - "schemas/schema.yaml"
+
+python_transforms:
+  - name: TransformIntoNetconf
+    class_name: TransformIntoNetconf
+    file_path: "transforms/transform.py"
+
+artifact_definitions:
+  - name: "NetconfXML-Artifact"
+    artifact_name: "Netconf-XML_Artifact"
+    parameters:
+      device: "name__value"
+    content_type: "text/plain"
+    targets: "CiscoSwitche"
+    transformation: "TransformIntoNetconf"
+
+check_definitions:
+  - name: check_access_mode
+    class_name: AccessModeCheck
+    file_path: "checks/validate_interfaces.py"

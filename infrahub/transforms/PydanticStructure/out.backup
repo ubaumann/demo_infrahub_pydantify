@@ -1,0 +1,3136 @@
+from __future__ import annotations
+
+from enum import Enum
+from typing import Any, List, Union
+
+from pydantic import BaseModel, ConfigDict, Field, RootModel
+from typing_extensions import Annotated
+
+
+class NameLeaf(RootModel[str]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[str, Field(title='NameLeaf')]
+    """
+    Interface VLAN name.
+    """
+
+
+class NameLeaf2(RootModel[str]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[str, Field(title='NameLeaf2')]
+    """
+    Interface VLAN name.
+    """
+
+
+class NameLeaf4(RootModel[str]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: str
+    """
+    The name of the interface.
+
+    A device MAY restrict the allowed values for this leaf,
+    possibly depending on the type of the interface.
+    For system-controlled interfaces, this leaf is the
+    device-specific name of the interface.  The 'config false'
+    list interfaces/interface[name]/state contains the currently
+    existing interfaces on the device.
+
+    If a client tries to create configuration for a
+    system-controlled interface that is not present in the
+    corresponding state list, the server MAY reject
+    the request if the implementation does not support
+    pre-provisioning of interfaces or if the name refers to
+    an interface that can never exist in the system.  A
+    NETCONF server MUST reply with an rpc-error with the
+    error-tag 'invalid-value' in this case.
+
+    The IETF model in RFC 7223 provides YANG features for the
+    following (i.e., pre-provisioning and arbitrary-names),
+    however they are omitted here:
+
+     If the device supports pre-provisioning of interface
+     configuration, the 'pre-provisioning' feature is
+     advertised.
+
+     If the device allows arbitrarily named user-controlled
+     interfaces, the 'arbitrary-names' feature is advertised.
+
+    When a configured user-controlled interface is created by
+    the system, it is instantiated with the same name in the
+    /interfaces/interface[name]/state list.
+    """
+
+
+class VlanIdType(RootModel[int]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[int, Field(ge=1, le=4094)]
+    """
+    Type definition representing a single-tagged VLAN
+    """
+
+
+class EnumerationEnum(Enum):
+    active = 'ACTIVE'
+    suspended = 'SUSPENDED'
+
+
+class EnumerationEnum2(Enum):
+    active = 'ACTIVE'
+    suspended = 'SUSPENDED'
+
+
+class NameLeaf3(RootModel[NameLeaf4]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: NameLeaf4
+    """
+    References the configured name of the interface
+    """
+
+
+class StatusLeaf(RootModel[EnumerationEnum]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[EnumerationEnum, Field(title='StatusLeaf')]
+    """
+    Admin state of the VLAN
+    """
+
+
+class StatusLeaf2(RootModel[EnumerationEnum2]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[EnumerationEnum2, Field(title='StatusLeaf2')]
+    """
+    Admin state of the VLAN
+    """
+
+
+class VlanIdLeaf2(RootModel[VlanIdType]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: VlanIdType
+    """
+    Interface VLAN id.
+    """
+
+
+class VlanIdLeaf3(RootModel[VlanIdType]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[VlanIdType, Field(title='Vlan-idLeaf3')]
+    """
+    Interface VLAN id.
+    """
+
+
+class BaseInterfaceRefType(RootModel[NameLeaf3]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: NameLeaf3
+    """
+    Reusable type for by-name reference to a base interface.
+    This type may be used in cases where ability to reference
+    a subinterface is not required.
+    """
+
+
+class ConfigContainer(BaseModel):
+    """
+    Configuration parameters for VLANs
+    """
+
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    vlan_id: Annotated[VlanIdLeaf2, Field(None, alias='openconfig-vlan:vlan-id')]
+    name: Annotated[NameLeaf, Field(None, alias='openconfig-vlan:name')]
+    status: Annotated[StatusLeaf, Field('ACTIVE', alias='openconfig-vlan:status')]
+
+
+class InterfaceLeaf(RootModel[BaseInterfaceRefType]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[BaseInterfaceRefType, Field(title='InterfaceLeaf')]
+    """
+    Reference to a base interface.
+    """
+
+
+class StateContainer(BaseModel):
+    """
+    State variables for VLANs
+    """
+
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    vlan_id: Annotated[VlanIdLeaf3, Field(None, alias='openconfig-vlan:vlan-id')]
+    name: Annotated[NameLeaf2, Field(None, alias='openconfig-vlan:name')]
+    status: Annotated[StatusLeaf2, Field('ACTIVE', alias='openconfig-vlan:status')]
+
+
+class StateContainer2(BaseModel):
+    """
+    Operational state for base interface reference
+    """
+
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    interface: Annotated[InterfaceLeaf, Field(None, alias='openconfig-vlan:interface')]
+
+
+class VlanIdLeaf(RootModel[VlanIdLeaf2]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[VlanIdLeaf2, Field(title='Vlan-idLeaf')]
+    """
+    references the configured vlan-id
+    """
+
+
+class MemberListEntry(BaseModel):
+    """
+    List of references to interfaces / subinterfaces
+    associated with the VLAN.
+    """
+
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    state: Annotated[StateContainer2, Field(None, alias='openconfig-vlan:state')]
+
+
+class MembersContainer(BaseModel):
+    """
+    Enclosing container for list of member interfaces
+    """
+
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    member: Annotated[List[MemberListEntry], Field(alias='openconfig-vlan:member')]
+
+
+class VlanListEntry(BaseModel):
+    """
+    Configured VLANs keyed by id
+    """
+
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    vlan_id: Annotated[VlanIdLeaf, Field(None, alias='openconfig-vlan:vlan-id')]
+    config: Annotated[ConfigContainer, Field(None, alias='openconfig-vlan:config')]
+    state: Annotated[StateContainer, Field(None, alias='openconfig-vlan:state')]
+    members: Annotated[MembersContainer, Field(None, alias='openconfig-vlan:members')]
+
+
+class VlansContainer(BaseModel):
+    """
+    Container for VLAN configuration and state
+    variables
+    """
+
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    vlan: Annotated[List[VlanListEntry], Field(alias='openconfig-vlan:vlan')]
+
+
+
+
+class AutoNegotiateLeaf(RootModel[bool]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[bool, Field(title='Auto-negotiateLeaf')]
+    """
+    Set to TRUE to request the interface to auto-negotiate
+    transmission parameters with its peer interface.  When
+    set to FALSE, the transmission parameters are specified
+    manually.
+    """
+
+
+class AutoNegotiateLeaf2(RootModel[bool]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[bool, Field(title='Auto-negotiateLeaf2')]
+    """
+    Set to TRUE to request the interface to auto-negotiate
+    transmission parameters with its peer interface.  When
+    set to FALSE, the transmission parameters are specified
+    manually.
+    """
+
+
+class Counter64Type(RootModel[int]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[int, Field(ge=0, le=18446744073709551615)]
+    """
+    A 64-bit counter. A counter value is a monotonically increasing
+    value which is used to express a count of a number of
+    occurrences of a particular event or entity. When a counter64
+    reaches its maximum value, 2^64-1, it loops to zero.
+    Discontinuities in a counter are generally triggered only when
+    the counter is reset to zero, through operator or system
+    intervention.
+    """
+
+
+class DescriptionLeaf(RootModel[str]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[str, Field(title='DescriptionLeaf')]
+    """
+    A textual description of the interface.
+
+    A server implementation MAY map this leaf to the ifAlias
+    MIB object.  Such an implementation needs to use some
+    mechanism to handle the differences in size and characters
+    allowed between this leaf and ifAlias.  The definition of
+    such a mechanism is outside the scope of this document.
+
+    Since ifAlias is defined to be stored in non-volatile
+    storage, the MIB implementation MUST map ifAlias to the
+    value of 'description' in the persistently stored
+    datastore.
+
+    Specifically, if the device supports ':startup', when
+    ifAlias is read the device MUST return the value of
+    'description' in the 'startup' datastore, and when it is
+    written, it MUST be written to the 'running' and 'startup'
+    datastores.  Note that it is up to the implementation to
+
+    decide whether to modify this single leaf in 'startup' or
+    perform an implicit copy-config from 'running' to
+    'startup'.
+
+    If the device does not support ':startup', ifAlias MUST
+    be mapped to the 'description' leaf in the 'running'
+    datastore.
+    """
+
+
+class DescriptionLeaf2(RootModel[str]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[str, Field(title='DescriptionLeaf2')]
+    """
+    A textual description of the interface.
+
+    A server implementation MAY map this leaf to the ifAlias
+    MIB object.  Such an implementation needs to use some
+    mechanism to handle the differences in size and characters
+    allowed between this leaf and ifAlias.  The definition of
+    such a mechanism is outside the scope of this document.
+
+    Since ifAlias is defined to be stored in non-volatile
+    storage, the MIB implementation MUST map ifAlias to the
+    value of 'description' in the persistently stored
+    datastore.
+
+    Specifically, if the device supports ':startup', when
+    ifAlias is read the device MUST return the value of
+    'description' in the 'startup' datastore, and when it is
+    written, it MUST be written to the 'running' and 'startup'
+    datastores.  Note that it is up to the implementation to
+
+    decide whether to modify this single leaf in 'startup' or
+    perform an implicit copy-config from 'running' to
+    'startup'.
+
+    If the device does not support ':startup', ifAlias MUST
+    be mapped to the 'description' leaf in the 'running'
+    datastore.
+    """
+
+
+class DescriptionLeaf3(RootModel[str]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[str, Field(title='DescriptionLeaf3')]
+    """
+    A textual description of the interface.
+
+    A server implementation MAY map this leaf to the ifAlias
+    MIB object.  Such an implementation needs to use some
+    mechanism to handle the differences in size and characters
+    allowed between this leaf and ifAlias.  The definition of
+    such a mechanism is outside the scope of this document.
+
+    Since ifAlias is defined to be stored in non-volatile
+    storage, the MIB implementation MUST map ifAlias to the
+    value of 'description' in the persistently stored
+    datastore.
+
+    Specifically, if the device supports ':startup', when
+    ifAlias is read the device MUST return the value of
+    'description' in the 'startup' datastore, and when it is
+    written, it MUST be written to the 'running' and 'startup'
+    datastores.  Note that it is up to the implementation to
+
+    decide whether to modify this single leaf in 'startup' or
+    perform an implicit copy-config from 'running' to
+    'startup'.
+
+    If the device does not support ':startup', ifAlias MUST
+    be mapped to the 'description' leaf in the 'running'
+    datastore.
+    """
+
+
+class DescriptionLeaf4(RootModel[str]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[str, Field(title='DescriptionLeaf4')]
+    """
+    A textual description of the interface.
+
+    A server implementation MAY map this leaf to the ifAlias
+    MIB object.  Such an implementation needs to use some
+    mechanism to handle the differences in size and characters
+    allowed between this leaf and ifAlias.  The definition of
+    such a mechanism is outside the scope of this document.
+
+    Since ifAlias is defined to be stored in non-volatile
+    storage, the MIB implementation MUST map ifAlias to the
+    value of 'description' in the persistently stored
+    datastore.
+
+    Specifically, if the device supports ':startup', when
+    ifAlias is read the device MUST return the value of
+    'description' in the 'startup' datastore, and when it is
+    written, it MUST be written to the 'running' and 'startup'
+    datastores.  Note that it is up to the implementation to
+
+    decide whether to modify this single leaf in 'startup' or
+    perform an implicit copy-config from 'running' to
+    'startup'.
+
+    If the device does not support ':startup', ifAlias MUST
+    be mapped to the 'description' leaf in the 'running'
+    datastore.
+    """
+
+
+class DownLeaf(RootModel[int]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[int, Field(ge=0, le=4294967295, title='DownLeaf')]
+    """
+    Dampens advertisement when the interface transitions from
+    up to down.  A zero value means dampening is turned off,
+    i.e., immediate notification.
+    """
+
+
+class DownLeaf2(RootModel[int]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[int, Field(ge=0, le=4294967295, title='DownLeaf2')]
+    """
+    Dampens advertisement when the interface transitions from
+    up to down.  A zero value means dampening is turned off,
+    i.e., immediate notification.
+    """
+
+
+class EnableFlowControlLeaf(RootModel[bool]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[bool, Field(title='Enable-flow-controlLeaf')]
+    """
+    Enable or disable flow control for this interface.
+    Ethernet flow control is a mechanism by which a receiver
+    may send PAUSE frames to a sender to stop transmission for
+    a specified time.
+
+    This setting should override auto-negotiated flow control
+    settings.  If left unspecified, and auto-negotiate is TRUE,
+    flow control mode is negotiated with the peer interface.
+    """
+
+
+class EnableFlowControlLeaf2(RootModel[bool]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[bool, Field(title='Enable-flow-controlLeaf2')]
+    """
+    Enable or disable flow control for this interface.
+    Ethernet flow control is a mechanism by which a receiver
+    may send PAUSE frames to a sender to stop transmission for
+    a specified time.
+
+    This setting should override auto-negotiated flow control
+    settings.  If left unspecified, and auto-negotiate is TRUE,
+    flow control mode is negotiated with the peer interface.
+    """
+
+
+class EnabledLeaf(RootModel[bool]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[bool, Field(title='EnabledLeaf')]
+    """
+    This leaf contains the configured, desired state of the
+    interface.
+
+    Systems that implement the IF-MIB use the value of this
+    leaf in the 'running' datastore to set
+    IF-MIB.ifAdminStatus to 'up' or 'down' after an ifEntry
+    has been initialized, as described in RFC 2863.
+
+    Changes in this leaf in the 'running' datastore are
+    reflected in ifAdminStatus, but if ifAdminStatus is
+    changed over SNMP, this leaf is not affected.
+    """
+
+
+class EnabledLeaf2(RootModel[bool]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[bool, Field(title='EnabledLeaf2')]
+    """
+    This leaf contains the configured, desired state of the
+    interface.
+
+    Systems that implement the IF-MIB use the value of this
+    leaf in the 'running' datastore to set
+    IF-MIB.ifAdminStatus to 'up' or 'down' after an ifEntry
+    has been initialized, as described in RFC 2863.
+
+    Changes in this leaf in the 'running' datastore are
+    reflected in ifAdminStatus, but if ifAdminStatus is
+    changed over SNMP, this leaf is not affected.
+    """
+
+
+class EnabledLeaf3(RootModel[bool]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[bool, Field(title='EnabledLeaf3')]
+    """
+    This leaf contains the configured, desired state of the
+    interface.
+
+    Systems that implement the IF-MIB use the value of this
+    leaf in the 'running' datastore to set
+    IF-MIB.ifAdminStatus to 'up' or 'down' after an ifEntry
+    has been initialized, as described in RFC 2863.
+
+    Changes in this leaf in the 'running' datastore are
+    reflected in ifAdminStatus, but if ifAdminStatus is
+    changed over SNMP, this leaf is not affected.
+    """
+
+
+class EnabledLeaf4(RootModel[bool]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[bool, Field(title='EnabledLeaf4')]
+    """
+    This leaf contains the configured, desired state of the
+    interface.
+
+    Systems that implement the IF-MIB use the value of this
+    leaf in the 'running' datastore to set
+    IF-MIB.ifAdminStatus to 'up' or 'down' after an ifEntry
+    has been initialized, as described in RFC 2863.
+
+    Changes in this leaf in the 'running' datastore are
+    reflected in ifAdminStatus, but if ifAdminStatus is
+    changed over SNMP, this leaf is not affected.
+    """
+
+
+class IfindexLeaf(RootModel[int]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[int, Field(ge=0, le=4294967295, title='IfindexLeaf')]
+    """
+    System assigned number for each interface.  Corresponds to
+    ifIndex object in SNMP Interface MIB
+    """
+
+
+class IfindexLeaf2(RootModel[int]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[int, Field(ge=0, le=4294967295, title='IfindexLeaf2')]
+    """
+    System assigned number for each interface.  Corresponds to
+    ifIndex object in SNMP Interface MIB
+    """
+
+
+class In8021qFramesLeaf(RootModel[Counter64Type]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[Counter64Type, Field(title='In-8021q-framesLeaf')]
+    """
+    Number of 802.1q tagged frames received on the interface
+    """
+
+
+class InBlockErrorsLeaf(RootModel[Counter64Type]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[Counter64Type, Field(title='In-block-errorsLeaf')]
+    """
+    The number of received errored blocks. Error detection codes
+    are capable of detecting whether one or more errors have
+    occurred in a given sequence of bits – the block. It is
+    normally not possible to determine the exact number of errored
+    bits within the block
+    """
+
+
+class InBroadcastPktsLeaf(RootModel[Counter64Type]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[Counter64Type, Field(title='In-broadcast-pktsLeaf')]
+    """
+    The number of packets, delivered by this sub-layer to a
+    higher (sub-)layer, that were addressed to a broadcast
+    address at this sub-layer.
+
+    Discontinuities in the value of this counter can occur
+    at re-initialization of the management system, and at
+    other times as indicated by the value of
+    'last-clear'.
+    """
+
+
+class InBroadcastPktsLeaf2(RootModel[Counter64Type]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[Counter64Type, Field(title='In-broadcast-pktsLeaf2')]
+    """
+    The number of packets, delivered by this sub-layer to a
+    higher (sub-)layer, that were addressed to a broadcast
+    address at this sub-layer.
+
+    Discontinuities in the value of this counter can occur
+    at re-initialization of the management system, and at
+    other times as indicated by the value of
+    'last-clear'.
+    """
+
+
+class InCrcErrorsLeaf(RootModel[Counter64Type]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[Counter64Type, Field(title='In-crc-errorsLeaf')]
+    """
+    The total number of frames received that
+    had a length (excluding framing bits, but
+    including FCS octets) of between 64 and 1518
+    octets, inclusive, but had either a bad
+    Frame Check Sequence (FCS) with an integral
+    number of octets (FCS Error) or a bad FCS with
+    a non-integral number of octets (Alignment Error)
+    """
+
+
+class InDiscardsLeaf(RootModel[Counter64Type]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[Counter64Type, Field(title='In-discardsLeaf')]
+    """
+    The number of inbound packets that were chosen to be
+    discarded even though no errors had been detected to
+    prevent their being deliverable to a higher-layer
+    protocol.  One possible reason for discarding such a
+    packet could be to free up buffer space.
+
+    Discontinuities in the value of this counter can occur
+    at re-initialization of the management system, and at
+    other times as indicated by the value of
+    'last-clear'.
+    """
+
+
+class InDiscardsLeaf2(RootModel[Counter64Type]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[Counter64Type, Field(title='In-discardsLeaf2')]
+    """
+    The number of inbound packets that were chosen to be
+    discarded even though no errors had been detected to
+    prevent their being deliverable to a higher-layer
+    protocol.  One possible reason for discarding such a
+    packet could be to free up buffer space.
+
+    Discontinuities in the value of this counter can occur
+    at re-initialization of the management system, and at
+    other times as indicated by the value of
+    'last-clear'.
+    """
+
+
+class InErrorsLeaf(RootModel[Counter64Type]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[Counter64Type, Field(title='In-errorsLeaf')]
+    """
+    For packet-oriented interfaces, the number of inbound
+    packets that contained errors preventing them from being
+    deliverable to a higher-layer protocol.  For character-
+    oriented or fixed-length interfaces, the number of
+    inbound transmission units that contained errors
+    preventing them from being deliverable to a higher-layer
+    protocol.
+
+    Discontinuities in the value of this counter can occur
+    at re-initialization of the management system, and at
+    other times as indicated by the value of
+    'last-clear'.
+    """
+
+
+class InErrorsLeaf2(RootModel[Counter64Type]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[Counter64Type, Field(title='In-errorsLeaf2')]
+    """
+    For packet-oriented interfaces, the number of inbound
+    packets that contained errors preventing them from being
+    deliverable to a higher-layer protocol.  For character-
+    oriented or fixed-length interfaces, the number of
+    inbound transmission units that contained errors
+    preventing them from being deliverable to a higher-layer
+    protocol.
+
+    Discontinuities in the value of this counter can occur
+    at re-initialization of the management system, and at
+    other times as indicated by the value of
+    'last-clear'.
+    """
+
+
+class InFcsErrorsLeaf(RootModel[Counter64Type]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[Counter64Type, Field(title='In-fcs-errorsLeaf')]
+    """
+    Number of received packets which had errors in the
+    frame check sequence (FCS), i.e., framing errors.
+
+    Discontinuities in the value of this counter can occur
+    when the device is re-initialization as indicated by the
+    value of 'last-clear'.
+    """
+
+
+class InFcsErrorsLeaf2(RootModel[Counter64Type]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[Counter64Type, Field(title='In-fcs-errorsLeaf2')]
+    """
+    Number of received packets which had errors in the
+    frame check sequence (FCS), i.e., framing errors.
+
+    Discontinuities in the value of this counter can occur
+    when the device is re-initialization as indicated by the
+    value of 'last-clear'.
+    """
+
+
+class InFragmentFramesLeaf(RootModel[Counter64Type]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[Counter64Type, Field(title='In-fragment-framesLeaf')]
+    """
+    The total number of frames received that were less than
+    64 octets in length (excluding framing bits but including
+    FCS octets) and had either a bad Frame Check Sequence
+    (FCS) with an integral number of octets (FCS Error) or a
+    bad FCS with a non-integral number of octets (Alignment
+    Error).
+    """
+
+
+class InJabberFramesLeaf(RootModel[Counter64Type]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[Counter64Type, Field(title='In-jabber-framesLeaf')]
+    """
+    Number of jabber frames received on the
+    interface.  Jabber frames are typically defined as oversize
+    frames which also have a bad CRC.  Implementations may use
+    slightly different definitions of what constitutes a jabber
+    frame.  Often indicative of a NIC hardware problem.
+    """
+
+
+class InMacControlFramesLeaf(RootModel[Counter64Type]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[Counter64Type, Field(title='In-mac-control-framesLeaf')]
+    """
+    MAC layer control frames received on the interface
+    """
+
+
+class InMacPauseFramesLeaf(RootModel[Counter64Type]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[Counter64Type, Field(title='In-mac-pause-framesLeaf')]
+    """
+    MAC layer PAUSE frames received on the interface
+    """
+
+
+class InMulticastPktsLeaf(RootModel[Counter64Type]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[Counter64Type, Field(title='In-multicast-pktsLeaf')]
+    """
+    The number of packets, delivered by this sub-layer to a
+    higher (sub-)layer, that were addressed to a multicast
+    address at this sub-layer.  For a MAC-layer protocol,
+    this includes both Group and Functional addresses.
+
+    Discontinuities in the value of this counter can occur
+    at re-initialization of the management system, and at
+    other times as indicated by the value of
+    'last-clear'.
+    """
+
+
+class InMulticastPktsLeaf2(RootModel[Counter64Type]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[Counter64Type, Field(title='In-multicast-pktsLeaf2')]
+    """
+    The number of packets, delivered by this sub-layer to a
+    higher (sub-)layer, that were addressed to a multicast
+    address at this sub-layer.  For a MAC-layer protocol,
+    this includes both Group and Functional addresses.
+
+    Discontinuities in the value of this counter can occur
+    at re-initialization of the management system, and at
+    other times as indicated by the value of
+    'last-clear'.
+    """
+
+
+class InOctetsLeaf(RootModel[Counter64Type]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[Counter64Type, Field(title='In-octetsLeaf')]
+    """
+    The total number of octets received on the interface,
+    including framing characters.
+
+    Discontinuities in the value of this counter can occur
+    at re-initialization of the management system, and at
+    other times as indicated by the value of
+    'last-clear'.
+    """
+
+
+class InOctetsLeaf2(RootModel[Counter64Type]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[Counter64Type, Field(title='In-octetsLeaf2')]
+    """
+    The total number of octets received on the interface,
+    including framing characters.
+
+    Discontinuities in the value of this counter can occur
+    at re-initialization of the management system, and at
+    other times as indicated by the value of
+    'last-clear'.
+    """
+
+
+class InOversizeFramesLeaf(RootModel[Counter64Type]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[Counter64Type, Field(title='In-oversize-framesLeaf')]
+    """
+    The total number of frames received that were
+    longer than 1518 octets (excluding framing bits,
+    but including FCS octets) and were otherwise
+    well formed.
+    """
+
+
+class InUndersizeFramesLeaf(RootModel[Counter64Type]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[Counter64Type, Field(title='In-undersize-framesLeaf')]
+    """
+    The total number of frames received that were
+    less than 64 octets long (excluding framing bits,
+    but including FCS octets) and were otherwise well
+    formed.
+    """
+
+
+class InUnicastPktsLeaf(RootModel[Counter64Type]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[Counter64Type, Field(title='In-unicast-pktsLeaf')]
+    """
+    The number of packets, delivered by this sub-layer to a
+    higher (sub-)layer, that were not addressed to a
+    multicast or broadcast address at this sub-layer.
+
+    Discontinuities in the value of this counter can occur
+    at re-initialization of the management system, and at
+    other times as indicated by the value of
+    'last-clear'.
+    """
+
+
+class InUnicastPktsLeaf2(RootModel[Counter64Type]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[Counter64Type, Field(title='In-unicast-pktsLeaf2')]
+    """
+    The number of packets, delivered by this sub-layer to a
+    higher (sub-)layer, that were not addressed to a
+    multicast or broadcast address at this sub-layer.
+
+    Discontinuities in the value of this counter can occur
+    at re-initialization of the management system, and at
+    other times as indicated by the value of
+    'last-clear'.
+    """
+
+
+class InUnknownProtosLeaf(RootModel[Counter64Type]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[Counter64Type, Field(title='In-unknown-protosLeaf')]
+    """
+    For packet-oriented interfaces, the number of packets
+    received via the interface that were discarded because
+    of an unknown or unsupported protocol.  For
+    character-oriented or fixed-length interfaces that
+    support protocol multiplexing, the number of
+    transmission units received via the interface that were
+    discarded because of an unknown or unsupported protocol.
+    For any interface that does not support protocol
+    multiplexing, this counter is not present.
+
+    Discontinuities in the value of this counter can occur
+    at re-initialization of the management system, and at
+    other times as indicated by the value of
+    'last-clear'.
+    """
+
+
+class InUnknownProtosLeaf2(RootModel[Counter64Type]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[Counter64Type, Field(title='In-unknown-protosLeaf2')]
+    """
+    For packet-oriented interfaces, the number of packets
+    received via the interface that were discarded because
+    of an unknown or unsupported protocol.  For
+    character-oriented or fixed-length interfaces that
+    support protocol multiplexing, the number of
+    transmission units received via the interface that were
+    discarded because of an unknown or unsupported protocol.
+    For any interface that does not support protocol
+    multiplexing, this counter is not present.
+
+    Discontinuities in the value of this counter can occur
+    at re-initialization of the management system, and at
+    other times as indicated by the value of
+    'last-clear'.
+    """
+
+
+class IndexLeaf2(RootModel[int]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[int, Field(ge=0, le=4294967295)]
+    """
+    The index of the subinterface, or logical interface number.
+    On systems with no support for subinterfaces, or not using
+    subinterfaces, this value should default to 0, i.e., the
+    default subinterface.
+    """
+
+
+class IndexLeaf3(RootModel[int]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[int, Field(ge=0, le=4294967295, title='IndexLeaf3')]
+    """
+    The index of the subinterface, or logical interface number.
+    On systems with no support for subinterfaces, or not using
+    subinterfaces, this value should default to 0, i.e., the
+    default subinterface.
+    """
+
+
+class LagSpeedLeaf(RootModel[int]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[int, Field(ge=0, le=4294967295, title='Lag-speedLeaf')]
+    """
+    Reports effective speed of the aggregate interface,
+    based on speed of active member interfaces
+    """
+
+
+class LoopbackModeLeaf(RootModel[bool]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[bool, Field(title='Loopback-modeLeaf')]
+    """
+    When set to true, the interface is logically looped back,
+    such that packets that are forwarded via the interface
+    are received on the same interface.
+    """
+
+
+class LoopbackModeLeaf2(RootModel[bool]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[bool, Field(title='Loopback-modeLeaf2')]
+    """
+    When set to true, the interface is logically looped back,
+    such that packets that are forwarded via the interface
+    are received on the same interface.
+    """
+
+
+class MacAddressType(RootModel[str]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+        regex_engine="python-re",
+    )
+    root: Annotated[str, Field(pattern='^(?=^[0-9a-fA-F]{2}(:[0-9a-fA-F]{2}){5}$).*$')]
+    """
+    An IEEE 802 MAC address
+    """
+
+
+class MinLinksLeaf(RootModel[int]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[int, Field(ge=0, le=65535, title='Min-linksLeaf')]
+    """
+    Specifies the mininum number of member
+    interfaces that must be active for the aggregate interface
+    to be available
+    """
+
+
+class MinLinksLeaf2(RootModel[int]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[int, Field(ge=0, le=65535, title='Min-linksLeaf2')]
+    """
+    Specifies the mininum number of member
+    interfaces that must be active for the aggregate interface
+    to be available
+    """
+
+
+class MtuLeaf(RootModel[int]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[int, Field(ge=0, le=65535, title='MtuLeaf')]
+    """
+    Set the max transmission unit size in octets
+    for the physical interface.  If this is not set, the mtu is
+    set to the operational default -- e.g., 1514 bytes on an
+    Ethernet interface.
+    """
+
+
+class MtuLeaf2(RootModel[int]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[int, Field(ge=0, le=65535, title='MtuLeaf2')]
+    """
+    Set the max transmission unit size in octets
+    for the physical interface.  If this is not set, the mtu is
+    set to the operational default -- e.g., 1514 bytes on an
+    Ethernet interface.
+    """
+
+
+class NameLeaf4(RootModel[str]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[str, Field(title='NameLeaf4')]
+    """
+    The name of the interface.
+
+    A device MAY restrict the allowed values for this leaf,
+    possibly depending on the type of the interface.
+    For system-controlled interfaces, this leaf is the
+    device-specific name of the interface.  The 'config false'
+    list interfaces/interface[name]/state contains the currently
+    existing interfaces on the device.
+
+    If a client tries to create configuration for a
+    system-controlled interface that is not present in the
+    corresponding state list, the server MAY reject
+    the request if the implementation does not support
+    pre-provisioning of interfaces or if the name refers to
+    an interface that can never exist in the system.  A
+    NETCONF server MUST reply with an rpc-error with the
+    error-tag 'invalid-value' in this case.
+
+    The IETF model in RFC 7223 provides YANG features for the
+    following (i.e., pre-provisioning and arbitrary-names),
+    however they are omitted here:
+
+     If the device supports pre-provisioning of interface
+     configuration, the 'pre-provisioning' feature is
+     advertised.
+
+     If the device allows arbitrarily named user-controlled
+     interfaces, the 'arbitrary-names' feature is advertised.
+
+    When a configured user-controlled interface is created by
+    the system, it is instantiated with the same name in the
+    /interfaces/interface[name]/state list.
+    """
+
+
+class NameLeaf5(RootModel[str]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[str, Field(title='NameLeaf5')]
+    """
+    The name of the interface.
+
+    A device MAY restrict the allowed values for this leaf,
+    possibly depending on the type of the interface.
+    For system-controlled interfaces, this leaf is the
+    device-specific name of the interface.  The 'config false'
+    list interfaces/interface[name]/state contains the currently
+    existing interfaces on the device.
+
+    If a client tries to create configuration for a
+    system-controlled interface that is not present in the
+    corresponding state list, the server MAY reject
+    the request if the implementation does not support
+    pre-provisioning of interfaces or if the name refers to
+    an interface that can never exist in the system.  A
+    NETCONF server MUST reply with an rpc-error with the
+    error-tag 'invalid-value' in this case.
+
+    The IETF model in RFC 7223 provides YANG features for the
+    following (i.e., pre-provisioning and arbitrary-names),
+    however they are omitted here:
+
+     If the device supports pre-provisioning of interface
+     configuration, the 'pre-provisioning' feature is
+     advertised.
+
+     If the device allows arbitrarily named user-controlled
+     interfaces, the 'arbitrary-names' feature is advertised.
+
+    When a configured user-controlled interface is created by
+    the system, it is instantiated with the same name in the
+    /interfaces/interface[name]/state list.
+    """
+
+
+class NameLeaf6(RootModel[str]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[str, Field(title='NameLeaf6')]
+    """
+    The system-assigned name for the sub-interface.  This MAY
+    be a combination of the base interface name and the
+    subinterface index, or some other convention used by the
+    system.
+    """
+
+
+class NegotiatedPortSpeedLeaf(RootModel[Any]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[Any, Field(title='Negotiated-port-speedLeaf')]
+    """
+    When auto-negotiate is set to TRUE, and the interface has
+    completed auto-negotiation with the remote peer, this value
+    shows the interface speed that has been negotiated.
+    """
+
+
+class Out8021qFramesLeaf(RootModel[Counter64Type]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[Counter64Type, Field(title='Out-8021q-framesLeaf')]
+    """
+    Number of 802.1q tagged frames sent on the interface
+    """
+
+
+class OutBroadcastPktsLeaf(RootModel[Counter64Type]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[Counter64Type, Field(title='Out-broadcast-pktsLeaf')]
+    """
+    The total number of packets that higher-level protocols
+    requested be transmitted, and that were addressed to a
+    broadcast address at this sub-layer, including those
+    that were discarded or not sent.
+
+    Discontinuities in the value of this counter can occur
+    at re-initialization of the management system, and at
+    other times as indicated by the value of
+    'last-clear'.
+    """
+
+
+class OutBroadcastPktsLeaf2(RootModel[Counter64Type]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[Counter64Type, Field(title='Out-broadcast-pktsLeaf2')]
+    """
+    The total number of packets that higher-level protocols
+    requested be transmitted, and that were addressed to a
+    broadcast address at this sub-layer, including those
+    that were discarded or not sent.
+
+    Discontinuities in the value of this counter can occur
+    at re-initialization of the management system, and at
+    other times as indicated by the value of
+    'last-clear'.
+    """
+
+
+class OutDiscardsLeaf(RootModel[Counter64Type]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[Counter64Type, Field(title='Out-discardsLeaf')]
+    """
+    The number of outbound packets that were chosen to be
+    discarded even though no errors had been detected to
+    prevent their being transmitted.  One possible reason
+    for discarding such a packet could be to free up buffer
+    space.
+
+    Discontinuities in the value of this counter can occur
+    at re-initialization of the management system, and at
+    other times as indicated by the value of
+    'last-clear'.
+    """
+
+
+class OutDiscardsLeaf2(RootModel[Counter64Type]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[Counter64Type, Field(title='Out-discardsLeaf2')]
+    """
+    The number of outbound packets that were chosen to be
+    discarded even though no errors had been detected to
+    prevent their being transmitted.  One possible reason
+    for discarding such a packet could be to free up buffer
+    space.
+
+    Discontinuities in the value of this counter can occur
+    at re-initialization of the management system, and at
+    other times as indicated by the value of
+    'last-clear'.
+    """
+
+
+class OutErrorsLeaf(RootModel[Counter64Type]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[Counter64Type, Field(title='Out-errorsLeaf')]
+    """
+    For packet-oriented interfaces, the number of outbound
+    packets that could not be transmitted because of errors.
+    For character-oriented or fixed-length interfaces, the
+    number of outbound transmission units that could not be
+    transmitted because of errors.
+
+    Discontinuities in the value of this counter can occur
+    at re-initialization of the management system, and at
+    other times as indicated by the value of
+    'last-clear'.
+    """
+
+
+class OutErrorsLeaf2(RootModel[Counter64Type]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[Counter64Type, Field(title='Out-errorsLeaf2')]
+    """
+    For packet-oriented interfaces, the number of outbound
+    packets that could not be transmitted because of errors.
+    For character-oriented or fixed-length interfaces, the
+    number of outbound transmission units that could not be
+    transmitted because of errors.
+
+    Discontinuities in the value of this counter can occur
+    at re-initialization of the management system, and at
+    other times as indicated by the value of
+    'last-clear'.
+    """
+
+
+class OutMacControlFramesLeaf(RootModel[Counter64Type]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[Counter64Type, Field(title='Out-mac-control-framesLeaf')]
+    """
+    MAC layer control frames sent on the interface
+    """
+
+
+class OutMacPauseFramesLeaf(RootModel[Counter64Type]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[Counter64Type, Field(title='Out-mac-pause-framesLeaf')]
+    """
+    MAC layer PAUSE frames sent on the interface
+    """
+
+
+class OutMulticastPktsLeaf(RootModel[Counter64Type]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[Counter64Type, Field(title='Out-multicast-pktsLeaf')]
+    """
+    The total number of packets that higher-level protocols
+    requested be transmitted, and that were addressed to a
+    multicast address at this sub-layer, including those
+    that were discarded or not sent.  For a MAC-layer
+    protocol, this includes both Group and Functional
+    addresses.
+
+    Discontinuities in the value of this counter can occur
+    at re-initialization of the management system, and at
+    other times as indicated by the value of
+    'last-clear'.
+    """
+
+
+class OutMulticastPktsLeaf2(RootModel[Counter64Type]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[Counter64Type, Field(title='Out-multicast-pktsLeaf2')]
+    """
+    The total number of packets that higher-level protocols
+    requested be transmitted, and that were addressed to a
+    multicast address at this sub-layer, including those
+    that were discarded or not sent.  For a MAC-layer
+    protocol, this includes both Group and Functional
+    addresses.
+
+    Discontinuities in the value of this counter can occur
+    at re-initialization of the management system, and at
+    other times as indicated by the value of
+    'last-clear'.
+    """
+
+
+class OutOctetsLeaf(RootModel[Counter64Type]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[Counter64Type, Field(title='Out-octetsLeaf')]
+    """
+    The total number of octets transmitted out of the
+    interface, including framing characters.
+
+    Discontinuities in the value of this counter can occur
+    at re-initialization of the management system, and at
+    other times as indicated by the value of
+    'last-clear'.
+    """
+
+
+class OutOctetsLeaf2(RootModel[Counter64Type]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[Counter64Type, Field(title='Out-octetsLeaf2')]
+    """
+    The total number of octets transmitted out of the
+    interface, including framing characters.
+
+    Discontinuities in the value of this counter can occur
+    at re-initialization of the management system, and at
+    other times as indicated by the value of
+    'last-clear'.
+    """
+
+
+class OutUnicastPktsLeaf(RootModel[Counter64Type]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[Counter64Type, Field(title='Out-unicast-pktsLeaf')]
+    """
+    The total number of packets that higher-level protocols
+    requested be transmitted, and that were not addressed
+    to a multicast or broadcast address at this sub-layer,
+    including those that were discarded or not sent.
+
+    Discontinuities in the value of this counter can occur
+    at re-initialization of the management system, and at
+    other times as indicated by the value of
+    'last-clear'.
+    """
+
+
+class OutUnicastPktsLeaf2(RootModel[Counter64Type]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[Counter64Type, Field(title='Out-unicast-pktsLeaf2')]
+    """
+    The total number of packets that higher-level protocols
+    requested be transmitted, and that were not addressed
+    to a multicast or broadcast address at this sub-layer,
+    including those that were discarded or not sent.
+
+    Discontinuities in the value of this counter can occur
+    at re-initialization of the management system, and at
+    other times as indicated by the value of
+    'last-clear'.
+    """
+
+
+class PortSpeedLeaf(RootModel[Any]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[Any, Field(title='Port-speedLeaf')]
+    """
+    When auto-negotiate is TRUE, this optionally sets the
+    port-speed mode that will be advertised to the peer for
+    negotiation.  If unspecified, it is expected that the
+    interface will select the highest speed available based on
+    negotiation.  When auto-negotiate is set to FALSE, sets the
+    link speed to a fixed value -- supported values are defined
+    by ETHERNET_SPEED identities
+    """
+
+
+class PortSpeedLeaf2(RootModel[Any]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[Any, Field(title='Port-speedLeaf2')]
+    """
+    When auto-negotiate is TRUE, this optionally sets the
+    port-speed mode that will be advertised to the peer for
+    negotiation.  If unspecified, it is expected that the
+    interface will select the highest speed available based on
+    negotiation.  When auto-negotiate is set to FALSE, sets the
+    link speed to a fixed value -- supported values are defined
+    by ETHERNET_SPEED identities
+    """
+
+
+class QinqIdType(RootModel[str]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+        regex_engine="python-re",
+    )
+    root: Annotated[
+        str,
+        Field(
+            pattern='^(?=^(409[0-4]|40[0-8][0-9]|[1-3][0-9]{3}|[1-9][0-9]{1,2}|[1-9])\\.((409[0-4]|40[0-8][0-9]|[1-3][0-9]{3}|[1-9][0-9]{1,2}|[1-9])|\\*)$).*$',
+            title='Qinq-idType',
+        ),
+    ]
+    """
+    Type definition representing a single double-tagged/QinQ VLAN
+    identifier. The format of a QinQ VLAN-ID is x.y where X is the
+    'outer' VLAN identifier, and y is the 'inner' VLAN identifier.
+    Both x and y must be valid VLAN IDs (1 <= vlan-id <= 4094)
+    with the exception that y may be equal to a wildcard (*). In
+    cases where y is set to the wildcard, this represents all inner
+    VLAN identifiers where the outer VLAN identifier is equal to
+    x
+    """
+
+
+class Timeticks64Type(RootModel[int]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[int, Field(ge=0, le=18446744073709551615)]
+    """
+    The timeticks64 represents the time, modulo 2^64 in
+    nanoseconds between two epochs. The leaf using this
+    type must define the epochs that tests are relative to.
+    """
+
+
+class TpidLeaf(RootModel[Any]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[Any, Field(title='TpidLeaf')]
+    """
+    Optionally set the tag protocol identifier field (TPID) that
+    is accepted on the VLAN
+    """
+
+
+class TpidLeaf2(RootModel[Any]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[Any, Field(title='TpidLeaf2')]
+    """
+    Optionally set the tag protocol identifier field (TPID) that
+    is accepted on the VLAN
+    """
+
+
+class TypeLeaf(RootModel[Any]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[Any, Field(title='TypeLeaf')]
+    """
+    The type of the interface.
+
+    When an interface entry is created, a server MAY
+    initialize the type leaf with a valid value, e.g., if it
+    is possible to derive the type from the name of the
+    interface.
+
+    If a client tries to set the type of an interface to a
+    value that can never be used by the system, e.g., if the
+    type is not supported or if the type does not match the
+    name of the interface, the server MUST reject the request.
+    A NETCONF server MUST reply with an rpc-error with the
+    error-tag 'invalid-value' in this case.
+    """
+
+
+class TypeLeaf2(RootModel[Any]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[Any, Field(title='TypeLeaf2')]
+    """
+    The type of the interface.
+
+    When an interface entry is created, a server MAY
+    initialize the type leaf with a valid value, e.g., if it
+    is possible to derive the type from the name of the
+    interface.
+
+    If a client tries to set the type of an interface to a
+    value that can never be used by the system, e.g., if the
+    type is not supported or if the type does not match the
+    name of the interface, the server MUST reject the request.
+    A NETCONF server MUST reply with an rpc-error with the
+    error-tag 'invalid-value' in this case.
+    """
+
+
+class UpLeaf(RootModel[int]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[int, Field(ge=0, le=4294967295, title='UpLeaf')]
+    """
+    Dampens advertisement when the interface
+    transitions from down to up.  A zero value means dampening
+    is turned off, i.e., immediate notification.
+    """
+
+
+class UpLeaf2(RootModel[int]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[int, Field(ge=0, le=4294967295, title='UpLeaf2')]
+    """
+    Dampens advertisement when the interface
+    transitions from down to up.  A zero value means dampening
+    is turned off, i.e., immediate notification.
+    """
+
+
+class VlanIdType(RootModel[int]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[int, Field(ge=1, le=4094)]
+    """
+    Type definition representing a single-tagged VLAN
+    """
+
+
+class VlanRangeType(RootModel[str]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+        regex_engine="python-re",
+    )
+    root: Annotated[
+        str,
+        Field(
+            pattern='^(?=^(409[0-4]|40[0-8][0-9]|[1-3][0-9]{3}|[1-9][0-9]{1,2}|[1-9])\\.\\.(409[0-4]|40[0-8][0-9]|[1-3][0-9]{3}|[1-9][0-9]{1,2}|[1-9])$).*$',
+            title='Vlan-rangeType',
+        ),
+    ]
+    """
+    Type definition representing a range of single-tagged
+    VLANs. A range is specified as x..y where x and y are
+    valid VLAN IDs (1 <= vlan-id <= 4094). The range is
+    assumed to be inclusive, such that any VLAN-ID matching
+    x <= VLAN-ID <= y falls within the range.
+    """
+
+
+class VlanLeaf1(RootModel[int]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[int, Field(ge=0, le=65535, title='VlanLeaf')]
+    """
+    References the VLAN for which this IP interface
+    provides routing services -- similar to a switch virtual
+    interface (SVI), or integrated routing and bridging interface
+    (IRB) in some implementations.
+    """
+
+
+class VlanLeaf(RootModel[Union[VlanLeaf1, str]]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[Union[VlanLeaf1, str], Field(title='VlanLeaf')]
+    """
+    References the VLAN for which this IP interface
+    provides routing services -- similar to a switch virtual
+    interface (SVI), or integrated routing and bridging interface
+    (IRB) in some implementations.
+    """
+
+
+class VlanLeaf21(RootModel[int]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[int, Field(ge=0, le=65535, title='VlanLeaf2')]
+    """
+    References the VLAN for which this IP interface
+    provides routing services -- similar to a switch virtual
+    interface (SVI), or integrated routing and bridging interface
+    (IRB) in some implementations.
+    """
+
+
+class VlanLeaf2(RootModel[Union[VlanLeaf21, str]]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[Union[VlanLeaf21, str], Field(title='VlanLeaf2')]
+    """
+    References the VLAN for which this IP interface
+    provides routing services -- similar to a switch virtual
+    interface (SVI), or integrated routing and bridging interface
+    (IRB) in some implementations.
+    """
+
+
+class EnumerationEnum10(Enum):
+    access = 'ACCESS'
+    trunk = 'TRUNK'
+
+
+class EnumerationEnum11(Enum):
+    lacp = 'LACP'
+    static = 'STATIC'
+
+
+class EnumerationEnum3(Enum):
+    up = 'UP'
+    down = 'DOWN'
+    testing = 'TESTING'
+
+
+class EnumerationEnum4(Enum):
+    up = 'UP'
+    down = 'DOWN'
+    testing = 'TESTING'
+    unknown = 'UNKNOWN'
+    dormant = 'DORMANT'
+    not_present = 'NOT_PRESENT'
+    lower_layer_down = 'LOWER_LAYER_DOWN'
+
+
+class EnumerationEnum5(Enum):
+    up = 'UP'
+    down = 'DOWN'
+    testing = 'TESTING'
+
+
+class EnumerationEnum6(Enum):
+    up = 'UP'
+    down = 'DOWN'
+    testing = 'TESTING'
+    unknown = 'UNKNOWN'
+    dormant = 'DORMANT'
+    not_present = 'NOT_PRESENT'
+    lower_layer_down = 'LOWER_LAYER_DOWN'
+
+
+class EnumerationEnum7(Enum):
+    full = 'FULL'
+    half = 'HALF'
+
+
+class EnumerationEnum8(Enum):
+    full = 'FULL'
+    half = 'HALF'
+
+
+class EnumerationEnum9(Enum):
+    full = 'FULL'
+    half = 'HALF'
+
+
+class AccessVlanLeaf(RootModel[VlanIdType]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[VlanIdType, Field(title='Access-vlanLeaf')]
+    """
+    Assign the access vlan to the access port.
+    """
+
+
+class AccessVlanLeaf2(RootModel[VlanIdType]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[VlanIdType, Field(title='Access-vlanLeaf2')]
+    """
+    Assign the access vlan to the access port.
+    """
+
+
+class AccessVlanLeaf3(RootModel[VlanIdType]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[VlanIdType, Field(title='Access-vlanLeaf3')]
+    """
+    Assign the access vlan to the access port.
+    """
+
+
+class AccessVlanLeaf4(RootModel[VlanIdType]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[VlanIdType, Field(title='Access-vlanLeaf4')]
+    """
+    Assign the access vlan to the access port.
+    """
+
+
+class AdminStatusLeaf(RootModel[EnumerationEnum3]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[EnumerationEnum3, Field(title='Admin-statusLeaf')]
+    """
+    The desired state of the interface.  In RFC 7223 this leaf
+    has the same read semantics as ifAdminStatus.  Here, it
+    reflects the administrative state as set by enabling or
+    disabling the interface.
+    """
+
+
+class AdminStatusLeaf2(RootModel[EnumerationEnum5]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[EnumerationEnum5, Field(title='Admin-statusLeaf2')]
+    """
+    The desired state of the interface.  In RFC 7223 this leaf
+    has the same read semantics as ifAdminStatus.  Here, it
+    reflects the administrative state as set by enabling or
+    disabling the interface.
+    """
+
+
+class AggregationTypeType(RootModel[EnumerationEnum11]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: EnumerationEnum11
+    """
+    Type to define the lag-type, i.e., how the LAG is
+    defined and managed
+    """
+
+
+class CarrierTransitionsLeaf(RootModel[Counter64Type]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[Counter64Type, Field(title='Carrier-transitionsLeaf')]
+    """
+    Number of times the interface state has transitioned
+    between up and down since the time the device restarted
+    or the last-clear time, whichever is most recent.
+    """
+
+
+class CarrierTransitionsLeaf2(RootModel[Counter64Type]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[Counter64Type, Field(title='Carrier-transitionsLeaf2')]
+    """
+    Number of times the interface state has transitioned
+    between up and down since the time the device restarted
+    or the last-clear time, whichever is most recent.
+    """
+
+
+class ConfigContainer10(BaseModel):
+    """
+    Configuration data for routed vlan interfaces
+    """
+
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    vlan: Annotated[VlanLeaf, Field(None, alias='openconfig-vlan:vlan')]
+
+
+class ConfigContainer2(BaseModel):
+    """
+    Configurable items at the global, physical interface
+    level
+    """
+
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    name: Annotated[NameLeaf4, Field(None, alias='openconfig-interfaces:name')]
+    type: Annotated[TypeLeaf, Field(alias='openconfig-interfaces:type')]
+    mtu: Annotated[MtuLeaf, Field(None, alias='openconfig-interfaces:mtu')]
+    loopback_mode: Annotated[
+        LoopbackModeLeaf, Field(False, alias='openconfig-interfaces:loopback-mode')
+    ]
+    description: Annotated[
+        DescriptionLeaf, Field(None, alias='openconfig-interfaces:description')
+    ]
+    enabled: Annotated[EnabledLeaf, Field(True, alias='openconfig-interfaces:enabled')]
+    tpid: Annotated[TpidLeaf, Field('TPID_0X8100', alias='openconfig-vlan:tpid')]
+
+
+class ConfigContainer3(BaseModel):
+    """
+    Configuration data for interface hold-time settings.
+    """
+
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    up: Annotated[UpLeaf, Field(0, alias='openconfig-interfaces:up')]
+    down: Annotated[DownLeaf, Field(0, alias='openconfig-interfaces:down')]
+
+
+class ConfigContainer4(BaseModel):
+    """
+    Configurable items at the subinterface level
+    """
+
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    index: Annotated[IndexLeaf2, Field(0, alias='openconfig-interfaces:index')]
+    description: Annotated[
+        DescriptionLeaf3, Field(None, alias='openconfig-interfaces:description')
+    ]
+    enabled: Annotated[EnabledLeaf3, Field(True, alias='openconfig-interfaces:enabled')]
+
+
+class CountersContainer3(BaseModel):
+    """
+    Ethernet interface counters
+    """
+
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    in_mac_control_frames: Annotated[
+        InMacControlFramesLeaf,
+        Field(None, alias='openconfig-if-ethernet:in-mac-control-frames'),
+    ]
+    in_mac_pause_frames: Annotated[
+        InMacPauseFramesLeaf,
+        Field(None, alias='openconfig-if-ethernet:in-mac-pause-frames'),
+    ]
+    in_oversize_frames: Annotated[
+        InOversizeFramesLeaf,
+        Field(None, alias='openconfig-if-ethernet:in-oversize-frames'),
+    ]
+    in_undersize_frames: Annotated[
+        InUndersizeFramesLeaf,
+        Field(None, alias='openconfig-if-ethernet:in-undersize-frames'),
+    ]
+    in_jabber_frames: Annotated[
+        InJabberFramesLeaf, Field(None, alias='openconfig-if-ethernet:in-jabber-frames')
+    ]
+    in_fragment_frames: Annotated[
+        InFragmentFramesLeaf,
+        Field(None, alias='openconfig-if-ethernet:in-fragment-frames'),
+    ]
+    in_8021q_frames: Annotated[
+        In8021qFramesLeaf, Field(None, alias='openconfig-if-ethernet:in-8021q-frames')
+    ]
+    in_crc_errors: Annotated[
+        InCrcErrorsLeaf, Field(None, alias='openconfig-if-ethernet:in-crc-errors')
+    ]
+    in_block_errors: Annotated[
+        InBlockErrorsLeaf, Field(None, alias='openconfig-if-ethernet:in-block-errors')
+    ]
+    out_mac_control_frames: Annotated[
+        OutMacControlFramesLeaf,
+        Field(None, alias='openconfig-if-ethernet:out-mac-control-frames'),
+    ]
+    out_mac_pause_frames: Annotated[
+        OutMacPauseFramesLeaf,
+        Field(None, alias='openconfig-if-ethernet:out-mac-pause-frames'),
+    ]
+    out_8021q_frames: Annotated[
+        Out8021qFramesLeaf, Field(None, alias='openconfig-if-ethernet:out-8021q-frames')
+    ]
+
+
+class DuplexModeLeaf(RootModel[EnumerationEnum7]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[EnumerationEnum7, Field(title='Duplex-modeLeaf')]
+    """
+    When auto-negotiate is TRUE, this optionally sets the
+    duplex mode that will be advertised to the peer.  If
+    unspecified, the interface should negotiate the duplex mode
+    directly (typically full-duplex).  When auto-negotiate is
+    FALSE, this sets the duplex mode on the interface directly.
+    """
+
+
+class DuplexModeLeaf2(RootModel[EnumerationEnum8]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[EnumerationEnum8, Field(title='Duplex-modeLeaf2')]
+    """
+    When auto-negotiate is TRUE, this optionally sets the
+    duplex mode that will be advertised to the peer.  If
+    unspecified, the interface should negotiate the duplex mode
+    directly (typically full-duplex).  When auto-negotiate is
+    FALSE, this sets the duplex mode on the interface directly.
+    """
+
+
+class HwMacAddressLeaf(RootModel[MacAddressType]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[MacAddressType, Field(title='Hw-mac-addressLeaf')]
+    """
+    Represenets the 'burned-in',  or system-assigned, MAC
+    address for the Ethernet interface.
+    """
+
+
+class IndexLeaf(RootModel[IndexLeaf2]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[IndexLeaf2, Field(title='IndexLeaf')]
+    """
+    The index number of the subinterface -- used to address
+    the logical interface
+    """
+
+
+class LagTypeLeaf(RootModel[AggregationTypeType]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[AggregationTypeType, Field(title='Lag-typeLeaf')]
+    """
+    Sets the type of LAG, i.e., how it is
+    configured / maintained
+    """
+
+
+class LagTypeLeaf2(RootModel[AggregationTypeType]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[AggregationTypeType, Field(title='Lag-typeLeaf2')]
+    """
+    Sets the type of LAG, i.e., how it is
+    configured / maintained
+    """
+
+
+class LastChangeLeaf(RootModel[Timeticks64Type]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[Timeticks64Type, Field(title='Last-changeLeaf')]
+    """
+    This timestamp indicates the time of the last state change
+    of the interface (e.g., up-to-down transition). This
+    corresponds to the ifLastChange object in the standard
+    interface MIB.
+
+    The value is the timestamp in nanoseconds relative to
+    the Unix Epoch (Jan 1, 1970 00:00:00 UTC).
+    """
+
+
+class LastChangeLeaf2(RootModel[Timeticks64Type]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[Timeticks64Type, Field(title='Last-changeLeaf2')]
+    """
+    This timestamp indicates the time of the last state change
+    of the interface (e.g., up-to-down transition). This
+    corresponds to the ifLastChange object in the standard
+    interface MIB.
+
+    The value is the timestamp in nanoseconds relative to
+    the Unix Epoch (Jan 1, 1970 00:00:00 UTC).
+    """
+
+
+class LastClearLeaf(RootModel[Timeticks64Type]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[Timeticks64Type, Field(title='Last-clearLeaf')]
+    """
+    Timestamp of the last time the interface counters were
+    cleared.
+
+    The value is the timestamp in nanoseconds relative to
+    the Unix Epoch (Jan 1, 1970 00:00:00 UTC).
+    """
+
+
+class LastClearLeaf2(RootModel[Timeticks64Type]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[Timeticks64Type, Field(title='Last-clearLeaf2')]
+    """
+    Timestamp of the last time the interface counters were
+    cleared.
+
+    The value is the timestamp in nanoseconds relative to
+    the Unix Epoch (Jan 1, 1970 00:00:00 UTC).
+    """
+
+
+class MacAddressLeaf(RootModel[MacAddressType]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[MacAddressType, Field(title='Mac-addressLeaf')]
+    """
+    Assigns a MAC address to the Ethernet interface.  If not
+    specified, the corresponding operational state leaf is
+    expected to show the system-assigned MAC address.
+    """
+
+
+class MacAddressLeaf2(RootModel[MacAddressType]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[MacAddressType, Field(title='Mac-addressLeaf2')]
+    """
+    Assigns a MAC address to the Ethernet interface.  If not
+    specified, the corresponding operational state leaf is
+    expected to show the system-assigned MAC address.
+    """
+
+
+class NameLeaf3(RootModel[NameLeaf4]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: NameLeaf4
+    """
+    References the configured name of the interface
+    """
+
+
+class NativeVlanLeaf(RootModel[VlanIdType]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[VlanIdType, Field(title='Native-vlanLeaf')]
+    """
+    Set the native VLAN id for untagged frames arriving on
+    a trunk interface. Tagged frames sent on an interface
+    configured with a native VLAN should have their tags
+    stripped prior to transmission.This configuration is only
+    valid on a trunk interface.
+    """
+
+
+class NativeVlanLeaf2(RootModel[VlanIdType]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[VlanIdType, Field(title='Native-vlanLeaf2')]
+    """
+    Set the native VLAN id for untagged frames arriving on
+    a trunk interface. Tagged frames sent on an interface
+    configured with a native VLAN should have their tags
+    stripped prior to transmission.This configuration is only
+    valid on a trunk interface.
+    """
+
+
+class NativeVlanLeaf3(RootModel[VlanIdType]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[VlanIdType, Field(title='Native-vlanLeaf3')]
+    """
+    Set the native VLAN id for untagged frames arriving on
+    a trunk interface. Tagged frames sent on an interface
+    configured with a native VLAN should have their tags
+    stripped prior to transmission.This configuration is only
+    valid on a trunk interface.
+    """
+
+
+class NativeVlanLeaf4(RootModel[VlanIdType]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[VlanIdType, Field(title='Native-vlanLeaf4')]
+    """
+    Set the native VLAN id for untagged frames arriving on
+    a trunk interface. Tagged frames sent on an interface
+    configured with a native VLAN should have their tags
+    stripped prior to transmission.This configuration is only
+    valid on a trunk interface.
+    """
+
+
+class NegotiatedDuplexModeLeaf(RootModel[EnumerationEnum9]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[EnumerationEnum9, Field(title='Negotiated-duplex-modeLeaf')]
+    """
+    When auto-negotiate is set to TRUE, and the interface has
+    completed auto-negotiation with the remote peer, this value
+    shows the duplex mode that has been negotiated.
+    """
+
+
+class OperStatusLeaf(RootModel[EnumerationEnum4]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[EnumerationEnum4, Field(title='Oper-statusLeaf')]
+    """
+    The current operational state of the interface.
+
+    This leaf has the same semantics as ifOperStatus.
+    """
+
+
+class OperStatusLeaf2(RootModel[EnumerationEnum6]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[EnumerationEnum6, Field(title='Oper-statusLeaf2')]
+    """
+    The current operational state of the interface.
+
+    This leaf has the same semantics as ifOperStatus.
+    """
+
+
+class StateContainer11(BaseModel):
+    """
+    Operational state data
+    """
+
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    vlan: Annotated[VlanLeaf2, Field(None, alias='openconfig-vlan:vlan')]
+
+
+class StateContainer4(BaseModel):
+    """
+    Operational state data for interface hold-time.
+    """
+
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    up: Annotated[UpLeaf2, Field(0, alias='openconfig-interfaces:up')]
+    down: Annotated[DownLeaf2, Field(0, alias='openconfig-interfaces:down')]
+
+
+class TrunkVlansLeafList(RootModel[Union[VlanIdType, VlanRangeType]]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[
+        Union[VlanIdType, VlanRangeType], Field(title='Trunk-vlansLeafList')
+    ]
+    """
+    Specify VLANs, or ranges thereof, that the interface may
+    carry when in trunk mode.  If not specified, all VLANs are
+    allowed on the interface. Ranges are specified in the form
+    x..y, where x<y - ranges are assumed to be inclusive (such
+    that the VLAN range is x <= range <= y.
+    """
+
+
+class TrunkVlansLeafList2(RootModel[Union[VlanIdType, VlanRangeType]]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[
+        Union[VlanIdType, VlanRangeType], Field(title='Trunk-vlansLeafList2')
+    ]
+    """
+    Specify VLANs, or ranges thereof, that the interface may
+    carry when in trunk mode.  If not specified, all VLANs are
+    allowed on the interface. Ranges are specified in the form
+    x..y, where x<y - ranges are assumed to be inclusive (such
+    that the VLAN range is x <= range <= y.
+    """
+
+
+class TrunkVlansLeafList3(RootModel[Union[VlanIdType, VlanRangeType]]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[
+        Union[VlanIdType, VlanRangeType], Field(title='Trunk-vlansLeafList3')
+    ]
+    """
+    Specify VLANs, or ranges thereof, that the interface may
+    carry when in trunk mode.  If not specified, all VLANs are
+    allowed on the interface. Ranges are specified in the form
+    x..y, where x<y - ranges are assumed to be inclusive (such
+    that the VLAN range is x <= range <= y.
+    """
+
+
+class TrunkVlansLeafList4(RootModel[Union[VlanIdType, VlanRangeType]]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[
+        Union[VlanIdType, VlanRangeType], Field(title='Trunk-vlansLeafList4')
+    ]
+    """
+    Specify VLANs, or ranges thereof, that the interface may
+    carry when in trunk mode.  If not specified, all VLANs are
+    allowed on the interface. Ranges are specified in the form
+    x..y, where x<y - ranges are assumed to be inclusive (such
+    that the VLAN range is x <= range <= y.
+    """
+
+
+class VlanIdLeaf4(RootModel[Union[VlanIdType, QinqIdType]]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[Union[VlanIdType, QinqIdType], Field(title='Vlan-idLeaf4')]
+    """
+    VLAN id for the subinterface -- specified inline for the
+    case of a local VLAN.  The id is scoped to the
+    subinterface, and could be repeated on different
+    subinterfaces.
+    """
+
+
+class VlanIdLeaf5(RootModel[Union[VlanIdType, QinqIdType]]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[Union[VlanIdType, QinqIdType], Field(title='Vlan-idLeaf5')]
+    """
+    VLAN id for the subinterface -- specified inline for the
+    case of a local VLAN.  The id is scoped to the
+    subinterface, and could be repeated on different
+    subinterfaces.
+    """
+
+
+class VlanModeTypeType(RootModel[EnumerationEnum10]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: EnumerationEnum10
+    """
+    VLAN interface mode (trunk or access)
+    """
+
+
+class AggregateIdLeaf(RootModel[NameLeaf3]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[NameLeaf3, Field(title='Aggregate-idLeaf')]
+    """
+    Specify the logical aggregate interface to which
+    this interface belongs
+    """
+
+
+class AggregateIdLeaf2(RootModel[NameLeaf3]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[NameLeaf3, Field(title='Aggregate-idLeaf2')]
+    """
+    Specify the logical aggregate interface to which
+    this interface belongs
+    """
+
+
+class BaseInterfaceRefType(RootModel[NameLeaf3]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: NameLeaf3
+    """
+    Reusable type for by-name reference to a base interface.
+    This type may be used in cases where ability to reference
+    a subinterface is not required.
+    """
+
+
+class ConfigContainer5(BaseModel):
+    """
+    Configuration parameters for VLANs
+    """
+
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    vlan_id: Annotated[VlanIdLeaf4, Field(None, alias='openconfig-vlan:vlan-id')]
+
+
+class ConfigContainer6(BaseModel):
+    """
+    Configuration data for ethernet interfaces
+    """
+
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    mac_address: Annotated[
+        MacAddressLeaf, Field(None, alias='openconfig-if-ethernet:mac-address')
+    ]
+    auto_negotiate: Annotated[
+        AutoNegotiateLeaf, Field(True, alias='openconfig-if-ethernet:auto-negotiate')
+    ]
+    duplex_mode: Annotated[
+        DuplexModeLeaf, Field(None, alias='openconfig-if-ethernet:duplex-mode')
+    ]
+    port_speed: Annotated[
+        PortSpeedLeaf, Field(None, alias='openconfig-if-ethernet:port-speed')
+    ]
+    enable_flow_control: Annotated[
+        EnableFlowControlLeaf,
+        Field(False, alias='openconfig-if-ethernet:enable-flow-control'),
+    ]
+    aggregate_id: Annotated[
+        AggregateIdLeaf, Field(None, alias='openconfig-if-aggregate:aggregate-id')
+    ]
+
+
+class ConfigContainer8(BaseModel):
+    """
+    Configuration variables for logical aggregate /
+    LAG interfaces
+    """
+
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    lag_type: Annotated[
+        LagTypeLeaf, Field(None, alias='openconfig-if-aggregate:lag-type')
+    ]
+    min_links: Annotated[
+        MinLinksLeaf, Field(None, alias='openconfig-if-aggregate:min-links')
+    ]
+
+
+class CountersContainer(BaseModel):
+    """
+    A collection of interface-related statistics objects.
+    """
+
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    in_octets: Annotated[
+        InOctetsLeaf, Field(None, alias='openconfig-interfaces:in-octets')
+    ]
+    in_unicast_pkts: Annotated[
+        InUnicastPktsLeaf, Field(None, alias='openconfig-interfaces:in-unicast-pkts')
+    ]
+    in_broadcast_pkts: Annotated[
+        InBroadcastPktsLeaf,
+        Field(None, alias='openconfig-interfaces:in-broadcast-pkts'),
+    ]
+    in_multicast_pkts: Annotated[
+        InMulticastPktsLeaf,
+        Field(None, alias='openconfig-interfaces:in-multicast-pkts'),
+    ]
+    in_discards: Annotated[
+        InDiscardsLeaf, Field(None, alias='openconfig-interfaces:in-discards')
+    ]
+    in_errors: Annotated[
+        InErrorsLeaf, Field(None, alias='openconfig-interfaces:in-errors')
+    ]
+    in_unknown_protos: Annotated[
+        InUnknownProtosLeaf,
+        Field(None, alias='openconfig-interfaces:in-unknown-protos'),
+    ]
+    in_fcs_errors: Annotated[
+        InFcsErrorsLeaf, Field(None, alias='openconfig-interfaces:in-fcs-errors')
+    ]
+    out_octets: Annotated[
+        OutOctetsLeaf, Field(None, alias='openconfig-interfaces:out-octets')
+    ]
+    out_unicast_pkts: Annotated[
+        OutUnicastPktsLeaf, Field(None, alias='openconfig-interfaces:out-unicast-pkts')
+    ]
+    out_broadcast_pkts: Annotated[
+        OutBroadcastPktsLeaf,
+        Field(None, alias='openconfig-interfaces:out-broadcast-pkts'),
+    ]
+    out_multicast_pkts: Annotated[
+        OutMulticastPktsLeaf,
+        Field(None, alias='openconfig-interfaces:out-multicast-pkts'),
+    ]
+    out_discards: Annotated[
+        OutDiscardsLeaf, Field(None, alias='openconfig-interfaces:out-discards')
+    ]
+    out_errors: Annotated[
+        OutErrorsLeaf, Field(None, alias='openconfig-interfaces:out-errors')
+    ]
+    carrier_transitions: Annotated[
+        CarrierTransitionsLeaf,
+        Field(None, alias='openconfig-interfaces:carrier-transitions'),
+    ]
+    last_clear: Annotated[
+        LastClearLeaf, Field(None, alias='openconfig-interfaces:last-clear')
+    ]
+
+
+class CountersContainer2(BaseModel):
+    """
+    A collection of interface-related statistics objects.
+    """
+
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    in_octets: Annotated[
+        InOctetsLeaf2, Field(None, alias='openconfig-interfaces:in-octets')
+    ]
+    in_unicast_pkts: Annotated[
+        InUnicastPktsLeaf2, Field(None, alias='openconfig-interfaces:in-unicast-pkts')
+    ]
+    in_broadcast_pkts: Annotated[
+        InBroadcastPktsLeaf2,
+        Field(None, alias='openconfig-interfaces:in-broadcast-pkts'),
+    ]
+    in_multicast_pkts: Annotated[
+        InMulticastPktsLeaf2,
+        Field(None, alias='openconfig-interfaces:in-multicast-pkts'),
+    ]
+    in_discards: Annotated[
+        InDiscardsLeaf2, Field(None, alias='openconfig-interfaces:in-discards')
+    ]
+    in_errors: Annotated[
+        InErrorsLeaf2, Field(None, alias='openconfig-interfaces:in-errors')
+    ]
+    in_unknown_protos: Annotated[
+        InUnknownProtosLeaf2,
+        Field(None, alias='openconfig-interfaces:in-unknown-protos'),
+    ]
+    in_fcs_errors: Annotated[
+        InFcsErrorsLeaf2, Field(None, alias='openconfig-interfaces:in-fcs-errors')
+    ]
+    out_octets: Annotated[
+        OutOctetsLeaf2, Field(None, alias='openconfig-interfaces:out-octets')
+    ]
+    out_unicast_pkts: Annotated[
+        OutUnicastPktsLeaf2, Field(None, alias='openconfig-interfaces:out-unicast-pkts')
+    ]
+    out_broadcast_pkts: Annotated[
+        OutBroadcastPktsLeaf2,
+        Field(None, alias='openconfig-interfaces:out-broadcast-pkts'),
+    ]
+    out_multicast_pkts: Annotated[
+        OutMulticastPktsLeaf2,
+        Field(None, alias='openconfig-interfaces:out-multicast-pkts'),
+    ]
+    out_discards: Annotated[
+        OutDiscardsLeaf2, Field(None, alias='openconfig-interfaces:out-discards')
+    ]
+    out_errors: Annotated[
+        OutErrorsLeaf2, Field(None, alias='openconfig-interfaces:out-errors')
+    ]
+    carrier_transitions: Annotated[
+        CarrierTransitionsLeaf2,
+        Field(None, alias='openconfig-interfaces:carrier-transitions'),
+    ]
+    last_clear: Annotated[
+        LastClearLeaf2, Field(None, alias='openconfig-interfaces:last-clear')
+    ]
+
+
+class HoldTimeContainer(BaseModel):
+    """
+    Top-level container for hold-time settings to enable
+    dampening advertisements of interface transitions.
+    """
+
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    config: Annotated[
+        ConfigContainer3, Field(None, alias='openconfig-interfaces:config')
+    ]
+    state: Annotated[StateContainer4, Field(None, alias='openconfig-interfaces:state')]
+
+
+class InterfaceModeLeaf(RootModel[VlanModeTypeType]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[VlanModeTypeType, Field(title='Interface-modeLeaf')]
+    """
+    Set the interface to access or trunk mode for
+    VLANs
+    """
+
+
+class InterfaceModeLeaf2(RootModel[VlanModeTypeType]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[VlanModeTypeType, Field(title='Interface-modeLeaf2')]
+    """
+    Set the interface to access or trunk mode for
+    VLANs
+    """
+
+
+class InterfaceModeLeaf3(RootModel[VlanModeTypeType]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[VlanModeTypeType, Field(title='Interface-modeLeaf3')]
+    """
+    Set the interface to access or trunk mode for
+    VLANs
+    """
+
+
+class InterfaceModeLeaf4(RootModel[VlanModeTypeType]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[VlanModeTypeType, Field(title='Interface-modeLeaf4')]
+    """
+    Set the interface to access or trunk mode for
+    VLANs
+    """
+
+
+class MemberLeafList(RootModel[BaseInterfaceRefType]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: Annotated[BaseInterfaceRefType, Field(title='MemberLeafList')]
+    """
+    List of current member interfaces for the aggregate,
+    expressed as references to existing interfaces
+    """
+
+
+class RoutedVlanContainer(BaseModel):
+    """
+    Top-level container for routed vlan interfaces.  These
+    logical interfaces are also known as SVI (switched virtual
+    interface), IRB (integrated routing and bridging), RVI
+    (routed VLAN interface)
+    """
+
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    config: Annotated[ConfigContainer10, Field(None, alias='openconfig-vlan:config')]
+    state: Annotated[StateContainer11, Field(None, alias='openconfig-vlan:state')]
+
+
+class StateContainer10(BaseModel):
+    """
+    State variables for VLANs
+    """
+
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    interface_mode: Annotated[
+        InterfaceModeLeaf4, Field(None, alias='openconfig-vlan:interface-mode')
+    ]
+    native_vlan: Annotated[
+        NativeVlanLeaf4, Field(None, alias='openconfig-vlan:native-vlan')
+    ]
+    access_vlan: Annotated[
+        AccessVlanLeaf4, Field(None, alias='openconfig-vlan:access-vlan')
+    ]
+    trunk_vlans: Annotated[
+        List[TrunkVlansLeafList4], Field([], alias='openconfig-vlan:trunk-vlans')
+    ]
+    """
+    Specify VLANs, or ranges thereof, that the interface may
+    carry when in trunk mode.  If not specified, all VLANs are
+    allowed on the interface. Ranges are specified in the form
+    x..y, where x<y - ranges are assumed to be inclusive (such
+    that the VLAN range is x <= range <= y.
+    """
+
+
+class StateContainer3(BaseModel):
+    """
+    Operational state data at the global interface level
+    """
+
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    name: Annotated[NameLeaf5, Field(None, alias='openconfig-interfaces:name')]
+    type: Annotated[TypeLeaf2, Field(alias='openconfig-interfaces:type')]
+    mtu: Annotated[MtuLeaf2, Field(None, alias='openconfig-interfaces:mtu')]
+    loopback_mode: Annotated[
+        LoopbackModeLeaf2, Field(False, alias='openconfig-interfaces:loopback-mode')
+    ]
+    description: Annotated[
+        DescriptionLeaf2, Field(None, alias='openconfig-interfaces:description')
+    ]
+    enabled: Annotated[EnabledLeaf2, Field(True, alias='openconfig-interfaces:enabled')]
+    ifindex: Annotated[IfindexLeaf, Field(None, alias='openconfig-interfaces:ifindex')]
+    admin_status: Annotated[
+        AdminStatusLeaf, Field(alias='openconfig-interfaces:admin-status')
+    ]
+    oper_status: Annotated[
+        OperStatusLeaf, Field(alias='openconfig-interfaces:oper-status')
+    ]
+    last_change: Annotated[
+        LastChangeLeaf, Field(None, alias='openconfig-interfaces:last-change')
+    ]
+    counters: Annotated[
+        CountersContainer, Field(None, alias='openconfig-interfaces:counters')
+    ]
+    tpid: Annotated[TpidLeaf2, Field('TPID_0X8100', alias='openconfig-vlan:tpid')]
+
+
+class StateContainer5(BaseModel):
+    """
+    Operational state data for logical interfaces
+    """
+
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    index: Annotated[IndexLeaf3, Field(0, alias='openconfig-interfaces:index')]
+    description: Annotated[
+        DescriptionLeaf4, Field(None, alias='openconfig-interfaces:description')
+    ]
+    enabled: Annotated[EnabledLeaf4, Field(True, alias='openconfig-interfaces:enabled')]
+    name: Annotated[NameLeaf6, Field(None, alias='openconfig-interfaces:name')]
+    ifindex: Annotated[IfindexLeaf2, Field(None, alias='openconfig-interfaces:ifindex')]
+    admin_status: Annotated[
+        AdminStatusLeaf2, Field(alias='openconfig-interfaces:admin-status')
+    ]
+    oper_status: Annotated[
+        OperStatusLeaf2, Field(alias='openconfig-interfaces:oper-status')
+    ]
+    last_change: Annotated[
+        LastChangeLeaf2, Field(None, alias='openconfig-interfaces:last-change')
+    ]
+    counters: Annotated[
+        CountersContainer2, Field(None, alias='openconfig-interfaces:counters')
+    ]
+
+
+class StateContainer6(BaseModel):
+    """
+    State variables for VLANs
+    """
+
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    vlan_id: Annotated[VlanIdLeaf5, Field(None, alias='openconfig-vlan:vlan-id')]
+
+
+class StateContainer7(BaseModel):
+    """
+    State variables for Ethernet interfaces
+    """
+
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    mac_address: Annotated[
+        MacAddressLeaf2, Field(None, alias='openconfig-if-ethernet:mac-address')
+    ]
+    auto_negotiate: Annotated[
+        AutoNegotiateLeaf2, Field(True, alias='openconfig-if-ethernet:auto-negotiate')
+    ]
+    duplex_mode: Annotated[
+        DuplexModeLeaf2, Field(None, alias='openconfig-if-ethernet:duplex-mode')
+    ]
+    port_speed: Annotated[
+        PortSpeedLeaf2, Field(None, alias='openconfig-if-ethernet:port-speed')
+    ]
+    enable_flow_control: Annotated[
+        EnableFlowControlLeaf2,
+        Field(False, alias='openconfig-if-ethernet:enable-flow-control'),
+    ]
+    hw_mac_address: Annotated[
+        HwMacAddressLeaf, Field(None, alias='openconfig-if-ethernet:hw-mac-address')
+    ]
+    negotiated_duplex_mode: Annotated[
+        NegotiatedDuplexModeLeaf,
+        Field(None, alias='openconfig-if-ethernet:negotiated-duplex-mode'),
+    ]
+    negotiated_port_speed: Annotated[
+        NegotiatedPortSpeedLeaf,
+        Field(None, alias='openconfig-if-ethernet:negotiated-port-speed'),
+    ]
+    counters: Annotated[
+        CountersContainer3, Field(None, alias='openconfig-if-ethernet:counters')
+    ]
+    aggregate_id: Annotated[
+        AggregateIdLeaf2, Field(None, alias='openconfig-if-aggregate:aggregate-id')
+    ]
+
+
+class StateContainer8(BaseModel):
+    """
+    State variables for VLANs
+    """
+
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    interface_mode: Annotated[
+        InterfaceModeLeaf2, Field(None, alias='openconfig-vlan:interface-mode')
+    ]
+    native_vlan: Annotated[
+        NativeVlanLeaf2, Field(None, alias='openconfig-vlan:native-vlan')
+    ]
+    access_vlan: Annotated[
+        AccessVlanLeaf2, Field(None, alias='openconfig-vlan:access-vlan')
+    ]
+    trunk_vlans: Annotated[
+        List[TrunkVlansLeafList2], Field([], alias='openconfig-vlan:trunk-vlans')
+    ]
+    """
+    Specify VLANs, or ranges thereof, that the interface may
+    carry when in trunk mode.  If not specified, all VLANs are
+    allowed on the interface. Ranges are specified in the form
+    x..y, where x<y - ranges are assumed to be inclusive (such
+    that the VLAN range is x <= range <= y.
+    """
+
+
+class StateContainer9(BaseModel):
+    """
+    Operational state variables for logical
+    aggregate / LAG interfaces
+    """
+
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    lag_type: Annotated[
+        LagTypeLeaf2, Field(None, alias='openconfig-if-aggregate:lag-type')
+    ]
+    min_links: Annotated[
+        MinLinksLeaf2, Field(None, alias='openconfig-if-aggregate:min-links')
+    ]
+    lag_speed: Annotated[
+        LagSpeedLeaf, Field(None, alias='openconfig-if-aggregate:lag-speed')
+    ]
+    member: Annotated[
+        List[MemberLeafList], Field([], alias='openconfig-if-aggregate:member')
+    ]
+    """
+    List of current member interfaces for the aggregate,
+    expressed as references to existing interfaces
+    """
+
+
+class VlanContainer(BaseModel):
+    """
+    Enclosing container for VLAN interface-specific
+    data on subinterfaces
+    """
+
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    config: Annotated[ConfigContainer5, Field(None, alias='openconfig-vlan:config')]
+    state: Annotated[StateContainer6, Field(None, alias='openconfig-vlan:state')]
+
+
+class ConfigContainer7(BaseModel):
+    """
+    Configuration parameters for VLANs
+    """
+
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    interface_mode: Annotated[
+        InterfaceModeLeaf, Field(None, alias='openconfig-vlan:interface-mode')
+    ]
+    native_vlan: Annotated[
+        NativeVlanLeaf, Field(None, alias='openconfig-vlan:native-vlan')
+    ]
+    access_vlan: Annotated[
+        AccessVlanLeaf, Field(None, alias='openconfig-vlan:access-vlan')
+    ]
+    trunk_vlans: Annotated[
+        List[TrunkVlansLeafList], Field([], alias='openconfig-vlan:trunk-vlans')
+    ]
+    """
+    Specify VLANs, or ranges thereof, that the interface may
+    carry when in trunk mode.  If not specified, all VLANs are
+    allowed on the interface. Ranges are specified in the form
+    x..y, where x<y - ranges are assumed to be inclusive (such
+    that the VLAN range is x <= range <= y.
+    """
+
+
+class ConfigContainer9(BaseModel):
+    """
+    Configuration parameters for VLANs
+    """
+
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    interface_mode: Annotated[
+        InterfaceModeLeaf3, Field(None, alias='openconfig-vlan:interface-mode')
+    ]
+    native_vlan: Annotated[
+        NativeVlanLeaf3, Field(None, alias='openconfig-vlan:native-vlan')
+    ]
+    access_vlan: Annotated[
+        AccessVlanLeaf3, Field(None, alias='openconfig-vlan:access-vlan')
+    ]
+    trunk_vlans: Annotated[
+        List[TrunkVlansLeafList3], Field([], alias='openconfig-vlan:trunk-vlans')
+    ]
+    """
+    Specify VLANs, or ranges thereof, that the interface may
+    carry when in trunk mode.  If not specified, all VLANs are
+    allowed on the interface. Ranges are specified in the form
+    x..y, where x<y - ranges are assumed to be inclusive (such
+    that the VLAN range is x <= range <= y.
+    """
+
+
+class SubinterfaceListEntry(BaseModel):
+    """
+    The list of subinterfaces (logical interfaces) associated
+    with a physical interface
+    """
+
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    index: Annotated[IndexLeaf, Field(None, alias='openconfig-interfaces:index')]
+    config: Annotated[
+        ConfigContainer4, Field(None, alias='openconfig-interfaces:config')
+    ]
+    state: Annotated[StateContainer5, Field(None, alias='openconfig-interfaces:state')]
+    vlan: Annotated[VlanContainer, Field(None, alias='openconfig-vlan:vlan')]
+
+
+class SubinterfacesContainer(BaseModel):
+    """
+    Enclosing container for the list of subinterfaces associated
+    with a physical interface
+    """
+
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    subinterface: Annotated[
+        List[SubinterfaceListEntry], Field(alias='openconfig-interfaces:subinterface')
+    ]
+
+
+class SwitchedVlanContainer(BaseModel):
+    """
+    Enclosing container for VLAN interface-specific
+    data on Ethernet interfaces.  These are for standard
+    L2, switched-style VLANs.
+    """
+
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    config: Annotated[ConfigContainer7, Field(None, alias='openconfig-vlan:config')]
+    state: Annotated[StateContainer8, Field(None, alias='openconfig-vlan:state')]
+
+
+class SwitchedVlanContainer2(BaseModel):
+    """
+    Enclosing container for VLAN interface-specific
+    data on Ethernet interfaces.  These are for standard
+    L2, switched-style VLANs.
+    """
+
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    config: Annotated[ConfigContainer9, Field(None, alias='openconfig-vlan:config')]
+    state: Annotated[StateContainer10, Field(None, alias='openconfig-vlan:state')]
+
+
+class AggregationContainer(BaseModel):
+    """
+    Options for logical interfaces representing
+    aggregates
+    """
+
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    config: Annotated[
+        ConfigContainer8, Field(None, alias='openconfig-if-aggregate:config')
+    ]
+    state: Annotated[
+        StateContainer9, Field(None, alias='openconfig-if-aggregate:state')
+    ]
+    switched_vlan: Annotated[
+        SwitchedVlanContainer2, Field(None, alias='openconfig-vlan:switched-vlan')
+    ]
+
+
+class EthernetContainer(BaseModel):
+    """
+    Top-level container for ethernet configuration
+    and state
+    """
+
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    config: Annotated[
+        ConfigContainer6, Field(None, alias='openconfig-if-ethernet:config')
+    ]
+    state: Annotated[StateContainer7, Field(None, alias='openconfig-if-ethernet:state')]
+    switched_vlan: Annotated[
+        SwitchedVlanContainer, Field(None, alias='openconfig-vlan:switched-vlan')
+    ]
+
+
+class InterfaceListEntry(BaseModel):
+    """
+    The list of named interfaces on the device.
+    """
+
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    name: Annotated[NameLeaf3, Field(None, alias='openconfig-interfaces:name')]
+    config: Annotated[
+        ConfigContainer2, Field(None, alias='openconfig-interfaces:config')
+    ]
+    state: Annotated[StateContainer3, Field(None, alias='openconfig-interfaces:state')]
+    hold_time: Annotated[
+        HoldTimeContainer, Field(None, alias='openconfig-interfaces:hold-time')
+    ]
+    subinterfaces: Annotated[
+        SubinterfacesContainer, Field(None, alias='openconfig-interfaces:subinterfaces')
+    ]
+    ethernet: Annotated[
+        EthernetContainer, Field(None, alias='openconfig-if-ethernet:ethernet')
+    ]
+    aggregation: Annotated[
+        AggregationContainer, Field(None, alias='openconfig-if-aggregate:aggregation')
+    ]
+    routed_vlan: Annotated[
+        RoutedVlanContainer, Field(None, alias='openconfig-vlan:routed-vlan')
+    ]
+
+
+class InterfacesContainer(BaseModel):
+    """
+    Top level container for interfaces, including configuration
+    and state data.
+    """
+
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    interface: Annotated[
+        List[InterfaceListEntry], Field(alias='openconfig-interfaces:interface')
+    ]
+
+
+class Model(BaseModel):
+    """
+    Initialize an instance of this class and serialize it to JSON; this results in a RESTCONF payload.
+
+    ## Tips
+    Initialization:
+    - all values have to be set via keyword arguments
+    - if a class contains only a `root` field, it can be initialized as follows:
+        - `member=MyNode(root=<value>)`
+        - `member=<value>`
+
+    Serialziation:
+    - `exclude_defaults=True` omits fields set to their default value (recommended)
+    - `by_alias=True` ensures qualified names are used (necessary)
+    """
+
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    vlans: Annotated[VlansContainer, Field(None, alias='openconfig-vlan:vlans')]
+    interfaces: Annotated[InterfacesContainer, Field(None, alias='openconfig-interfaces:interfaces')]
+
+
+if __name__ == "__main__":
+    model = Model(
+        # <Initialize model here>
+    )
+
+    restconf_payload = model.model_dump_json(
+        exclude_defaults=True, by_alias=True, indent=2
+    )
+
+    print(f"Generated output: {restconf_payload}")
+
+    # Send config to network device:
+    # from pydantify.utility import restconf_patch_request
+    # restconf_patch_request(url='...', user_pw_auth=('usr', 'pw'), data=restconf_payload)

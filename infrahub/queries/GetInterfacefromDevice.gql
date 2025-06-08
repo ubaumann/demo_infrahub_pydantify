@@ -1,0 +1,44 @@
+query GetDevice ($device: String!){
+  NetworkDevice(name__value: $device) {
+    edges {
+      node {
+        interfaces {
+          edges {
+            node {
+              name {
+                value
+              }
+              mode {
+                value
+              }
+              status {
+                value
+              }
+              vlan {
+                edges {
+                  node {
+                    vlan_id {
+                      value
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  NetworkVlan {
+    edges {
+      node {
+        name {
+          value
+        }
+        vlan_id {
+          value
+        }
+      }
+    }
+  }
+}
