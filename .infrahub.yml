@@ -1,9 +1,9 @@
 ---
 queries:
   - name: GetInterfacefromDevice
-    file_path: "queries/GetInterfacefromDevice.gql"
+    file_path: "infrahub/queries/GetInterfacefromDevice.gql"
   - name: GetInterfaceDetails
-    file_path: "queries/GetInterfaceDetails.gql"
+    file_path: "infrahub/queries/GetInterfaceDetails.gql"
 
 schemas:
   - "schemas/schema.yaml"
@@ -11,7 +11,7 @@ schemas:
 python_transforms:
   - name: TransformIntoNetconf
     class_name: TransformIntoNetconf
-    file_path: "transforms/transform.py"
+    file_path: "infrahub/transforms/transform.py"
 
 artifact_definitions:
   - name: "NetconfXML-Artifact"
@@ -25,4 +25,4 @@ artifact_definitions:
 check_definitions:
   - name: check_access_mode
     class_name: AccessModeCheck
-    file_path: "checks/validate_interfaces.py"
+    file_path: "infrahub/checks/validate_interfaces.py"
