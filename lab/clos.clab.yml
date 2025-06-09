@@ -1,0 +1,41 @@
+name: clos
+
+topology:
+  kinds:
+    nokia_srlinux:
+      image: ghcr.io/nokia/srlinux
+    linux:
+      image: ghcr.io/hellt/network-multitool
+  nodes:
+    spine1:
+      kind: nokia_srlinux
+      type: ixrd3l
+    spine2:
+      kind: nokia_srlinux
+      type: ixrd3l
+    leaf1:
+      kind: nokia_srlinux
+      type: ixrd2l
+    leaf2:
+      kind: nokia_srlinux
+      type: ixrd2l
+    leaf3:
+      kind: nokia_srlinux
+      type: ixrd2l
+    client1:
+      kind: linux
+    client2:
+      kind: linux
+    client3:
+      kind: linux
+
+  links:
+    - endpoints: ["leaf1:e1-1", "spine1:e1-1"]
+    - endpoints: ["leaf1:e1-2", "spine2:e1-1"]
+    - endpoints: ["leaf2:e1-1", "spine1:e1-2"]
+    - endpoints: ["leaf2:e1-2", "spine2:e1-2"]
+    - endpoints: ["leaf3:e1-1", "spine1:e1-3"]
+    - endpoints: ["leaf3:e1-2", "spine2:e1-3"]
+    - endpoints: ["client1:eth1", "leaf1:e1-3"]
+    - endpoints: ["client2:eth1", "leaf2:e1-3"]
+    - endpoints: ["client3:eth1", "leaf3:e1-3"]
