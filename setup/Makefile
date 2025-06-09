@@ -4,4 +4,4 @@ setup:
 
 .PHONY: destroy
 destroy:
-	docker compose down
+	docker compose -f docker-compose.infrahub.yaml -f docker-compose.prefect.yaml down
