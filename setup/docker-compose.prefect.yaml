@@ -12,7 +12,7 @@ services:
     image: prefecthq/prefect:3-latest
     restart: always
     volumes:
-      - prefect:/root/.prefect
+      - prefect-server:/root/.prefect
     ports:
       - "4200:4200"
     command: prefect server start
@@ -32,3 +32,7 @@ services:
       - prefect-server
     environment:
       - PREFECT_API_URL=http://prefect-server:4200/api
+
+volumes:
+  prefect-db:
+  prefect-server:
