@@ -1,0 +1,7 @@
+---
+services:
+  task-worker:
+    image: custom/infrahub-worker:latest
+    build:
+      context: infrahub-worker
+      dockerfile: ../infrahub-worker/Dockerfile
