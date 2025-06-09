@@ -6,7 +6,7 @@ queries:
     file_path: "infrahub/queries/GetInterfaceDetails.gql"
 
 schemas:
-  - "schemas/schema.yaml"
+  - "infrahub/schemas/schema.yaml"
 
 python_transforms:
   - name: TransformIntoNetconf
