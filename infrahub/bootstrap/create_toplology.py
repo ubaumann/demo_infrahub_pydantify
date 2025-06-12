@@ -1,13 +1,40 @@
 import logging
 
 from typing import Optional
+from dataclasses import dataclass
 
 from infrahub_sdk import InfrahubClient
 from infrahub_sdk.batch import InfrahubBatch
-from protocols import NetworkDevice, NetworkInterface
+from protocols import NetworkDevice, NetworkInterface, IpamIPPrefix
+
+
+@dataclass
+class Prefixe:
+    prefix: str
+    member_type: str
+    description: str
+    is_pool: bool = False
 
 
 PLATFORM = "nokia_srlinux"
+PREFIXES = [
+    Prefixe(
+        prefix="10.0.0.0/8",
+        member_type="prefix",
+        description="underlay network",
+    ),
+    Prefixe(
+        prefix="10.255.255.0/24",
+        member_type="address",
+        description="Loopback IP address pool",
+        is_pool=True,
+    ),
+    Prefixe(
+        prefix="10.255.252.0/23",
+        member_type="prefix",
+        description="p2p network",
+    ),
+]
 
 
 async def create_device_and_add_to_batch(
@@ -65,6 +92,30 @@ async def create_interfaces_and_add_to_batch(
         batch.add(task=interface.save, allow_upsert=allow_upsert, node=interface)
 
 
+async def init_ipam(
+    client: InfrahubClient,
+    log: logging.Logger,
+    branch: str,
+    allow_upsert: bool = True,
+) -> None:
+    log.info("Initializing IPAM with prefixes")
+    batch = await client.create_batch()
+    for prefix in PREFIXES:
+        log.info(f"Creating prefix {prefix.prefix} and adding to batch")
+        prefix_obj = await client.create(
+            IpamIPPrefix,
+            prefix=prefix.prefix,
+            member_type=prefix.member_type,
+            description=prefix.description,
+            is_pool=prefix.is_pool,
+            branch=branch,
+        )
+        batch.add(task=prefix_obj.save, allow_upsert=allow_upsert, node=prefix_obj)
+
+    async for node, _ in batch.execute():
+        log.info(f"Created {node.prefix.value}")
+
+
 # ---------------------------------------------------------------
 # Use the `infrahubctl run` command line to execute this script
 #
@@ -83,6 +134,8 @@ async def run(
     edges: str = "0",
 ) -> None:
     log.info("Creating Infrahub objects")
+    await init_ipam(client, log, branch)
+
     batch = await client.create_batch()
 
     for i in range(1, int(leafs) + 1):
