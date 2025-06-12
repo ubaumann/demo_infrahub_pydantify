@@ -60,6 +60,9 @@ nodes:
       # - "mode__value"
     uniqueness_constraints:
       - ["device", "name__value"]
+    human_friendly_id:
+      - device__name__value
+      - name__value
     attributes:
       - name: name
         kind: Text
