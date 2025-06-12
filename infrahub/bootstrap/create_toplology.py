@@ -1,6 +1,68 @@
 import logging
 
+from typing import Optional
+
 from infrahub_sdk import InfrahubClient
+from infrahub_sdk.batch import InfrahubBatch
+from protocols import NetworkDevice, NetworkInterface
+
+
+PLATFORM = "nokia_srlinux"
+
+
+async def create_device_and_add_to_batch(
+    client: InfrahubClient,
+    log: logging.Logger,
+    branch: str,
+    device_role: str,
+    number: int,
+    batch: InfrahubBatch,
+    allow_upsert: Optional[bool] = True,
+) -> NetworkDevice:
+    """Creates a device and adds it to a batch for deferred saving."""
+    device_name = f"{device_role}{number:02d}"
+    log.info(f"Creating {device_role} {device_name} and adding to batch")
+    device = await client.create(
+        NetworkDevice,
+        name=device_name,
+        platform=PLATFORM,
+        status="active",
+        branch=branch,
+    )
+    batch.add(task=device.save, allow_upsert=allow_upsert, node=device)
+
+    client.store.set(key=device_name, node=device)
+    return device
+
+
+async def create_interfaces_and_add_to_batch(
+    client: InfrahubClient,
+    log: logging.Logger,
+    branch: str,
+    device_name: str,
+    neighbor_role: str,
+    neighbor_number: int,
+    batch: InfrahubBatch,
+    allow_upsert: Optional[bool] = True,
+    offset: int = 0,
+) -> None:
+    """Creates interfaces for a device and add them to a batch for deferred saving."""
+    for i in range(1, neighbor_number + 1):
+        interface_name = f"ethernet-1/{i + offset}"
+        log.info(
+            f"Creating interface {interface_name} {device_name} and adding to batch"
+        )
+        device = client.store.get(key=device_name)
+        interface = await client.create(
+            NetworkInterface,
+            name=interface_name,
+            status="up",
+            device=device.hfid,
+            mode="access",
+            description=f"{device_name} to {neighbor_role}{i:02d}",
+            branch=branch,
+        )
+        batch.add(task=interface.save, allow_upsert=allow_upsert, node=interface)
 
 
 # ---------------------------------------------------------------
@@ -11,20 +73,128 @@ from infrahub_sdk import InfrahubClient
 #
 # ---------------------------------------------------------------
 async def run(
-    client: InfrahubClient, log: logging.Logger, branch: str, leafs: str = "3", spines: str = "2", borders: str = "0", routers: str = "0", edges: str = "0", 
+    client: InfrahubClient,
+    log: logging.Logger,
+    branch: str,
+    leafs: str = "3",
+    spines: str = "2",
+    borders: str = "0",
+    routers: str = "0",
+    edges: str = "0",
 ) -> None:
-    log.info("creating Infrahub objects")
-    for i in range(int(leafs)):
-        log.info(f"creating leaf {i + 1}")
-    
-    for i in range(int(spines)):
-        log.info(f"creating spine {i + 1}")
-    
-    for i in range(int(borders)):
-        log.info(f"creating border {i + 1}")
-    
-    for i in range(int(routers)):
-        log.info(f"creating router {i + 1}")
-    
-    for i in range(int(edges)):
-        log.info(f"creating edge {i + 1}")
+    log.info("Creating Infrahub objects")
+    batch = await client.create_batch()
+
+    for i in range(1, int(leafs) + 1):
+        device = await create_device_and_add_to_batch(
+            client, log, branch, "leaf", i, batch
+        )
+        await create_interfaces_and_add_to_batch(
+            client,
+            log,
+            branch,
+            device.name.value,
+            "spine",
+            int(spines),
+            batch,
+        )
+        # Create interfaces to borders if any
+        if int(borders) > 0 and i <= 2:
+            await create_interfaces_and_add_to_batch(
+                client,
+                log,
+                branch,
+                device.name.value,
+                "border",
+                int(borders),
+                batch,
+                offset=2,  # Offset to avoid duplicate interface names
+            )
+
+    for i in range(1, int(spines) + 1):
+        device = await create_device_and_add_to_batch(
+            client, log, branch, "spine", i, batch
+        )
+        await create_interfaces_and_add_to_batch(
+            client,
+            log,
+            branch,
+            device.name.value,
+            "leaf",
+            int(leafs),
+            batch,
+        )
+
+    for i in range(1, int(borders) + 1):
+        device = await create_device_and_add_to_batch(
+            client, log, branch, "border", i, batch
+        )
+        # Create interfaces to leafs
+        await create_interfaces_and_add_to_batch(
+            client,
+            log,
+            branch,
+            device.name.value,
+            "leaf",
+            min(int(leafs), 2),
+            batch,
+        )
+        # Create interfaces to routers (rXX)
+        await create_interfaces_and_add_to_batch(
+            client,
+            log,
+            branch,
+            device.name.value,
+            "r",
+            int(routers),
+            batch,
+            offset=min(int(leafs), 2),
+        )
+
+    for i in range(1, int(routers) + 1):
+        device = await create_device_and_add_to_batch(
+            client, log, branch, "router", i, batch
+        )
+        # Create interfaces to borders
+        await create_interfaces_and_add_to_batch(
+            client,
+            log,
+            branch,
+            device.name.value,
+            "border",
+            int(borders),
+            batch,
+        )
+        # Create interfaces to edges
+        await create_interfaces_and_add_to_batch(
+            client,
+            log,
+            branch,
+            device.name.value,
+            "edge",
+            int(edges),
+            batch,
+            offset=int(borders),
+        )
+
+    for i in range(1, int(edges) + 1):
+        device = await create_device_and_add_to_batch(
+            client, log, branch, "edge", i, batch
+        )
+        # Create interfaces to routers
+        await create_interfaces_and_add_to_batch(
+            client,
+            log,
+            branch,
+            device.name.value,
+            "router",
+            int(routers),
+            batch,
+        )
+
+    async for node, _ in batch.execute():
+        # if isinstance(node, NetworkDevice):
+        #     log.info(f"Created {node.name.value} with platform {node.platform}")
+        # elif isinstance(node, NetworkInterface):
+        #     log.info(f"Created {node.name.value}")
+        log.info(f"Created {node.name.value}")
