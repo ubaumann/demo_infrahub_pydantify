@@ -139,13 +139,13 @@ async def run(
             min(int(leafs), 2),
             batch,
         )
-        # Create interfaces to routers (rXX)
+        # Create interfaces to routers
         await create_interfaces_and_add_to_batch(
             client,
             log,
             branch,
             device.name.value,
-            "r",
+            "router",
             int(routers),
             batch,
             offset=min(int(leafs), 2),
