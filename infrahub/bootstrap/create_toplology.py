@@ -5,7 +5,14 @@ from dataclasses import dataclass
 
 from infrahub_sdk import InfrahubClient
 from infrahub_sdk.batch import InfrahubBatch
-from protocols import NetworkDevice, NetworkInterface, IpamIPPrefix
+from protocols import (
+    NetworkDevice,
+    NetworkInterface,
+    IpamIPPrefix,
+    IpamIPAddress,
+    CoreIPAddressPool,
+    CoreIPPrefixPool,
+)
 
 
 @dataclass
@@ -14,6 +21,7 @@ class Prefixe:
     member_type: str
     description: str
     is_pool: bool = False
+    resource_pool_key: Optional[str] = None
 
 
 PLATFORM = "nokia_srlinux"
@@ -28,11 +36,13 @@ PREFIXES = [
         member_type="address",
         description="Loopback IP address pool",
         is_pool=True,
+        resource_pool_key="loopback_network",
     ),
     Prefixe(
         prefix="10.255.252.0/23",
         member_type="prefix",
         description="p2p network",
+        resource_pool_key="p2p_network",
     ),
 ]
 
@@ -100,6 +110,7 @@ async def init_ipam(
 ) -> None:
     log.info("Initializing IPAM with prefixes")
     batch = await client.create_batch()
+    batch_pools = await client.create_batch()
     for prefix in PREFIXES:
         log.info(f"Creating prefix {prefix.prefix} and adding to batch")
         prefix_obj = await client.create(
@@ -112,8 +123,28 @@ async def init_ipam(
         )
         batch.add(task=prefix_obj.save, allow_upsert=allow_upsert, node=prefix_obj)
 
+        if prefix.resource_pool_key:
+            log.info(
+                f"Creating Resource Pool {prefix.resource_pool_key} with prefix {prefix.prefix}"
+            )
+            is_ip_pool = prefix.member_type == "address"
+            pool = await client.create(
+                CoreIPAddressPool if is_ip_pool else CoreIPPrefixPool,
+                name=prefix.resource_pool_key,
+                default_address_type="IpamIPAddress" if is_ip_pool else "IpamIPPrefix",
+                default_prefix_size=32 if is_ip_pool else 31,
+                resources=[prefix_obj],
+                is_pool=True,
+                ip_namespace={"id": "default"},
+            )
+            batch_pools.add(task=pool.save, allow_upsert=allow_upsert, node=pool)
+            client.store.set(key=prefix.resource_pool_key, node=pool)
+
     async for node, _ in batch.execute():
-        log.info(f"Created {node.prefix.value}")
+        log.info(f"Created IP prefix {node.prefix.value} with member type {node.member_type.value}")
+    
+    async for node, _ in batch_pools.execute():
+        log.info(f"Created Resource Pool {node.name.value}")
 
 
 # ---------------------------------------------------------------
