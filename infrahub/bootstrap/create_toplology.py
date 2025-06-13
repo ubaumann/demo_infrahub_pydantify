@@ -133,7 +133,7 @@ async def create_loopback_interface(
         name="Loopback0",
         status="up",
         device=device.hfid,
-        mode="access",
+        mode="routed",
         ip_address=ip_address,
         branch=branch,
     )

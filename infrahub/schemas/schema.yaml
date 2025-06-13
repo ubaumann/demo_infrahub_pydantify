@@ -85,6 +85,10 @@ nodes:
             label: Trunk
             description: "Trunk port"
             color: "#f7cf6a"
+          - name: routed
+            label: Routed
+            description: "Routed L3 port"
+            color: "#fcba03"
       - name: status
         kind: Dropdown
         choices:
