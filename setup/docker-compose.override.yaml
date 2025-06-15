@@ -1,7 +1,16 @@
 ---
+x-infrahub-custom-build: &infrahub_custom_build
+  image: custom/infrahub-worker:${INFRAHUB_BASE_VERSION:-1.3.0}
+  build:
+    context: infrahub-worker
+    dockerfile: ./infrahub-worker/Dockerfile
+    args:
+      INFRAHUB_BASE_VERSION: "${INFRAHUB_BASE_VERSION:-1.3.0}"
+
 services:
+  infrahub-server:
+    <<: *infrahub_custom_build
   task-worker:
-    image: custom/infrahub-worker:latest
-    build:
-      context: infrahub-worker
-      dockerfile: ../infrahub-worker/Dockerfile
+    <<: *infrahub_custom_build
+  task-manager:
+    <<: *infrahub_custom_build
