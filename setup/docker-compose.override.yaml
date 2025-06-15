@@ -3,7 +3,7 @@ x-infrahub-custom-build: &infrahub_custom_build
   image: custom/infrahub-worker:${INFRAHUB_BASE_VERSION:-1.3.0}
   build:
     context: infrahub-worker
-    dockerfile: ./infrahub-worker/Dockerfile
+    dockerfile: Dockerfile
     args:
       INFRAHUB_BASE_VERSION: "${INFRAHUB_BASE_VERSION:-1.3.0}"
 
