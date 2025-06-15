@@ -1,0 +1,11 @@
+---
+apiVersion: infrahub.app/v1
+kind: Object
+spec:
+  kind: TopologyGlobal
+  data:
+    - name: Global
+      description: "Global artifacts for the topology"
+      member_of_groups:
+        - GlobalArtifactTarget
+...

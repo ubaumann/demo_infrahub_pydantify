@@ -165,3 +165,19 @@ nodes:
       - "BuiltinIPAddress"
     description: "IP Address"
     label: "IP Address"
+
+  # Used for global artifacts
+  - name: Global
+    namespace: Topology
+    description: "A Node used for global artifacts"
+    human_friendly_id: ["name__value"]
+    include_in_menu: false
+    inherit_from:
+      - CoreArtifactTarget
+    attributes:
+      - name: name
+        kind: Text
+        unique: true
+      - name: description
+        kind: Text
+        optional: true
