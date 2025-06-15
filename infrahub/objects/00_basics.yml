@@ -1,0 +1,52 @@
+---
+apiVersion: infrahub.app/v1
+kind: Object
+spec:
+  kind: CoreStandardGroup
+  data:
+    - name: CiscoSwitche
+    - name: SRLinuxRouter
+...
+---
+apiVersion: infrahub.app/v1
+kind: Object
+spec:
+  kind: CoreGroupAction
+  data:
+    - name: AddSRLDeviceToSRLinuxRouter
+      description: "Add device to vendor group"
+      member_action: add_member
+      group: SRLinuxRouter
+...
+---
+apiVersion: infrahub.app/v1
+kind: Object
+spec:
+  kind: CoreNodeTriggerRule
+  data:
+    - name: NewSRLinuxDevice
+      branch_scope: all_branches
+      description: "Trigger rule for device creation"
+      active: true
+      node_kind: NetworkDevice
+      mutation_action: created
+      action: AddSRLDeviceToSRLinuxRouter
+      matches:
+        kind: CoreNodeTriggerAttributeMatch
+        data:
+          - attribute_name: platform
+            value: nokia_srlinux
+            value_match: value
+            trigger: NewSRLinuxDevice
+...
+# ---
+# apiVersion: infrahub.app/v1
+# kind: Object
+# spec:
+#   kind: CoreNodeTriggerAttributeMatch
+#   data:
+#     - attribute_name: platform
+#       value: nokia_srlinux
+#       # value_previous: ""
+#       value_match: value
+#       trigger: NewSRLinuxDevice

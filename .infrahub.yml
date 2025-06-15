@@ -26,3 +26,6 @@ check_definitions:
   - name: check_access_mode
     class_name: AccessModeCheck
     file_path: "infrahub/checks/validate_interfaces.py"
+
+objects:
+  - infrahub/objects
