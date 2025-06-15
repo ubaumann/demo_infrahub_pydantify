@@ -89,6 +89,10 @@ nodes:
             label: Routed
             description: "Routed L3 port"
             color: "#fcba03"
+          - name: fabric
+            label: Fabric
+            description: "IPv6 Fabric port"
+            color: "#42f2f5"
       - name: status
         kind: Dropdown
         choices:

@@ -1,6 +1,6 @@
 import logging
 
-from typing import Optional
+from typing import Optional, Literal
 from dataclasses import dataclass
 
 from infrahub_sdk import InfrahubClient
@@ -90,23 +90,39 @@ async def create_interfaces_and_add_to_batch(
     neighbor_role: str,
     neighbor_number: int,
     batch: InfrahubBatch,
-    allow_upsert: Optional[bool] = True,
+    allow_upsert: bool = True,
     offset: int = 0,
+    port_mode: Literal["routed", "access", "fabric"] = "access",
 ) -> None:
     """Creates interfaces for a device and add them to a batch for deferred saving."""
     for i in range(1, neighbor_number + 1):
         interface_name = f"ethernet-1/{i + offset}"
+        neighbor_name = f"{neighbor_role}{i:02d}"
         log.info(
             f"Creating interface {interface_name} {device_name} and adding to batch"
         )
         device = client.store.get(key=device_name)
+        if port_mode == "routed":
+            # get the IP address for the interface
+            ip_address = await get_interface_ip(
+                client=client,
+                log=log,
+                branch=branch,
+                prefix_identifier="_to_".join(sorted([device_name, neighbor_name])),
+                ip_index=0 if device_name < neighbor_name else 1,
+                allow_upsert=allow_upsert,
+            )
+        else:
+            ip_address = None
+
         interface = await client.create(
             NetworkInterface,
             name=interface_name,
             status="up",
             device=device.hfid,
-            mode="access",
-            description=f"{device_name} to {neighbor_role}{i:02d}",
+            mode=port_mode,
+            description=f"{device_name} to {neighbor_name}",
+            ip_address=ip_address,
             branch=branch,
         )
         batch.add(task=interface.save, allow_upsert=allow_upsert, node=interface)
@@ -138,6 +154,35 @@ async def create_loopback_interface(
         branch=branch,
     )
     batch.add(task=interface.save, allow_upsert=allow_upsert, node=interface)
+
+
+async def get_interface_ip(
+    client: InfrahubClient,
+    log: logging.Logger,
+    branch: str,
+    prefix_identifier: str,
+    ip_index: int,
+    allow_upsert: bool = True,
+) -> IpamIPAddress:
+    log.info(f"Get IP link {prefix_identifier}")
+    pool = client.store.get(key="p2p_network")
+    p2p_prefix = await client.allocate_next_ip_prefix(
+        resource_pool=pool,
+        identifier=f"{prefix_identifier}",
+        prefix_length=31,
+        prefix_type="IpamIPPrefix",
+    )
+
+    p2p_network = p2p_prefix.prefix.value
+    ip_address = list(p2p_network.hosts())[ip_index]
+    ip = await client.create(
+        IpamIPAddress,
+        branch=branch,
+        address=f"{ip_address}/{p2p_network.prefixlen}",
+        description=f"P2P link {prefix_identifier}",
+    )
+    await ip.save(allow_upsert=allow_upsert)
+    return ip
 
 
 async def init_ipam(
@@ -222,6 +267,7 @@ async def run(
             "spine",
             int(spines),
             batch_interfaces,
+            port_mode="fabric",
         )
         # Create interfaces to borders if any
         if int(borders) > 0 and i <= 2:
@@ -234,6 +280,7 @@ async def run(
                 int(borders),
                 batch_interfaces,
                 offset=2,  # Offset to avoid duplicate interface names
+                port_mode="routed",
             )
 
     for i in range(1, int(spines) + 1):
@@ -248,6 +295,7 @@ async def run(
             "leaf",
             int(leafs),
             batch_interfaces,
+            port_mode="fabric",
         )
 
     for i in range(1, int(borders) + 1):
@@ -263,6 +311,7 @@ async def run(
             "leaf",
             min(int(leafs), 2),
             batch_interfaces,
+            port_mode="routed",
         )
         # Create interfaces to routers
         await create_interfaces_and_add_to_batch(
@@ -274,6 +323,7 @@ async def run(
             int(routers),
             batch_interfaces,
             offset=min(int(leafs), 2),
+            port_mode="routed",
         )
 
     for i in range(1, int(routers) + 1):
@@ -289,6 +339,7 @@ async def run(
             "border",
             int(borders),
             batch_interfaces,
+            port_mode="routed",
         )
         # Create interfaces to edges
         await create_interfaces_and_add_to_batch(
@@ -300,6 +351,7 @@ async def run(
             int(edges),
             batch_interfaces,
             offset=int(borders),
+            port_mode="routed",
         )
 
     for i in range(1, int(edges) + 1):
@@ -315,6 +367,7 @@ async def run(
             "router",
             int(routers),
             batch_interfaces,
+            port_mode="routed",
         )
 
     async for node, _ in batch_devices.execute():
