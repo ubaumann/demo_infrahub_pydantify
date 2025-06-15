@@ -1,4 +1,4 @@
-from typing import Annotated, Optional
+from typing import Annotated, Any, Optional
 
 from infrahub_sdk.transforms import InfrahubTransform
 from pydantic import BaseModel, AliasPath, Field, BeforeValidator
@@ -33,6 +33,9 @@ class Device(BaseModel):
 
 class Topology(BaseModel):
     devices: list[Device] = Field(validation_alias=AliasPath("NetworkDevice", "edges"))
+
+    def model_post_init(self, context: Any) -> None:
+        self.devices = sorted(self.devices, key=lambda x: x.name.lower())
 
 
 class TransformTopologyMarkdown(InfrahubTransform):
