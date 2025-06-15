@@ -1,0 +1,832 @@
+{
+  "data": {
+    "NetworkDevice": {
+      "edges": [
+        {
+          "node": {
+            "name": {
+              "value": "spine02"
+            },
+            "status": {
+              "value": "active"
+            },
+            "description": {
+              "value": null
+            },
+            "interfaces": {
+              "edges": [
+                {
+                  "node": {
+                    "name": {
+                      "value": "ethernet-1/1"
+                    },
+                    "description": {
+                      "value": "spine02 to leaf01"
+                    },
+                    "mode": {
+                      "value": "fabric"
+                    }
+                  }
+                },
+                {
+                  "node": {
+                    "name": {
+                      "value": "ethernet-1/3"
+                    },
+                    "description": {
+                      "value": "spine02 to leaf03"
+                    },
+                    "mode": {
+                      "value": "fabric"
+                    }
+                  }
+                },
+                {
+                  "node": {
+                    "name": {
+                      "value": "ethernet-1/2"
+                    },
+                    "description": {
+                      "value": "spine02 to leaf02"
+                    },
+                    "mode": {
+                      "value": "fabric"
+                    }
+                  }
+                },
+                {
+                  "node": {
+                    "name": {
+                      "value": "Loopback0"
+                    },
+                    "description": {
+                      "value": null
+                    },
+                    "mode": {
+                      "value": "routed"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "node": {
+            "name": {
+              "value": "spine01"
+            },
+            "status": {
+              "value": "active"
+            },
+            "description": {
+              "value": null
+            },
+            "interfaces": {
+              "edges": [
+                {
+                  "node": {
+                    "name": {
+                      "value": "ethernet-1/2"
+                    },
+                    "description": {
+                      "value": "spine01 to leaf02"
+                    },
+                    "mode": {
+                      "value": "fabric"
+                    }
+                  }
+                },
+                {
+                  "node": {
+                    "name": {
+                      "value": "Loopback0"
+                    },
+                    "description": {
+                      "value": null
+                    },
+                    "mode": {
+                      "value": "routed"
+                    }
+                  }
+                },
+                {
+                  "node": {
+                    "name": {
+                      "value": "ethernet-1/3"
+                    },
+                    "description": {
+                      "value": "spine01 to leaf03"
+                    },
+                    "mode": {
+                      "value": "fabric"
+                    }
+                  }
+                },
+                {
+                  "node": {
+                    "name": {
+                      "value": "ethernet-1/1"
+                    },
+                    "description": {
+                      "value": "spine01 to leaf01"
+                    },
+                    "mode": {
+                      "value": "fabric"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "node": {
+            "name": {
+              "value": "leaf03"
+            },
+            "status": {
+              "value": "active"
+            },
+            "description": {
+              "value": null
+            },
+            "interfaces": {
+              "edges": [
+                {
+                  "node": {
+                    "name": {
+                      "value": "Loopback0"
+                    },
+                    "description": {
+                      "value": null
+                    },
+                    "mode": {
+                      "value": "routed"
+                    }
+                  }
+                },
+                {
+                  "node": {
+                    "name": {
+                      "value": "ethernet-1/1"
+                    },
+                    "description": {
+                      "value": "leaf03 to spine01"
+                    },
+                    "mode": {
+                      "value": "fabric"
+                    }
+                  }
+                },
+                {
+                  "node": {
+                    "name": {
+                      "value": "ethernet-1/2"
+                    },
+                    "description": {
+                      "value": "leaf03 to spine02"
+                    },
+                    "mode": {
+                      "value": "fabric"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "node": {
+            "name": {
+              "value": "leaf01"
+            },
+            "status": {
+              "value": "active"
+            },
+            "description": {
+              "value": null
+            },
+            "interfaces": {
+              "edges": [
+                {
+                  "node": {
+                    "name": {
+                      "value": "ethernet-1/3"
+                    },
+                    "description": {
+                      "value": "leaf01 to border01"
+                    },
+                    "mode": {
+                      "value": "routed"
+                    }
+                  }
+                },
+                {
+                  "node": {
+                    "name": {
+                      "value": "ethernet-1/2"
+                    },
+                    "description": {
+                      "value": "leaf01 to spine02"
+                    },
+                    "mode": {
+                      "value": "fabric"
+                    }
+                  }
+                },
+                {
+                  "node": {
+                    "name": {
+                      "value": "ethernet-1/1"
+                    },
+                    "description": {
+                      "value": "leaf01 to spine01"
+                    },
+                    "mode": {
+                      "value": "fabric"
+                    }
+                  }
+                },
+                {
+                  "node": {
+                    "name": {
+                      "value": "Loopback0"
+                    },
+                    "description": {
+                      "value": null
+                    },
+                    "mode": {
+                      "value": "routed"
+                    }
+                  }
+                },
+                {
+                  "node": {
+                    "name": {
+                      "value": "ethernet-1/4"
+                    },
+                    "description": {
+                      "value": "leaf01 to border02"
+                    },
+                    "mode": {
+                      "value": "routed"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "node": {
+            "name": {
+              "value": "border02"
+            },
+            "status": {
+              "value": "active"
+            },
+            "description": {
+              "value": null
+            },
+            "interfaces": {
+              "edges": [
+                {
+                  "node": {
+                    "name": {
+                      "value": "Loopback0"
+                    },
+                    "description": {
+                      "value": null
+                    },
+                    "mode": {
+                      "value": "routed"
+                    }
+                  }
+                },
+                {
+                  "node": {
+                    "name": {
+                      "value": "ethernet-1/2"
+                    },
+                    "description": {
+                      "value": "border02 to leaf02"
+                    },
+                    "mode": {
+                      "value": "routed"
+                    }
+                  }
+                },
+                {
+                  "node": {
+                    "name": {
+                      "value": "ethernet-1/3"
+                    },
+                    "description": {
+                      "value": "border02 to router01"
+                    },
+                    "mode": {
+                      "value": "routed"
+                    }
+                  }
+                },
+                {
+                  "node": {
+                    "name": {
+                      "value": "ethernet-1/5"
+                    },
+                    "description": {
+                      "value": "border02 to router03"
+                    },
+                    "mode": {
+                      "value": "routed"
+                    }
+                  }
+                },
+                {
+                  "node": {
+                    "name": {
+                      "value": "ethernet-1/4"
+                    },
+                    "description": {
+                      "value": "border02 to router02"
+                    },
+                    "mode": {
+                      "value": "routed"
+                    }
+                  }
+                },
+                {
+                  "node": {
+                    "name": {
+                      "value": "ethernet-1/1"
+                    },
+                    "description": {
+                      "value": "border02 to leaf01"
+                    },
+                    "mode": {
+                      "value": "routed"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "node": {
+            "name": {
+              "value": "leaf02"
+            },
+            "status": {
+              "value": "active"
+            },
+            "description": {
+              "value": null
+            },
+            "interfaces": {
+              "edges": [
+                {
+                  "node": {
+                    "name": {
+                      "value": "Loopback0"
+                    },
+                    "description": {
+                      "value": null
+                    },
+                    "mode": {
+                      "value": "routed"
+                    }
+                  }
+                },
+                {
+                  "node": {
+                    "name": {
+                      "value": "ethernet-1/2"
+                    },
+                    "description": {
+                      "value": "leaf02 to spine02"
+                    },
+                    "mode": {
+                      "value": "fabric"
+                    }
+                  }
+                },
+                {
+                  "node": {
+                    "name": {
+                      "value": "ethernet-1/3"
+                    },
+                    "description": {
+                      "value": "leaf02 to border01"
+                    },
+                    "mode": {
+                      "value": "routed"
+                    }
+                  }
+                },
+                {
+                  "node": {
+                    "name": {
+                      "value": "ethernet-1/4"
+                    },
+                    "description": {
+                      "value": "leaf02 to border02"
+                    },
+                    "mode": {
+                      "value": "routed"
+                    }
+                  }
+                },
+                {
+                  "node": {
+                    "name": {
+                      "value": "ethernet-1/1"
+                    },
+                    "description": {
+                      "value": "leaf02 to spine01"
+                    },
+                    "mode": {
+                      "value": "fabric"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "node": {
+            "name": {
+              "value": "border01"
+            },
+            "status": {
+              "value": "active"
+            },
+            "description": {
+              "value": null
+            },
+            "interfaces": {
+              "edges": [
+                {
+                  "node": {
+                    "name": {
+                      "value": "Loopback0"
+                    },
+                    "description": {
+                      "value": null
+                    },
+                    "mode": {
+                      "value": "routed"
+                    }
+                  }
+                },
+                {
+                  "node": {
+                    "name": {
+                      "value": "ethernet-1/1"
+                    },
+                    "description": {
+                      "value": "border01 to leaf01"
+                    },
+                    "mode": {
+                      "value": "routed"
+                    }
+                  }
+                },
+                {
+                  "node": {
+                    "name": {
+                      "value": "ethernet-1/4"
+                    },
+                    "description": {
+                      "value": "border01 to router02"
+                    },
+                    "mode": {
+                      "value": "routed"
+                    }
+                  }
+                },
+                {
+                  "node": {
+                    "name": {
+                      "value": "ethernet-1/3"
+                    },
+                    "description": {
+                      "value": "border01 to router01"
+                    },
+                    "mode": {
+                      "value": "routed"
+                    }
+                  }
+                },
+                {
+                  "node": {
+                    "name": {
+                      "value": "ethernet-1/5"
+                    },
+                    "description": {
+                      "value": "border01 to router03"
+                    },
+                    "mode": {
+                      "value": "routed"
+                    }
+                  }
+                },
+                {
+                  "node": {
+                    "name": {
+                      "value": "ethernet-1/2"
+                    },
+                    "description": {
+                      "value": "border01 to leaf02"
+                    },
+                    "mode": {
+                      "value": "routed"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "node": {
+            "name": {
+              "value": "router01"
+            },
+            "status": {
+              "value": "active"
+            },
+            "description": {
+              "value": null
+            },
+            "interfaces": {
+              "edges": [
+                {
+                  "node": {
+                    "name": {
+                      "value": "ethernet-1/1"
+                    },
+                    "description": {
+                      "value": "router01 to border01"
+                    },
+                    "mode": {
+                      "value": "routed"
+                    }
+                  }
+                },
+                {
+                  "node": {
+                    "name": {
+                      "value": "ethernet-1/3"
+                    },
+                    "description": {
+                      "value": "router01 to edge01"
+                    },
+                    "mode": {
+                      "value": "routed"
+                    }
+                  }
+                },
+                {
+                  "node": {
+                    "name": {
+                      "value": "ethernet-1/2"
+                    },
+                    "description": {
+                      "value": "router01 to border02"
+                    },
+                    "mode": {
+                      "value": "routed"
+                    }
+                  }
+                },
+                {
+                  "node": {
+                    "name": {
+                      "value": "Loopback0"
+                    },
+                    "description": {
+                      "value": null
+                    },
+                    "mode": {
+                      "value": "routed"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "node": {
+            "name": {
+              "value": "router02"
+            },
+            "status": {
+              "value": "active"
+            },
+            "description": {
+              "value": null
+            },
+            "interfaces": {
+              "edges": [
+                {
+                  "node": {
+                    "name": {
+                      "value": "Loopback0"
+                    },
+                    "description": {
+                      "value": null
+                    },
+                    "mode": {
+                      "value": "routed"
+                    }
+                  }
+                },
+                {
+                  "node": {
+                    "name": {
+                      "value": "ethernet-1/2"
+                    },
+                    "description": {
+                      "value": "router02 to border02"
+                    },
+                    "mode": {
+                      "value": "routed"
+                    }
+                  }
+                },
+                {
+                  "node": {
+                    "name": {
+                      "value": "ethernet-1/3"
+                    },
+                    "description": {
+                      "value": "router02 to edge01"
+                    },
+                    "mode": {
+                      "value": "routed"
+                    }
+                  }
+                },
+                {
+                  "node": {
+                    "name": {
+                      "value": "ethernet-1/1"
+                    },
+                    "description": {
+                      "value": "router02 to border01"
+                    },
+                    "mode": {
+                      "value": "routed"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "node": {
+            "name": {
+              "value": "router03"
+            },
+            "status": {
+              "value": "active"
+            },
+            "description": {
+              "value": null
+            },
+            "interfaces": {
+              "edges": [
+                {
+                  "node": {
+                    "name": {
+                      "value": "ethernet-1/1"
+                    },
+                    "description": {
+                      "value": "router03 to border01"
+                    },
+                    "mode": {
+                      "value": "routed"
+                    }
+                  }
+                },
+                {
+                  "node": {
+                    "name": {
+                      "value": "Loopback0"
+                    },
+                    "description": {
+                      "value": null
+                    },
+                    "mode": {
+                      "value": "routed"
+                    }
+                  }
+                },
+                {
+                  "node": {
+                    "name": {
+                      "value": "ethernet-1/2"
+                    },
+                    "description": {
+                      "value": "router03 to border02"
+                    },
+                    "mode": {
+                      "value": "routed"
+                    }
+                  }
+                },
+                {
+                  "node": {
+                    "name": {
+                      "value": "ethernet-1/3"
+                    },
+                    "description": {
+                      "value": "router03 to edge01"
+                    },
+                    "mode": {
+                      "value": "routed"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "node": {
+            "name": {
+              "value": "edge01"
+            },
+            "status": {
+              "value": "active"
+            },
+            "description": {
+              "value": null
+            },
+            "interfaces": {
+              "edges": [
+                {
+                  "node": {
+                    "name": {
+                      "value": "Loopback0"
+                    },
+                    "description": {
+                      "value": null
+                    },
+                    "mode": {
+                      "value": "routed"
+                    }
+                  }
+                },
+                {
+                  "node": {
+                    "name": {
+                      "value": "ethernet-1/1"
+                    },
+                    "description": {
+                      "value": "edge01 to router01"
+                    },
+                    "mode": {
+                      "value": "routed"
+                    }
+                  }
+                },
+                {
+                  "node": {
+                    "name": {
+                      "value": "ethernet-1/2"
+                    },
+                    "description": {
+                      "value": "edge01 to router02"
+                    },
+                    "mode": {
+                      "value": "routed"
+                    }
+                  }
+                },
+                {
+                  "node": {
+                    "name": {
+                      "value": "ethernet-1/3"
+                    },
+                    "description": {
+                      "value": "edge01 to router03"
+                    },
+                    "mode": {
+                      "value": "routed"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  }
+}

@@ -4,6 +4,8 @@ queries:
     file_path: "infrahub/queries/GetInterfacefromDevice.gql"
   - name: GetInterfaceDetails
     file_path: "infrahub/queries/GetInterfaceDetails.gql"
+  - name: GetNetworkDevices
+    file_path: "infrahub/queries/GetNetworkDevices.gql"
 
 schemas:
   - "infrahub/schemas/schema.yaml"
@@ -12,6 +14,9 @@ python_transforms:
   - name: TransformIntoNetconf
     class_name: TransformIntoNetconf
     file_path: "infrahub/transforms/transform.py"
+  - name: TransformTopologyMarkdown
+    class_name: TransformTopologyMarkdown
+    file_path: "infrahub/transforms/global_topology.py"
 
 artifact_definitions:
   - name: "NetconfXML-Artifact"
@@ -21,6 +26,12 @@ artifact_definitions:
     content_type: "text/plain"
     targets: "CiscoSwitche"
     transformation: "TransformIntoNetconf"
+  - name: "TopologyMarkdown-Artifact"
+    artifact_name: "TopologyMarkdown_Artifact"
+    parameters: {}
+    content_type: "text/markdown"
+    targets: "GlobalArtifactTarget"
+    transformation: "TransformTopologyMarkdown"
 
 check_definitions:
   - name: check_access_mode

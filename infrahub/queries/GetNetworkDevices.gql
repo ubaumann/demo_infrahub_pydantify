@@ -1,0 +1,32 @@
+query MyQuery {
+  NetworkDevice {
+    edges {
+      node {
+        name {
+          value
+        }
+        status {
+          value
+        }
+        description {
+          value
+        }
+        interfaces {
+          edges {
+            node {
+              name {
+                value
+              }
+              description {
+                value
+              }
+              mode {
+                value
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
