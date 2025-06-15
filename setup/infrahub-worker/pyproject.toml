@@ -1,0 +1,19 @@
+[project]
+name = "custom-helper"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "ubaumann", email = "github@m.ubaumann.ch" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "lxml>=5.4.0",
+]
+
+[project.scripts]
+custom-helper = "custom_helper:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
