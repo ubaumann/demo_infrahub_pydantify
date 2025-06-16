@@ -2,6 +2,8 @@ query MyQuery {
   NetworkDevice {
     edges {
       node {
+        __typename
+        id
         name {
           value
         }
@@ -14,6 +16,8 @@ query MyQuery {
         interfaces {
           edges {
             node {
+              __typename
+        	  id
               name {
                 value
               }
@@ -22,6 +26,24 @@ query MyQuery {
               }
               mode {
                 value
+              }
+              remote_interface {
+                node {
+                  __typename
+        		  id
+                  name {
+                    value
+                  }
+                  device {
+                    node {
+                      __typename
+        			  id
+                      name {
+                        value
+                      }
+                    }
+                  }
+                }
               }
             }
           }

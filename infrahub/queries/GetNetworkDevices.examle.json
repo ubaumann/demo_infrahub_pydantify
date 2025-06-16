@@ -4,75 +4,8 @@
       "edges": [
         {
           "node": {
-            "name": {
-              "value": "spine02"
-            },
-            "status": {
-              "value": "active"
-            },
-            "description": {
-              "value": null
-            },
-            "interfaces": {
-              "edges": [
-                {
-                  "node": {
-                    "name": {
-                      "value": "ethernet-1/1"
-                    },
-                    "description": {
-                      "value": "spine02 to leaf01"
-                    },
-                    "mode": {
-                      "value": "fabric"
-                    }
-                  }
-                },
-                {
-                  "node": {
-                    "name": {
-                      "value": "ethernet-1/3"
-                    },
-                    "description": {
-                      "value": "spine02 to leaf03"
-                    },
-                    "mode": {
-                      "value": "fabric"
-                    }
-                  }
-                },
-                {
-                  "node": {
-                    "name": {
-                      "value": "ethernet-1/2"
-                    },
-                    "description": {
-                      "value": "spine02 to leaf02"
-                    },
-                    "mode": {
-                      "value": "fabric"
-                    }
-                  }
-                },
-                {
-                  "node": {
-                    "name": {
-                      "value": "Loopback0"
-                    },
-                    "description": {
-                      "value": null
-                    },
-                    "mode": {
-                      "value": "routed"
-                    }
-                  }
-                }
-              ]
-            }
-          }
-        },
-        {
-          "node": {
+            "__typename": "NetworkDevice",
+            "id": "18495822-72a3-0dd3-3614-c51fc9752505",
             "name": {
               "value": "spine01"
             },
@@ -86,45 +19,8 @@
               "edges": [
                 {
                   "node": {
-                    "name": {
-                      "value": "ethernet-1/2"
-                    },
-                    "description": {
-                      "value": "spine01 to leaf02"
-                    },
-                    "mode": {
-                      "value": "fabric"
-                    }
-                  }
-                },
-                {
-                  "node": {
-                    "name": {
-                      "value": "Loopback0"
-                    },
-                    "description": {
-                      "value": null
-                    },
-                    "mode": {
-                      "value": "routed"
-                    }
-                  }
-                },
-                {
-                  "node": {
-                    "name": {
-                      "value": "ethernet-1/3"
-                    },
-                    "description": {
-                      "value": "spine01 to leaf03"
-                    },
-                    "mode": {
-                      "value": "fabric"
-                    }
-                  }
-                },
-                {
-                  "node": {
+                    "__typename": "NetworkInterface",
+                    "id": "18495824-1769-93a8-3619-c5199dcc7ca7",
                     "name": {
                       "value": "ethernet-1/1"
                     },
@@ -133,28 +29,64 @@
                     },
                     "mode": {
                       "value": "fabric"
+                    },
+                    "remote_interface": {
+                      "node": {
+                        "__typename": "NetworkInterface",
+                        "id": "18495823-ca39-0326-361f-c513ddc77ab4",
+                        "name": {
+                          "value": "ethernet-1/1"
+                        },
+                        "device": {
+                          "node": {
+                            "__typename": "NetworkDevice",
+                            "id": "18495822-9b5d-ee6d-3611-c518699fcd40",
+                            "name": {
+                              "value": "leaf01"
+                            }
+                          }
+                        }
+                      }
                     }
                   }
-                }
-              ]
-            }
-          }
-        },
-        {
-          "node": {
-            "name": {
-              "value": "leaf03"
-            },
-            "status": {
-              "value": "active"
-            },
-            "description": {
-              "value": null
-            },
-            "interfaces": {
-              "edges": [
+                },
                 {
                   "node": {
+                    "__typename": "NetworkInterface",
+                    "id": "18495824-1eec-52ca-3614-c51e4d8459c8",
+                    "name": {
+                      "value": "ethernet-1/3"
+                    },
+                    "description": {
+                      "value": "spine01 to leaf03"
+                    },
+                    "mode": {
+                      "value": "fabric"
+                    },
+                    "remote_interface": {
+                      "node": {
+                        "__typename": "NetworkInterface",
+                        "id": "18495824-0369-424b-361c-c51d68b14255",
+                        "name": {
+                          "value": "ethernet-1/1"
+                        },
+                        "device": {
+                          "node": {
+                            "__typename": "NetworkDevice",
+                            "id": "18495822-bf93-ac5c-3619-c517f4232369",
+                            "name": {
+                              "value": "leaf03"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                {
+                  "node": {
+                    "__typename": "NetworkInterface",
+                    "id": "18495824-24ed-ae16-361e-c510cf88b8c2",
                     "name": {
                       "value": "Loopback0"
                     },
@@ -163,32 +95,42 @@
                     },
                     "mode": {
                       "value": "routed"
+                    },
+                    "remote_interface": {
+                      "node": null
                     }
                   }
                 },
                 {
                   "node": {
-                    "name": {
-                      "value": "ethernet-1/1"
-                    },
-                    "description": {
-                      "value": "leaf03 to spine01"
-                    },
-                    "mode": {
-                      "value": "fabric"
-                    }
-                  }
-                },
-                {
-                  "node": {
+                    "__typename": "NetworkInterface",
+                    "id": "18495824-5316-4691-3618-c5120c948e38",
                     "name": {
                       "value": "ethernet-1/2"
                     },
                     "description": {
-                      "value": "leaf03 to spine02"
+                      "value": "spine01 to leaf02"
                     },
                     "mode": {
                       "value": "fabric"
+                    },
+                    "remote_interface": {
+                      "node": {
+                        "__typename": "NetworkInterface",
+                        "id": "18495823-d66e-104c-361f-c5116f3017b4",
+                        "name": {
+                          "value": "ethernet-1/1"
+                        },
+                        "device": {
+                          "node": {
+                            "__typename": "NetworkDevice",
+                            "id": "18495822-add9-ae23-3619-c51a5bfa1353",
+                            "name": {
+                              "value": "leaf02"
+                            }
+                          }
+                        }
+                      }
                     }
                   }
                 }
@@ -198,6 +140,8 @@
         },
         {
           "node": {
+            "__typename": "NetworkDevice",
+            "id": "18495822-9b5d-ee6d-3611-c518699fcd40",
             "name": {
               "value": "leaf01"
             },
@@ -211,58 +155,8 @@
               "edges": [
                 {
                   "node": {
-                    "name": {
-                      "value": "ethernet-1/3"
-                    },
-                    "description": {
-                      "value": "leaf01 to border01"
-                    },
-                    "mode": {
-                      "value": "routed"
-                    }
-                  }
-                },
-                {
-                  "node": {
-                    "name": {
-                      "value": "ethernet-1/2"
-                    },
-                    "description": {
-                      "value": "leaf01 to spine02"
-                    },
-                    "mode": {
-                      "value": "fabric"
-                    }
-                  }
-                },
-                {
-                  "node": {
-                    "name": {
-                      "value": "ethernet-1/1"
-                    },
-                    "description": {
-                      "value": "leaf01 to spine01"
-                    },
-                    "mode": {
-                      "value": "fabric"
-                    }
-                  }
-                },
-                {
-                  "node": {
-                    "name": {
-                      "value": "Loopback0"
-                    },
-                    "description": {
-                      "value": null
-                    },
-                    "mode": {
-                      "value": "routed"
-                    }
-                  }
-                },
-                {
-                  "node": {
+                    "__typename": "NetworkInterface",
+                    "id": "18495822-e935-3463-3617-c515a4b365c6",
                     "name": {
                       "value": "ethernet-1/4"
                     },
@@ -271,28 +165,130 @@
                     },
                     "mode": {
                       "value": "routed"
+                    },
+                    "remote_interface": {
+                      "node": {
+                        "__typename": "NetworkInterface",
+                        "id": "18495824-b95b-46d9-361a-c519230ddd0d",
+                        "name": {
+                          "value": "ethernet-1/1"
+                        },
+                        "device": {
+                          "node": {
+                            "__typename": "NetworkDevice",
+                            "id": "18495822-b6a6-9646-361f-c51469d74dcb",
+                            "name": {
+                              "value": "border02"
+                            }
+                          }
+                        }
+                      }
                     }
                   }
-                }
-              ]
-            }
-          }
-        },
-        {
-          "node": {
-            "name": {
-              "value": "border02"
-            },
-            "status": {
-              "value": "active"
-            },
-            "description": {
-              "value": null
-            },
-            "interfaces": {
-              "edges": [
+                },
                 {
                   "node": {
+                    "__typename": "NetworkInterface",
+                    "id": "18495823-807b-a866-361e-c516b200c06d",
+                    "name": {
+                      "value": "ethernet-1/2"
+                    },
+                    "description": {
+                      "value": "leaf01 to spine02"
+                    },
+                    "mode": {
+                      "value": "fabric"
+                    },
+                    "remote_interface": {
+                      "node": {
+                        "__typename": "NetworkInterface",
+                        "id": "18495824-5ac4-386a-3615-c515ee26409f",
+                        "name": {
+                          "value": "ethernet-1/1"
+                        },
+                        "device": {
+                          "node": {
+                            "__typename": "NetworkDevice",
+                            "id": "18495822-b977-cfc2-361c-c515a4e1e277",
+                            "name": {
+                              "value": "spine02"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                {
+                  "node": {
+                    "__typename": "NetworkInterface",
+                    "id": "18495823-ca39-0326-361f-c513ddc77ab4",
+                    "name": {
+                      "value": "ethernet-1/1"
+                    },
+                    "description": {
+                      "value": "leaf01 to spine01"
+                    },
+                    "mode": {
+                      "value": "fabric"
+                    },
+                    "remote_interface": {
+                      "node": {
+                        "__typename": "NetworkInterface",
+                        "id": "18495824-1769-93a8-3619-c5199dcc7ca7",
+                        "name": {
+                          "value": "ethernet-1/1"
+                        },
+                        "device": {
+                          "node": {
+                            "__typename": "NetworkDevice",
+                            "id": "18495822-72a3-0dd3-3614-c51fc9752505",
+                            "name": {
+                              "value": "spine01"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                {
+                  "node": {
+                    "__typename": "NetworkInterface",
+                    "id": "18495823-f1ed-12cb-361e-c5145e238124",
+                    "name": {
+                      "value": "ethernet-1/3"
+                    },
+                    "description": {
+                      "value": "leaf01 to border01"
+                    },
+                    "mode": {
+                      "value": "routed"
+                    },
+                    "remote_interface": {
+                      "node": {
+                        "__typename": "NetworkInterface",
+                        "id": "18495824-b237-b407-361d-c51707232375",
+                        "name": {
+                          "value": "ethernet-1/1"
+                        },
+                        "device": {
+                          "node": {
+                            "__typename": "NetworkDevice",
+                            "id": "18495822-b084-f073-3611-c51db31b7d5d",
+                            "name": {
+                              "value": "border01"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                {
+                  "node": {
+                    "__typename": "NetworkInterface",
+                    "id": "18495824-300f-45e0-3618-c514d2e1dd6d",
                     "name": {
                       "value": "Loopback0"
                     },
@@ -301,71 +297,9 @@
                     },
                     "mode": {
                       "value": "routed"
-                    }
-                  }
-                },
-                {
-                  "node": {
-                    "name": {
-                      "value": "ethernet-1/2"
                     },
-                    "description": {
-                      "value": "border02 to leaf02"
-                    },
-                    "mode": {
-                      "value": "routed"
-                    }
-                  }
-                },
-                {
-                  "node": {
-                    "name": {
-                      "value": "ethernet-1/3"
-                    },
-                    "description": {
-                      "value": "border02 to router01"
-                    },
-                    "mode": {
-                      "value": "routed"
-                    }
-                  }
-                },
-                {
-                  "node": {
-                    "name": {
-                      "value": "ethernet-1/5"
-                    },
-                    "description": {
-                      "value": "border02 to router03"
-                    },
-                    "mode": {
-                      "value": "routed"
-                    }
-                  }
-                },
-                {
-                  "node": {
-                    "name": {
-                      "value": "ethernet-1/4"
-                    },
-                    "description": {
-                      "value": "border02 to router02"
-                    },
-                    "mode": {
-                      "value": "routed"
-                    }
-                  }
-                },
-                {
-                  "node": {
-                    "name": {
-                      "value": "ethernet-1/1"
-                    },
-                    "description": {
-                      "value": "border02 to leaf01"
-                    },
-                    "mode": {
-                      "value": "routed"
+                    "remote_interface": {
+                      "node": null
                     }
                   }
                 }
@@ -375,6 +309,8 @@
         },
         {
           "node": {
+            "__typename": "NetworkDevice",
+            "id": "18495822-add9-ae23-3619-c51a5bfa1353",
             "name": {
               "value": "leaf02"
             },
@@ -388,6 +324,8 @@
               "edges": [
                 {
                   "node": {
+                    "__typename": "NetworkInterface",
+                    "id": "18495823-bded-6918-3612-c518ee2bad45",
                     "name": {
                       "value": "Loopback0"
                     },
@@ -396,11 +334,16 @@
                     },
                     "mode": {
                       "value": "routed"
+                    },
+                    "remote_interface": {
+                      "node": null
                     }
                   }
                 },
                 {
                   "node": {
+                    "__typename": "NetworkInterface",
+                    "id": "18495823-cfa1-7746-3610-c51ba99212a9",
                     "name": {
                       "value": "ethernet-1/2"
                     },
@@ -409,37 +352,31 @@
                     },
                     "mode": {
                       "value": "fabric"
+                    },
+                    "remote_interface": {
+                      "node": {
+                        "__typename": "NetworkInterface",
+                        "id": "18495824-48bb-bd5b-3618-c519f2338e8b",
+                        "name": {
+                          "value": "ethernet-1/2"
+                        },
+                        "device": {
+                          "node": {
+                            "__typename": "NetworkDevice",
+                            "id": "18495822-b977-cfc2-361c-c515a4e1e277",
+                            "name": {
+                              "value": "spine02"
+                            }
+                          }
+                        }
+                      }
                     }
                   }
                 },
                 {
                   "node": {
-                    "name": {
-                      "value": "ethernet-1/3"
-                    },
-                    "description": {
-                      "value": "leaf02 to border01"
-                    },
-                    "mode": {
-                      "value": "routed"
-                    }
-                  }
-                },
-                {
-                  "node": {
-                    "name": {
-                      "value": "ethernet-1/4"
-                    },
-                    "description": {
-                      "value": "leaf02 to border02"
-                    },
-                    "mode": {
-                      "value": "routed"
-                    }
-                  }
-                },
-                {
-                  "node": {
+                    "__typename": "NetworkInterface",
+                    "id": "18495823-d66e-104c-361f-c5116f3017b4",
                     "name": {
                       "value": "ethernet-1/1"
                     },
@@ -448,6 +385,90 @@
                     },
                     "mode": {
                       "value": "fabric"
+                    },
+                    "remote_interface": {
+                      "node": {
+                        "__typename": "NetworkInterface",
+                        "id": "18495824-5316-4691-3618-c5120c948e38",
+                        "name": {
+                          "value": "ethernet-1/2"
+                        },
+                        "device": {
+                          "node": {
+                            "__typename": "NetworkDevice",
+                            "id": "18495822-72a3-0dd3-3614-c51fc9752505",
+                            "name": {
+                              "value": "spine01"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                {
+                  "node": {
+                    "__typename": "NetworkInterface",
+                    "id": "18495823-e3ac-c46b-3618-c51961cc1523",
+                    "name": {
+                      "value": "ethernet-1/4"
+                    },
+                    "description": {
+                      "value": "leaf02 to border02"
+                    },
+                    "mode": {
+                      "value": "routed"
+                    },
+                    "remote_interface": {
+                      "node": {
+                        "__typename": "NetworkInterface",
+                        "id": "18495824-a499-c34a-361b-c518310aa2d0",
+                        "name": {
+                          "value": "ethernet-1/2"
+                        },
+                        "device": {
+                          "node": {
+                            "__typename": "NetworkDevice",
+                            "id": "18495822-b6a6-9646-361f-c51469d74dcb",
+                            "name": {
+                              "value": "border02"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                {
+                  "node": {
+                    "__typename": "NetworkInterface",
+                    "id": "18495824-0e46-6096-3611-c51d7ae2d347",
+                    "name": {
+                      "value": "ethernet-1/3"
+                    },
+                    "description": {
+                      "value": "leaf02 to border01"
+                    },
+                    "mode": {
+                      "value": "routed"
+                    },
+                    "remote_interface": {
+                      "node": {
+                        "__typename": "NetworkInterface",
+                        "id": "18495824-95f6-2a9d-361b-c511c072bc3c",
+                        "name": {
+                          "value": "ethernet-1/2"
+                        },
+                        "device": {
+                          "node": {
+                            "__typename": "NetworkDevice",
+                            "id": "18495822-b084-f073-3611-c51db31b7d5d",
+                            "name": {
+                              "value": "border01"
+                            }
+                          }
+                        }
+                      }
                     }
                   }
                 }
@@ -457,6 +478,8 @@
         },
         {
           "node": {
+            "__typename": "NetworkDevice",
+            "id": "18495822-b084-f073-3611-c51db31b7d5d",
             "name": {
               "value": "border01"
             },
@@ -470,6 +493,8 @@
               "edges": [
                 {
                   "node": {
+                    "__typename": "NetworkInterface",
+                    "id": "18495824-6817-4a5c-361e-c51edccbfc01",
                     "name": {
                       "value": "Loopback0"
                     },
@@ -478,37 +503,16 @@
                     },
                     "mode": {
                       "value": "routed"
+                    },
+                    "remote_interface": {
+                      "node": null
                     }
                   }
                 },
                 {
                   "node": {
-                    "name": {
-                      "value": "ethernet-1/1"
-                    },
-                    "description": {
-                      "value": "border01 to leaf01"
-                    },
-                    "mode": {
-                      "value": "routed"
-                    }
-                  }
-                },
-                {
-                  "node": {
-                    "name": {
-                      "value": "ethernet-1/4"
-                    },
-                    "description": {
-                      "value": "border01 to router02"
-                    },
-                    "mode": {
-                      "value": "routed"
-                    }
-                  }
-                },
-                {
-                  "node": {
+                    "__typename": "NetworkInterface",
+                    "id": "18495824-6e4f-e234-3619-c51d286601c5",
                     "name": {
                       "value": "ethernet-1/3"
                     },
@@ -517,11 +521,31 @@
                     },
                     "mode": {
                       "value": "routed"
+                    },
+                    "remote_interface": {
+                      "node": {
+                        "__typename": "NetworkInterface",
+                        "id": "18495824-cb2c-225b-361d-c5117e8076e5",
+                        "name": {
+                          "value": "ethernet-1/1"
+                        },
+                        "device": {
+                          "node": {
+                            "__typename": "NetworkDevice",
+                            "id": "18495822-bca3-8c13-3618-c518400977af",
+                            "name": {
+                              "value": "router01"
+                            }
+                          }
+                        }
+                      }
                     }
                   }
                 },
                 {
                   "node": {
+                    "__typename": "NetworkInterface",
+                    "id": "18495824-86a3-52ad-3613-c51202440e6d",
                     "name": {
                       "value": "ethernet-1/5"
                     },
@@ -530,11 +554,64 @@
                     },
                     "mode": {
                       "value": "routed"
+                    },
+                    "remote_interface": {
+                      "node": {
+                        "__typename": "NetworkInterface",
+                        "id": "18495825-2b78-c2da-3619-c5125c4097f0",
+                        "name": {
+                          "value": "ethernet-1/1"
+                        },
+                        "device": {
+                          "node": {
+                            "__typename": "NetworkDevice",
+                            "id": "18495822-cb4c-10b7-3618-c519789bd70d",
+                            "name": {
+                              "value": "router03"
+                            }
+                          }
+                        }
+                      }
                     }
                   }
                 },
                 {
                   "node": {
+                    "__typename": "NetworkInterface",
+                    "id": "18495824-8de1-d07b-361e-c514c18de389",
+                    "name": {
+                      "value": "ethernet-1/4"
+                    },
+                    "description": {
+                      "value": "border01 to router02"
+                    },
+                    "mode": {
+                      "value": "routed"
+                    },
+                    "remote_interface": {
+                      "node": {
+                        "__typename": "NetworkInterface",
+                        "id": "18495824-dbc0-6a69-3615-c51823d9bf9b",
+                        "name": {
+                          "value": "ethernet-1/1"
+                        },
+                        "device": {
+                          "node": {
+                            "__typename": "NetworkDevice",
+                            "id": "18495822-d2f8-7b54-361b-c51ac70e458f",
+                            "name": {
+                              "value": "router02"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                {
+                  "node": {
+                    "__typename": "NetworkInterface",
+                    "id": "18495824-95f6-2a9d-361b-c511c072bc3c",
                     "name": {
                       "value": "ethernet-1/2"
                     },
@@ -543,6 +620,57 @@
                     },
                     "mode": {
                       "value": "routed"
+                    },
+                    "remote_interface": {
+                      "node": {
+                        "__typename": "NetworkInterface",
+                        "id": "18495824-0e46-6096-3611-c51d7ae2d347",
+                        "name": {
+                          "value": "ethernet-1/3"
+                        },
+                        "device": {
+                          "node": {
+                            "__typename": "NetworkDevice",
+                            "id": "18495822-add9-ae23-3619-c51a5bfa1353",
+                            "name": {
+                              "value": "leaf02"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                {
+                  "node": {
+                    "__typename": "NetworkInterface",
+                    "id": "18495824-b237-b407-361d-c51707232375",
+                    "name": {
+                      "value": "ethernet-1/1"
+                    },
+                    "description": {
+                      "value": "border01 to leaf01"
+                    },
+                    "mode": {
+                      "value": "routed"
+                    },
+                    "remote_interface": {
+                      "node": {
+                        "__typename": "NetworkInterface",
+                        "id": "18495823-f1ed-12cb-361e-c5145e238124",
+                        "name": {
+                          "value": "ethernet-1/3"
+                        },
+                        "device": {
+                          "node": {
+                            "__typename": "NetworkDevice",
+                            "id": "18495822-9b5d-ee6d-3611-c518699fcd40",
+                            "name": {
+                              "value": "leaf01"
+                            }
+                          }
+                        }
+                      }
                     }
                   }
                 }
@@ -552,6 +680,346 @@
         },
         {
           "node": {
+            "__typename": "NetworkDevice",
+            "id": "18495822-b6a6-9646-361f-c51469d74dcb",
+            "name": {
+              "value": "border02"
+            },
+            "status": {
+              "value": "active"
+            },
+            "description": {
+              "value": null
+            },
+            "interfaces": {
+              "edges": [
+                {
+                  "node": {
+                    "__typename": "NetworkInterface",
+                    "id": "18495824-9db5-4b8e-3610-c51195195382",
+                    "name": {
+                      "value": "Loopback0"
+                    },
+                    "description": {
+                      "value": null
+                    },
+                    "mode": {
+                      "value": "routed"
+                    },
+                    "remote_interface": {
+                      "node": null
+                    }
+                  }
+                },
+                {
+                  "node": {
+                    "__typename": "NetworkInterface",
+                    "id": "18495824-a499-c34a-361b-c518310aa2d0",
+                    "name": {
+                      "value": "ethernet-1/2"
+                    },
+                    "description": {
+                      "value": "border02 to leaf02"
+                    },
+                    "mode": {
+                      "value": "routed"
+                    },
+                    "remote_interface": {
+                      "node": {
+                        "__typename": "NetworkInterface",
+                        "id": "18495823-e3ac-c46b-3618-c51961cc1523",
+                        "name": {
+                          "value": "ethernet-1/4"
+                        },
+                        "device": {
+                          "node": {
+                            "__typename": "NetworkDevice",
+                            "id": "18495822-add9-ae23-3619-c51a5bfa1353",
+                            "name": {
+                              "value": "leaf02"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                {
+                  "node": {
+                    "__typename": "NetworkInterface",
+                    "id": "18495824-aa5a-fef4-361b-c516c55f84d7",
+                    "name": {
+                      "value": "ethernet-1/3"
+                    },
+                    "description": {
+                      "value": "border02 to router01"
+                    },
+                    "mode": {
+                      "value": "routed"
+                    },
+                    "remote_interface": {
+                      "node": {
+                        "__typename": "NetworkInterface",
+                        "id": "18495825-242c-ce63-3616-c51e3842491c",
+                        "name": {
+                          "value": "ethernet-1/2"
+                        },
+                        "device": {
+                          "node": {
+                            "__typename": "NetworkDevice",
+                            "id": "18495822-bca3-8c13-3618-c518400977af",
+                            "name": {
+                              "value": "router01"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                {
+                  "node": {
+                    "__typename": "NetworkInterface",
+                    "id": "18495824-b95b-46d9-361a-c519230ddd0d",
+                    "name": {
+                      "value": "ethernet-1/1"
+                    },
+                    "description": {
+                      "value": "border02 to leaf01"
+                    },
+                    "mode": {
+                      "value": "routed"
+                    },
+                    "remote_interface": {
+                      "node": {
+                        "__typename": "NetworkInterface",
+                        "id": "18495822-e935-3463-3617-c515a4b365c6",
+                        "name": {
+                          "value": "ethernet-1/4"
+                        },
+                        "device": {
+                          "node": {
+                            "__typename": "NetworkDevice",
+                            "id": "18495822-9b5d-ee6d-3611-c518699fcd40",
+                            "name": {
+                              "value": "leaf01"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                {
+                  "node": {
+                    "__typename": "NetworkInterface",
+                    "id": "18495824-f11d-cac9-3616-c511e4c547bb",
+                    "name": {
+                      "value": "ethernet-1/5"
+                    },
+                    "description": {
+                      "value": "border02 to router03"
+                    },
+                    "mode": {
+                      "value": "routed"
+                    },
+                    "remote_interface": {
+                      "node": {
+                        "__typename": "NetworkInterface",
+                        "id": "18495824-fd5e-7109-3610-c5112fca5b10",
+                        "name": {
+                          "value": "ethernet-1/2"
+                        },
+                        "device": {
+                          "node": {
+                            "__typename": "NetworkDevice",
+                            "id": "18495822-cb4c-10b7-3618-c519789bd70d",
+                            "name": {
+                              "value": "router03"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                {
+                  "node": {
+                    "__typename": "NetworkInterface",
+                    "id": "18495824-f889-291f-361d-c51e2a9e9fe8",
+                    "name": {
+                      "value": "ethernet-1/4"
+                    },
+                    "description": {
+                      "value": "border02 to router02"
+                    },
+                    "mode": {
+                      "value": "routed"
+                    },
+                    "remote_interface": {
+                      "node": {
+                        "__typename": "NetworkInterface",
+                        "id": "18495824-e3bd-dc9e-361b-c510e5598ca6",
+                        "name": {
+                          "value": "ethernet-1/2"
+                        },
+                        "device": {
+                          "node": {
+                            "__typename": "NetworkDevice",
+                            "id": "18495822-d2f8-7b54-361b-c51ac70e458f",
+                            "name": {
+                              "value": "router02"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "node": {
+            "__typename": "NetworkDevice",
+            "id": "18495822-b977-cfc2-361c-c515a4e1e277",
+            "name": {
+              "value": "spine02"
+            },
+            "status": {
+              "value": "active"
+            },
+            "description": {
+              "value": null
+            },
+            "interfaces": {
+              "edges": [
+                {
+                  "node": {
+                    "__typename": "NetworkInterface",
+                    "id": "18495824-3d19-3af1-361b-c516c70fa0ea",
+                    "name": {
+                      "value": "Loopback0"
+                    },
+                    "description": {
+                      "value": null
+                    },
+                    "mode": {
+                      "value": "routed"
+                    },
+                    "remote_interface": {
+                      "node": null
+                    }
+                  }
+                },
+                {
+                  "node": {
+                    "__typename": "NetworkInterface",
+                    "id": "18495824-48bb-bd5b-3618-c519f2338e8b",
+                    "name": {
+                      "value": "ethernet-1/2"
+                    },
+                    "description": {
+                      "value": "spine02 to leaf02"
+                    },
+                    "mode": {
+                      "value": "fabric"
+                    },
+                    "remote_interface": {
+                      "node": {
+                        "__typename": "NetworkInterface",
+                        "id": "18495823-cfa1-7746-3610-c51ba99212a9",
+                        "name": {
+                          "value": "ethernet-1/2"
+                        },
+                        "device": {
+                          "node": {
+                            "__typename": "NetworkDevice",
+                            "id": "18495822-add9-ae23-3619-c51a5bfa1353",
+                            "name": {
+                              "value": "leaf02"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                {
+                  "node": {
+                    "__typename": "NetworkInterface",
+                    "id": "18495824-5ac4-386a-3615-c515ee26409f",
+                    "name": {
+                      "value": "ethernet-1/1"
+                    },
+                    "description": {
+                      "value": "spine02 to leaf01"
+                    },
+                    "mode": {
+                      "value": "fabric"
+                    },
+                    "remote_interface": {
+                      "node": {
+                        "__typename": "NetworkInterface",
+                        "id": "18495823-807b-a866-361e-c516b200c06d",
+                        "name": {
+                          "value": "ethernet-1/2"
+                        },
+                        "device": {
+                          "node": {
+                            "__typename": "NetworkDevice",
+                            "id": "18495822-9b5d-ee6d-3611-c518699fcd40",
+                            "name": {
+                              "value": "leaf01"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                {
+                  "node": {
+                    "__typename": "NetworkInterface",
+                    "id": "18495824-80c2-d807-3619-c5109c66be2b",
+                    "name": {
+                      "value": "ethernet-1/3"
+                    },
+                    "description": {
+                      "value": "spine02 to leaf03"
+                    },
+                    "mode": {
+                      "value": "fabric"
+                    },
+                    "remote_interface": {
+                      "node": {
+                        "__typename": "NetworkInterface",
+                        "id": "18495823-ffdb-9385-361f-c519a031b6d4",
+                        "name": {
+                          "value": "ethernet-1/2"
+                        },
+                        "device": {
+                          "node": {
+                            "__typename": "NetworkDevice",
+                            "id": "18495822-bf93-ac5c-3619-c517f4232369",
+                            "name": {
+                              "value": "leaf03"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "node": {
+            "__typename": "NetworkDevice",
+            "id": "18495822-bca3-8c13-3618-c518400977af",
             "name": {
               "value": "router01"
             },
@@ -565,6 +1033,26 @@
               "edges": [
                 {
                   "node": {
+                    "__typename": "NetworkInterface",
+                    "id": "18495824-c386-30c6-3610-c513a9c3e35f",
+                    "name": {
+                      "value": "Loopback0"
+                    },
+                    "description": {
+                      "value": null
+                    },
+                    "mode": {
+                      "value": "routed"
+                    },
+                    "remote_interface": {
+                      "node": null
+                    }
+                  }
+                },
+                {
+                  "node": {
+                    "__typename": "NetworkInterface",
+                    "id": "18495824-cb2c-225b-361d-c5117e8076e5",
                     "name": {
                       "value": "ethernet-1/1"
                     },
@@ -573,11 +1061,31 @@
                     },
                     "mode": {
                       "value": "routed"
+                    },
+                    "remote_interface": {
+                      "node": {
+                        "__typename": "NetworkInterface",
+                        "id": "18495824-6e4f-e234-3619-c51d286601c5",
+                        "name": {
+                          "value": "ethernet-1/3"
+                        },
+                        "device": {
+                          "node": {
+                            "__typename": "NetworkDevice",
+                            "id": "18495822-b084-f073-3611-c51db31b7d5d",
+                            "name": {
+                              "value": "border01"
+                            }
+                          }
+                        }
+                      }
                     }
                   }
                 },
                 {
                   "node": {
+                    "__typename": "NetworkInterface",
+                    "id": "18495824-d013-90c7-3619-c51a1444c6e0",
                     "name": {
                       "value": "ethernet-1/3"
                     },
@@ -586,11 +1094,16 @@
                     },
                     "mode": {
                       "value": "routed"
+                    },
+                    "remote_interface": {
+                      "node": null
                     }
                   }
                 },
                 {
                   "node": {
+                    "__typename": "NetworkInterface",
+                    "id": "18495825-242c-ce63-3616-c51e3842491c",
                     "name": {
                       "value": "ethernet-1/2"
                     },
@@ -599,19 +1112,24 @@
                     },
                     "mode": {
                       "value": "routed"
-                    }
-                  }
-                },
-                {
-                  "node": {
-                    "name": {
-                      "value": "Loopback0"
                     },
-                    "description": {
-                      "value": null
-                    },
-                    "mode": {
-                      "value": "routed"
+                    "remote_interface": {
+                      "node": {
+                        "__typename": "NetworkInterface",
+                        "id": "18495824-aa5a-fef4-361b-c516c55f84d7",
+                        "name": {
+                          "value": "ethernet-1/3"
+                        },
+                        "device": {
+                          "node": {
+                            "__typename": "NetworkDevice",
+                            "id": "18495822-b6a6-9646-361f-c51469d74dcb",
+                            "name": {
+                              "value": "border02"
+                            }
+                          }
+                        }
+                      }
                     }
                   }
                 }
@@ -621,8 +1139,10 @@
         },
         {
           "node": {
+            "__typename": "NetworkDevice",
+            "id": "18495822-bf93-ac5c-3619-c517f4232369",
             "name": {
-              "value": "router02"
+              "value": "leaf03"
             },
             "status": {
               "value": "active"
@@ -634,6 +1154,8 @@
               "edges": [
                 {
                   "node": {
+                    "__typename": "NetworkInterface",
+                    "id": "18495823-f96f-ba7e-361f-c513c5dcb9b8",
                     "name": {
                       "value": "Loopback0"
                     },
@@ -642,45 +1164,75 @@
                     },
                     "mode": {
                       "value": "routed"
+                    },
+                    "remote_interface": {
+                      "node": null
                     }
                   }
                 },
                 {
                   "node": {
+                    "__typename": "NetworkInterface",
+                    "id": "18495823-ffdb-9385-361f-c519a031b6d4",
                     "name": {
                       "value": "ethernet-1/2"
                     },
                     "description": {
-                      "value": "router02 to border02"
+                      "value": "leaf03 to spine02"
                     },
                     "mode": {
-                      "value": "routed"
+                      "value": "fabric"
+                    },
+                    "remote_interface": {
+                      "node": {
+                        "__typename": "NetworkInterface",
+                        "id": "18495824-80c2-d807-3619-c5109c66be2b",
+                        "name": {
+                          "value": "ethernet-1/3"
+                        },
+                        "device": {
+                          "node": {
+                            "__typename": "NetworkDevice",
+                            "id": "18495822-b977-cfc2-361c-c515a4e1e277",
+                            "name": {
+                              "value": "spine02"
+                            }
+                          }
+                        }
+                      }
                     }
                   }
                 },
                 {
                   "node": {
-                    "name": {
-                      "value": "ethernet-1/3"
-                    },
-                    "description": {
-                      "value": "router02 to edge01"
-                    },
-                    "mode": {
-                      "value": "routed"
-                    }
-                  }
-                },
-                {
-                  "node": {
+                    "__typename": "NetworkInterface",
+                    "id": "18495824-0369-424b-361c-c51d68b14255",
                     "name": {
                       "value": "ethernet-1/1"
                     },
                     "description": {
-                      "value": "router02 to border01"
+                      "value": "leaf03 to spine01"
                     },
                     "mode": {
-                      "value": "routed"
+                      "value": "fabric"
+                    },
+                    "remote_interface": {
+                      "node": {
+                        "__typename": "NetworkInterface",
+                        "id": "18495824-1eec-52ca-3614-c51e4d8459c8",
+                        "name": {
+                          "value": "ethernet-1/3"
+                        },
+                        "device": {
+                          "node": {
+                            "__typename": "NetworkDevice",
+                            "id": "18495822-72a3-0dd3-3614-c51fc9752505",
+                            "name": {
+                              "value": "spine01"
+                            }
+                          }
+                        }
+                      }
                     }
                   }
                 }
@@ -690,75 +1242,8 @@
         },
         {
           "node": {
-            "name": {
-              "value": "router03"
-            },
-            "status": {
-              "value": "active"
-            },
-            "description": {
-              "value": null
-            },
-            "interfaces": {
-              "edges": [
-                {
-                  "node": {
-                    "name": {
-                      "value": "ethernet-1/1"
-                    },
-                    "description": {
-                      "value": "router03 to border01"
-                    },
-                    "mode": {
-                      "value": "routed"
-                    }
-                  }
-                },
-                {
-                  "node": {
-                    "name": {
-                      "value": "Loopback0"
-                    },
-                    "description": {
-                      "value": null
-                    },
-                    "mode": {
-                      "value": "routed"
-                    }
-                  }
-                },
-                {
-                  "node": {
-                    "name": {
-                      "value": "ethernet-1/2"
-                    },
-                    "description": {
-                      "value": "router03 to border02"
-                    },
-                    "mode": {
-                      "value": "routed"
-                    }
-                  }
-                },
-                {
-                  "node": {
-                    "name": {
-                      "value": "ethernet-1/3"
-                    },
-                    "description": {
-                      "value": "router03 to edge01"
-                    },
-                    "mode": {
-                      "value": "routed"
-                    }
-                  }
-                }
-              ]
-            }
-          }
-        },
-        {
-          "node": {
+            "__typename": "NetworkDevice",
+            "id": "18495822-c510-5d26-361d-c5199b49d184",
             "name": {
               "value": "edge01"
             },
@@ -772,6 +1257,8 @@
               "edges": [
                 {
                   "node": {
+                    "__typename": "NetworkInterface",
+                    "id": "18495825-0a6d-54f3-361c-c516b4d3b4d8",
                     "name": {
                       "value": "Loopback0"
                     },
@@ -780,11 +1267,16 @@
                     },
                     "mode": {
                       "value": "routed"
+                    },
+                    "remote_interface": {
+                      "node": null
                     }
                   }
                 },
                 {
                   "node": {
+                    "__typename": "NetworkInterface",
+                    "id": "18495825-1028-ee27-3612-c51b8c470243",
                     "name": {
                       "value": "ethernet-1/1"
                     },
@@ -793,11 +1285,16 @@
                     },
                     "mode": {
                       "value": "routed"
+                    },
+                    "remote_interface": {
+                      "node": null
                     }
                   }
                 },
                 {
                   "node": {
+                    "__typename": "NetworkInterface",
+                    "id": "18495825-165a-5e88-3616-c517dd7d30a9",
                     "name": {
                       "value": "ethernet-1/2"
                     },
@@ -806,11 +1303,31 @@
                     },
                     "mode": {
                       "value": "routed"
+                    },
+                    "remote_interface": {
+                      "node": {
+                        "__typename": "NetworkInterface",
+                        "id": "18495824-e8ca-dcb1-361b-c513a03afd66",
+                        "name": {
+                          "value": "ethernet-1/3"
+                        },
+                        "device": {
+                          "node": {
+                            "__typename": "NetworkDevice",
+                            "id": "18495822-d2f8-7b54-361b-c51ac70e458f",
+                            "name": {
+                              "value": "router02"
+                            }
+                          }
+                        }
+                      }
                     }
                   }
                 },
                 {
                   "node": {
+                    "__typename": "NetworkInterface",
+                    "id": "18495825-3489-9430-3612-c51e5b9197f8",
                     "name": {
                       "value": "ethernet-1/3"
                     },
@@ -819,6 +1336,266 @@
                     },
                     "mode": {
                       "value": "routed"
+                    },
+                    "remote_interface": {
+                      "node": null
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "node": {
+            "__typename": "NetworkDevice",
+            "id": "18495822-cb4c-10b7-3618-c519789bd70d",
+            "name": {
+              "value": "router03"
+            },
+            "status": {
+              "value": "active"
+            },
+            "description": {
+              "value": null
+            },
+            "interfaces": {
+              "edges": [
+                {
+                  "node": {
+                    "__typename": "NetworkInterface",
+                    "id": "18495824-fd5e-7109-3610-c5112fca5b10",
+                    "name": {
+                      "value": "ethernet-1/2"
+                    },
+                    "description": {
+                      "value": "router03 to border02"
+                    },
+                    "mode": {
+                      "value": "routed"
+                    },
+                    "remote_interface": {
+                      "node": {
+                        "__typename": "NetworkInterface",
+                        "id": "18495824-f11d-cac9-3616-c511e4c547bb",
+                        "name": {
+                          "value": "ethernet-1/5"
+                        },
+                        "device": {
+                          "node": {
+                            "__typename": "NetworkDevice",
+                            "id": "18495822-b6a6-9646-361f-c51469d74dcb",
+                            "name": {
+                              "value": "border02"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                {
+                  "node": {
+                    "__typename": "NetworkInterface",
+                    "id": "18495825-04a3-d186-361c-c515c06447ca",
+                    "name": {
+                      "value": "ethernet-1/3"
+                    },
+                    "description": {
+                      "value": "router03 to edge01"
+                    },
+                    "mode": {
+                      "value": "routed"
+                    },
+                    "remote_interface": {
+                      "node": null
+                    }
+                  }
+                },
+                {
+                  "node": {
+                    "__typename": "NetworkInterface",
+                    "id": "18495825-1e27-645f-3617-c511af5fd683",
+                    "name": {
+                      "value": "Loopback0"
+                    },
+                    "description": {
+                      "value": null
+                    },
+                    "mode": {
+                      "value": "routed"
+                    },
+                    "remote_interface": {
+                      "node": null
+                    }
+                  }
+                },
+                {
+                  "node": {
+                    "__typename": "NetworkInterface",
+                    "id": "18495825-2b78-c2da-3619-c5125c4097f0",
+                    "name": {
+                      "value": "ethernet-1/1"
+                    },
+                    "description": {
+                      "value": "router03 to border01"
+                    },
+                    "mode": {
+                      "value": "routed"
+                    },
+                    "remote_interface": {
+                      "node": {
+                        "__typename": "NetworkInterface",
+                        "id": "18495824-86a3-52ad-3613-c51202440e6d",
+                        "name": {
+                          "value": "ethernet-1/5"
+                        },
+                        "device": {
+                          "node": {
+                            "__typename": "NetworkDevice",
+                            "id": "18495822-b084-f073-3611-c51db31b7d5d",
+                            "name": {
+                              "value": "border01"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "node": {
+            "__typename": "NetworkDevice",
+            "id": "18495822-d2f8-7b54-361b-c51ac70e458f",
+            "name": {
+              "value": "router02"
+            },
+            "status": {
+              "value": "active"
+            },
+            "description": {
+              "value": null
+            },
+            "interfaces": {
+              "edges": [
+                {
+                  "node": {
+                    "__typename": "NetworkInterface",
+                    "id": "18495824-d6bb-aadb-3615-c51293c1d9e8",
+                    "name": {
+                      "value": "Loopback0"
+                    },
+                    "description": {
+                      "value": null
+                    },
+                    "mode": {
+                      "value": "routed"
+                    },
+                    "remote_interface": {
+                      "node": null
+                    }
+                  }
+                },
+                {
+                  "node": {
+                    "__typename": "NetworkInterface",
+                    "id": "18495824-dbc0-6a69-3615-c51823d9bf9b",
+                    "name": {
+                      "value": "ethernet-1/1"
+                    },
+                    "description": {
+                      "value": "router02 to border01"
+                    },
+                    "mode": {
+                      "value": "routed"
+                    },
+                    "remote_interface": {
+                      "node": {
+                        "__typename": "NetworkInterface",
+                        "id": "18495824-8de1-d07b-361e-c514c18de389",
+                        "name": {
+                          "value": "ethernet-1/4"
+                        },
+                        "device": {
+                          "node": {
+                            "__typename": "NetworkDevice",
+                            "id": "18495822-b084-f073-3611-c51db31b7d5d",
+                            "name": {
+                              "value": "border01"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                {
+                  "node": {
+                    "__typename": "NetworkInterface",
+                    "id": "18495824-e3bd-dc9e-361b-c510e5598ca6",
+                    "name": {
+                      "value": "ethernet-1/2"
+                    },
+                    "description": {
+                      "value": "router02 to border02"
+                    },
+                    "mode": {
+                      "value": "routed"
+                    },
+                    "remote_interface": {
+                      "node": {
+                        "__typename": "NetworkInterface",
+                        "id": "18495824-f889-291f-361d-c51e2a9e9fe8",
+                        "name": {
+                          "value": "ethernet-1/4"
+                        },
+                        "device": {
+                          "node": {
+                            "__typename": "NetworkDevice",
+                            "id": "18495822-b6a6-9646-361f-c51469d74dcb",
+                            "name": {
+                              "value": "border02"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                {
+                  "node": {
+                    "__typename": "NetworkInterface",
+                    "id": "18495824-e8ca-dcb1-361b-c513a03afd66",
+                    "name": {
+                      "value": "ethernet-1/3"
+                    },
+                    "description": {
+                      "value": "router02 to edge01"
+                    },
+                    "mode": {
+                      "value": "routed"
+                    },
+                    "remote_interface": {
+                      "node": {
+                        "__typename": "NetworkInterface",
+                        "id": "18495825-165a-5e88-3616-c517dd7d30a9",
+                        "name": {
+                          "value": "ethernet-1/2"
+                        },
+                        "device": {
+                          "node": {
+                            "__typename": "NetworkDevice",
+                            "id": "18495822-c510-5d26-361d-c5199b49d184",
+                            "name": {
+                              "value": "edge01"
+                            }
+                          }
+                        }
+                      }
                     }
                   }
                 }
