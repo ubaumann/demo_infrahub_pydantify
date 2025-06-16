@@ -102,6 +102,9 @@ async def create_interfaces_and_add_to_batch(
             f"Creating interface {interface_name} {device_name} and adding to batch"
         )
         device = client.store.get(key=device_name)
+        neighbor_interface = client.store.get(
+            key=f"{neighbor_name}__{device_name}", raise_when_missing=False
+        )
         if port_mode == "routed":
             # get the IP address for the interface
             ip_address = await get_interface_ip(
@@ -123,8 +126,10 @@ async def create_interfaces_and_add_to_batch(
             mode=port_mode,
             description=f"{device_name} to {neighbor_name}",
             ip_address=ip_address,
+            remote_interfaces=neighbor_interface,
             branch=branch,
         )
+        client.store.set(key=f"{device_name}__{neighbor_name}", node=interface)
         batch.add(task=interface.save, allow_upsert=allow_upsert, node=interface)
 
 
