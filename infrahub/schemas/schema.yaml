@@ -123,7 +123,7 @@ nodes:
         cardinality: many
         kind: Attribute
         description: "VLANs associated with this interface"
-      - name: remote_interfaces
+      - name: remote_interface
         peer: NetworkInterface
         optional: true
         cardinality: one

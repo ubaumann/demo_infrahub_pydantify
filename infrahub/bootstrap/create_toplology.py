@@ -126,7 +126,7 @@ async def create_interfaces_and_add_to_batch(
             mode=port_mode,
             description=f"{device_name} to {neighbor_name}",
             ip_address=ip_address,
-            remote_interfaces=neighbor_interface,
+            remote_interface=neighbor_interface,
             branch=branch,
         )
         client.store.set(key=f"{device_name}__{neighbor_name}", node=interface)

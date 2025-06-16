@@ -226,6 +226,15 @@ class NetworkDevice(CoreArtifactTarget):
     subscriber_of_groups: RelationshipManager
 
 
+class TopologyGlobal(CoreArtifactTarget):
+    description: StringOptional
+    name: String
+    artifacts: RelationshipManager
+    member_of_groups: RelationshipManager
+    profiles: RelationshipManager
+    subscriber_of_groups: RelationshipManager
+
+
 class IpamIPAddress(BuiltinIPAddress):
     address: IPHost
     description: StringOptional
@@ -266,6 +275,7 @@ class NetworkInterface(CoreNode):
     ip_address: RelatedNode
     member_of_groups: RelationshipManager
     profiles: RelationshipManager
+    remote_interface: RelatedNode
     subscriber_of_groups: RelationshipManager
     vlan: RelationshipManager
 
@@ -359,6 +369,15 @@ class ProfileNetworkInterface(LineageSource, CoreProfile, CoreNode):
 
 
 class ProfileNetworkVlan(LineageSource, CoreProfile, CoreNode):
+    profile_name: String
+    profile_priority: IntegerOptional
+    member_of_groups: RelationshipManager
+    related_nodes: RelationshipManager
+    subscriber_of_groups: RelationshipManager
+
+
+class ProfileTopologyGlobal(LineageSource, CoreProfile, CoreNode):
+    description: StringOptional
     profile_name: String
     profile_priority: IntegerOptional
     member_of_groups: RelationshipManager
