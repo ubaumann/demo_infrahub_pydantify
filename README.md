@@ -22,3 +22,8 @@ This demo shows how [Infrahub Python transform](https://docs.infrahub.app/guides
 XML/JSON payload for Netconf/Restconf/gNMI as a artefact.
 Nornir with the [nornir-conditional-runner](https://github.com/InfrastructureAsCode-ch/nornir_conditional_runner) is used
 to configure the [containerlab](https://containerlab.dev/) topology. 
+
+
+- `make setup`
+- add repo as a read-only repository integration
+- `infrahubctl run infrahub/bootstrap/create_toplology.py leafs=3 spines=2 borders=2 routers=3 edges=1`
