@@ -13,6 +13,9 @@ query MyQuery {
         description {
           value
         }
+        platform {
+          value
+        }
         interfaces {
           edges {
             node {

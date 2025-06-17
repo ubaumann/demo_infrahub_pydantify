@@ -17,6 +17,10 @@ python_transforms:
   - name: TransformTopologyMarkdown
     class_name: TransformTopologyMarkdown
     file_path: "infrahub/transforms/global_topology.py"
+  - name: TransformContainerlabTopology
+    class_name: TransformContainerlabTopology
+    file_path: "infrahub/transforms/containerlab.py"
+    convert_query_response: True
 
 artifact_definitions:
   - name: "NetconfXML-Artifact"
@@ -32,6 +36,12 @@ artifact_definitions:
     content_type: "text/markdown"
     targets: "GlobalArtifactTarget"
     transformation: "TransformTopologyMarkdown"
+  - name: "ContainerlabTopology-Artifact"
+    artifact_name: "ContainerlabTopology_Artifact"
+    parameters: {}
+    content_type: "application/yaml"
+    targets: "GlobalArtifactTarget"
+    transformation: "TransformContainerlabTopology"
 
 check_definitions:
   - name: check_access_mode
