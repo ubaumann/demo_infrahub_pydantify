@@ -29,6 +29,8 @@ class TransformContainerlabTopology(InfrahubTransform):
     processed_endpoints: list[str] = []
 
     async def transform(self, data):
+        await self.fetch()
+
         devices: list[NetworkDevice] = self.nodes  # type: ignore
 
         yaml = YAML()
@@ -58,11 +60,19 @@ class TransformContainerlabTopology(InfrahubTransform):
         yaml.dump(clab_topology, stream)
         return stream.getvalue()
 
+    async def fetch(self):
+        batch = await self.client.create_batch()
+        for device in self.nodes:
+            batch.add(task=device.interfaces.fetch)
+
+        # Asynchronous List Comprehensions
+        [_ async for _ in batch.execute()]
+
     @classmethod
     async def get_endpoints(
         cls, endpoints: list[dict[str, CommentedSeq]], device: "NetworkDevice"
     ) -> None:
-        await device.interfaces.fetch()
+        # await device.interfaces.fetch()
         for peer in device.interfaces.peers:
             interface: NetworkInterface = peer.peer  # type: ignore
 
@@ -73,9 +83,9 @@ class TransformContainerlabTopology(InfrahubTransform):
             if endpoint_1 in cls.processed_endpoints:
                 continue
 
-            await interface.remote_interface.fetch()
+            # await interface.remote_interface.fetch()
             remote_interface: NetworkInterface = interface.remote_interface.peer  # type: ignore
-            await remote_interface.device.fetch()
+            # await remote_interface.device.fetch()
             remote_device: NetworkDevice = remote_interface.device.peer  # type: ignore
             endpoint_2 = f"{remote_device.name.value}:{remote_interface.name.value}"
 
