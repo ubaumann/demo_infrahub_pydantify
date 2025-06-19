@@ -9,6 +9,7 @@ authors = [
 requires-python = ">=3.12"
 dependencies = [
     "lxml>=5.4.0",
+    "pydantic-srlinux",
 ]
 
 [project.scripts]
@@ -17,3 +18,6 @@ custom-helper = "custom_helper:main"
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
+
+[tool.uv.sources]
+pydantic-srlinux = { git = "https://github.com/srl-labs/pydantic-srlinux.git" }
