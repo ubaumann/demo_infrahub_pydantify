@@ -29,6 +29,18 @@ query GetDevice ($device: String!){
                   }
                 }
               }
+              ip_address {
+                node {
+                  __typename
+                  id
+                  address {
+                    value
+                    ip
+                    netmask
+                    prefixlen
+                  }
+                }
+              }
             }
           }
         }
