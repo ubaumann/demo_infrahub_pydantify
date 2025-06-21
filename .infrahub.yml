@@ -27,13 +27,20 @@ python_transforms:
     convert_query_response: True
 
 artifact_definitions:
-  - name: "NetconfXML-Artifact"
+  - name: "Cisco_NetconfXML-Artifact"
     artifact_name: "Netconf-XML_Artifact"
     parameters:
       device: "name__value"
     content_type: "text/plain"
     targets: "CiscoSwitche"
     transformation: "TransformIntoNetconf"
+  - name: "SRL_NetconfXML-Artifact"
+    artifact_name: "Netconf-XML_Artifact"
+    parameters:
+      device: "name__value"
+    content_type: "text/plain"
+    targets: "SRLinuxRouter"
+    transformation: "TransformSRLNetconf"
   - name: "TopologyMarkdown-Artifact"
     artifact_name: "TopologyMarkdown_Artifact"
     parameters: {}
@@ -46,13 +53,6 @@ artifact_definitions:
     content_type: "application/yaml"
     targets: "GlobalArtifactTarget"
     transformation: "TransformContainerlabTopology"
-  - name: "NetconfXML-Artifact"
-    artifact_name: "Netconf-XML_Artifact"
-    parameters:
-      device: "name__value"
-    content_type: "text/plain"
-    targets: "SRLinuxRouter"
-    transformation: "TransformSRLNetconf"
 
 check_definitions:
   - name: check_access_mode
