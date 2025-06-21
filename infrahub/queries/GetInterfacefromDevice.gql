@@ -2,9 +2,13 @@ query GetDevice ($device: String!){
   NetworkDevice(name__value: $device) {
     edges {
       node {
+        __typename
+        id
         interfaces {
           edges {
             node {
+              __typename
+              id
               name {
                 value
               }
@@ -17,6 +21,8 @@ query GetDevice ($device: String!){
               vlan {
                 edges {
                   node {
+                    __typename
+                    id
                     vlan_id {
                       value
                     }
@@ -32,6 +38,8 @@ query GetDevice ($device: String!){
   NetworkVlan {
     edges {
       node {
+        __typename
+        id
         name {
           value
         }
