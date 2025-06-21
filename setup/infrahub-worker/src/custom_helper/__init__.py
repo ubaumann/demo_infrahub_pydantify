@@ -1,2 +1,2 @@
-def main() -> None:
-    print("Hello from custom-helper!")
+def main() -> str:
+    return "Hello from custom-helper!"
