@@ -4,7 +4,7 @@ import pydantic_srlinux.models.interfaces as srl_if
 
 if TYPE_CHECKING:
     from ipaddress import IPv4Interface
-    from custom_helper.protocols import NetworkDevice, NetworkInterface
+    from custom_helper.protocols import NetworkDevice, NetworkInterface, NetworkVlan
 
 
 def routed_subinterface_payload(ip: "IPv4Interface") -> "srl_if.SubinterfaceListEntry":
@@ -23,6 +23,38 @@ def fabric_subinterface_payload() -> "srl_if.SubinterfaceListEntry":
     )
 
 
+def access_subinterface_payload() -> "srl_if.SubinterfaceListEntry":
+    return srl_if.SubinterfaceListEntry(
+        index=0,
+        # admin_state=srl_if.EnumerationEnum.enable,
+        vlan=srl_if.VlanContainer(
+            encap=srl_if.EncapContainer(untagged=srl_if.UntaggedContainer())
+        ),
+    )
+
+
+def trunk_subinterface_payload(
+    vlans: list["NetworkVlan"],
+) -> list["srl_if.SubinterfaceListEntry"]:
+    subinterfaces: list["srl_if.SubinterfaceListEntry"] = []
+    for peer in vlans:
+        vlan: NetworkVlan = peer.peer
+        subinterfaces.append(
+            srl_if.SubinterfaceListEntry(
+                index=vlan.vlan_id.value,
+                # admin_state=srl_if.EnumerationEnum.enable,
+                vlan=srl_if.VlanContainer(
+                    encap=srl_if.EncapContainer(
+                        single_tagged=srl_if.SingleTaggedContainer(
+                            vlan_id=srl_if.VlanIdType(vlan.vlan_id.value)
+                        )
+                    )
+                ),
+            )
+        )
+    return subinterfaces
+
+
 def interface_payload(interface: "NetworkInterface") -> "srl_if.InterfaceListEntry":
     admin_state = (
         srl_if.EnumerationEnum.enable
@@ -35,6 +67,10 @@ def interface_payload(interface: "NetworkInterface") -> "srl_if.InterfaceListEnt
             subinterfaces = [routed_subinterface_payload(interface.ip_address.peer)]
         case "fabric":
             subinterfaces = [fabric_subinterface_payload()]
+        case "access":
+            subinterfaces = [access_subinterface_payload()]
+        case "trunk":
+            subinterfaces = trunk_subinterface_payload(interface.vlan.peers)
         case _:
             ...  # ToDo
 
