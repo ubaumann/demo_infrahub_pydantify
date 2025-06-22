@@ -26,4 +26,5 @@ to configure the [containerlab](https://containerlab.dev/) topology.
 
 - `make setup`
 - add repo as a read-only repository integration
+  `infrahubctl repository add demo https://github.com/ubaumann/demo_infrahub_pydantify.git --read-only --ref main`
 - `infrahubctl run infrahub/bootstrap/create_toplology.py leafs=3 spines=2 borders=2 routers=3 edges=1`
