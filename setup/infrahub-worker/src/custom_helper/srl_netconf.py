@@ -10,7 +10,16 @@ if TYPE_CHECKING:
 def routed_subinterface_payload(ip: "IPv4Interface") -> "srl_if.SubinterfaceListEntry":
     return srl_if.SubinterfaceListEntry(
         index=0,
+        # admin_state=srl_if.EnumerationEnum.enable,
         ipv4=srl_if.Ipv4Container(address=[srl_if.AddressListEntry(ip_prefix=str(ip))]),
+    )
+
+
+def fabric_subinterface_payload() -> "srl_if.SubinterfaceListEntry":
+    return srl_if.SubinterfaceListEntry(
+        index=0,
+        # admin_state=srl_if.EnumerationEnum.enable,
+        ipv6=srl_if.Ipv6Container(admin_state=srl_if.EnumerationEnum.enable),
     )
 
 
@@ -24,6 +33,8 @@ def interface_payload(interface: "NetworkInterface") -> "srl_if.InterfaceListEnt
     match interface.mode.value:
         case "routed":
             subinterfaces = [routed_subinterface_payload(interface.ip_address.peer)]
+        case "fabric":
+            subinterfaces = [fabric_subinterface_payload()]
         case _:
             ...  # ToDo
 
