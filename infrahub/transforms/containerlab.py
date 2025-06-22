@@ -5,7 +5,7 @@ from ruamel.yaml.compat import StringIO
 from infrahub_sdk.transforms import InfrahubTransform
 
 if TYPE_CHECKING:
-    from .protocols import (
+    from custom_helper.protocols import (
         NetworkDevice,
         NetworkInterface,
     )

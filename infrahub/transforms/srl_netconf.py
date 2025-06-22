@@ -1,13 +1,11 @@
 from typing import TYPE_CHECKING
 
 from infrahub_sdk.transforms import InfrahubTransform
-
-from custom_helper import main
+from custom_helper.srl_netconf import main
 
 if TYPE_CHECKING:
-    from .protocols import (
+    from custom_helper.protocols import (
         NetworkDevice,
-        NetworkInterface,
     )
 
 
@@ -15,4 +13,5 @@ class TransformSRLNetconf(InfrahubTransform):
     query = "GetInterfacefromDevice"
 
     async def transform(self, data):
-        return main()
+        device: NetworkDevice = self.nodes[0]
+        return await main(device)

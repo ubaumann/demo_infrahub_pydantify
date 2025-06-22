@@ -5,7 +5,7 @@ from dataclasses import dataclass
 
 from infrahub_sdk import InfrahubClient
 from infrahub_sdk.batch import InfrahubBatch
-from protocols import (
+from custom_helper.protocols import (
     NetworkDevice,
     NetworkInterface,
     IpamIPPrefix,
