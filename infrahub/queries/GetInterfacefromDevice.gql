@@ -12,6 +12,9 @@ query GetDevice ($device: String!){
               name {
                 value
               }
+              description {
+                value
+              }
               mode {
                 value
               }
