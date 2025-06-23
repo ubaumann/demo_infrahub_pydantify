@@ -1,4 +1,5 @@
 from typing import TYPE_CHECKING
+from collections import defaultdict
 
 import pydantic_srlinux.models.interfaces as srl_if
 
@@ -7,84 +8,113 @@ if TYPE_CHECKING:
     from custom_helper.protocols import NetworkDevice, NetworkInterface, NetworkVlan
 
 
-def routed_subinterface_payload(ip: "IPv4Interface") -> "srl_if.SubinterfaceListEntry":
-    return srl_if.SubinterfaceListEntry(
-        index=0,
-        # admin_state=srl_if.EnumerationEnum.enable,
-        ipv4=srl_if.Ipv4Container(address=[srl_if.AddressListEntry(ip_prefix=str(ip))]),
-    )
+class SRLYangPayloadHelper:
+    def __init__(self) -> None:
+        self.mac_vrfs: dict[int, list[str]] = defaultdict(list)
 
-
-def fabric_subinterface_payload() -> "srl_if.SubinterfaceListEntry":
-    return srl_if.SubinterfaceListEntry(
-        index=0,
-        # admin_state=srl_if.EnumerationEnum.enable,
-        ipv6=srl_if.Ipv6Container(admin_state=srl_if.EnumerationEnum.enable),
-    )
-
-
-def access_subinterface_payload() -> "srl_if.SubinterfaceListEntry":
-    return srl_if.SubinterfaceListEntry(
-        index=0,
-        # admin_state=srl_if.EnumerationEnum.enable,
-        vlan=srl_if.VlanContainer(
-            encap=srl_if.EncapContainer(untagged=srl_if.UntaggedContainer())
-        ),
-    )
-
-
-def trunk_subinterface_payload(
-    vlans: list["NetworkVlan"],
-) -> list["srl_if.SubinterfaceListEntry"]:
-    subinterfaces: list["srl_if.SubinterfaceListEntry"] = []
-    for peer in vlans:
-        vlan: NetworkVlan = peer.peer
-        subinterfaces.append(
-            srl_if.SubinterfaceListEntry(
-                index=vlan.vlan_id.value,
-                # admin_state=srl_if.EnumerationEnum.enable,
-                vlan=srl_if.VlanContainer(
-                    encap=srl_if.EncapContainer(
-                        single_tagged=srl_if.SingleTaggedContainer(
-                            vlan_id=srl_if.VlanIdType(vlan.vlan_id.value)
-                        )
-                    )
-                ),
-            )
+    @staticmethod
+    def routed_subinterface_payload(
+        ip: "IPv4Interface",
+    ) -> "srl_if.SubinterfaceListEntry":
+        return srl_if.SubinterfaceListEntry(
+            index=0,
+            # admin_state=srl_if.EnumerationEnum.enable,
+            ipv4=srl_if.Ipv4Container(
+                address=[srl_if.AddressListEntry(ip_prefix=str(ip))]
+            ),
         )
-    return subinterfaces
 
+    @staticmethod
+    def fabric_subinterface_payload() -> "srl_if.SubinterfaceListEntry":
+        return srl_if.SubinterfaceListEntry(
+            index=0,
+            # admin_state=srl_if.EnumerationEnum.enable,
+            ipv6=srl_if.Ipv6Container(admin_state=srl_if.EnumerationEnum.enable),
+        )
 
-def interface_payload(interface: "NetworkInterface") -> "srl_if.InterfaceListEntry":
-    admin_state = (
-        srl_if.EnumerationEnum.enable
-        if interface.status.value == "up"
-        else srl_if.EnumerationEnum.enable
-    )
-    subinterfaces: list[srl_if.SubinterfaceListEntry] | None = None
-    match interface.mode.value:
-        case "routed":
-            subinterfaces = [routed_subinterface_payload(interface.ip_address.peer)]
-        case "fabric":
-            subinterfaces = [fabric_subinterface_payload()]
-        case "access":
-            subinterfaces = [access_subinterface_payload()]
-        case "trunk":
-            subinterfaces = trunk_subinterface_payload(interface.vlan.peers)
-        case _:
-            ...  # ToDo
+    def access_subinterface_payload(
+        self, vlan: "NetworkVlan", interface_name: str
+    ) -> "srl_if.SubinterfaceListEntry":
+        # Add interface to the mac_vrf to be able to create the network-instance later
+        self.mac_vrfs[vlan.peer.vlan_id.value].append(f"{interface_name}.0")
 
-    return srl_if.InterfaceListEntry(
-        name=interface.name.value,
-        admin_state=admin_state,
-        description=interface.description.value,
-        subinterface=subinterfaces,
-    )
+        return srl_if.SubinterfaceListEntry(
+            index=0,
+            # admin_state=srl_if.EnumerationEnum.enable,
+            vlan=srl_if.VlanContainer(
+                encap=srl_if.EncapContainer(untagged=srl_if.UntaggedContainer())
+            ),
+        )
+
+    def trunk_subinterface_payload(
+        self,
+        vlans: list["NetworkVlan"],
+        interface_name: str,
+    ) -> list["srl_if.SubinterfaceListEntry"]:
+        subinterfaces: list["srl_if.SubinterfaceListEntry"] = []
+        for peer in vlans:
+            vlan: NetworkVlan = peer.peer  # type: ignore
+            vlan_number = vlan.vlan_id.value
+
+            # Add interface to the mac_vrf to be able to create the network-instance later
+            self.mac_vrfs[vlan_number].append(f"{interface_name}.{vlan_number}")
+
+            subinterfaces.append(
+                srl_if.SubinterfaceListEntry(
+                    index=vlan_number,
+                    # admin_state=srl_if.EnumerationEnum.enable,
+                    vlan=srl_if.VlanContainer(
+                        encap=srl_if.EncapContainer(
+                            single_tagged=srl_if.SingleTaggedContainer(
+                                vlan_id=srl_if.VlanIdType(vlan_number)
+                            )
+                        )
+                    ),
+                )
+            )
+        return subinterfaces
+
+    def interface_payload(
+        self, interface: "NetworkInterface"
+    ) -> "srl_if.InterfaceListEntry":
+        admin_state = (
+            srl_if.EnumerationEnum.enable
+            if interface.status.value == "up"
+            else srl_if.EnumerationEnum.enable
+        )
+        subinterfaces: list[srl_if.SubinterfaceListEntry] | None = None
+        match interface.mode.value:
+            case "routed":
+                subinterfaces = [
+                    self.routed_subinterface_payload(interface.ip_address.peer)
+                ]
+            case "fabric":
+                subinterfaces = [self.fabric_subinterface_payload()]
+            case "access":
+                subinterfaces = [
+                    self.access_subinterface_payload(
+                        interface.vlan.peers[0], interface_name=interface.name.value
+                    )
+                ]
+            case "trunk":
+                subinterfaces = self.trunk_subinterface_payload(
+                    interface.vlan.peers, interface_name=interface.name.value
+                )
+            case _:
+                ...  # ToDo
+
+        return srl_if.InterfaceListEntry(
+            name=interface.name.value,
+            admin_state=admin_state,
+            description=interface.description.value,
+            subinterface=subinterfaces,
+        )
 
 
 async def main(device: "NetworkDevice") -> str:
+    helper = SRLYangPayloadHelper()
     interface_models: list[srl_if.InterfaceListEntry] = []
     for interface in device.interfaces.peers:
-        interface_models.append(interface_payload(interface.peer))
+        interface_models.append(helper.interface_payload(interface.peer))
     model = srl_if.Model(interface=interface_models)
     return model.model_dump_json(exclude_defaults=True, by_alias=True, indent=2)
