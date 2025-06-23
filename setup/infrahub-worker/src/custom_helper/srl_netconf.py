@@ -1,7 +1,9 @@
 from typing import TYPE_CHECKING
 from collections import defaultdict
 
+from pydantic import RootModel
 import pydantic_srlinux.models.interfaces as srl_if
+import pydantic_srlinux.models.network_instance as srl_ni
 
 if TYPE_CHECKING:
     from ipaddress import IPv4Interface
@@ -110,11 +112,43 @@ class SRLYangPayloadHelper:
             subinterface=subinterfaces,
         )
 
+    def mac_vrf_payload(self) -> list["srl_ni.NetworkInstanceListEntry"]:
+        network_instances: list[srl_ni.NetworkInstanceListEntry] = []
+        for vlan, interfaces in self.mac_vrfs.items():
+            network_instances.append(
+                srl_ni.NetworkInstanceListEntry(
+                    name=f"bridge-{vlan}",
+                    type="mac-vrf",
+                    interface=[
+                        srl_ni.InterfaceListEntry(name=eth) for eth in interfaces
+                    ],
+                )
+            )
+        return network_instances
+
+
+class PyloadData(RootModel):
+    root: list[srl_if.Model | srl_ni.Model]
+
 
 async def main(device: "NetworkDevice") -> str:
     helper = SRLYangPayloadHelper()
+
+    # Interfaces
     interface_models: list[srl_if.InterfaceListEntry] = []
     for interface in device.interfaces.peers:
         interface_models.append(helper.interface_payload(interface.peer))
-    model = srl_if.Model(interface=interface_models)
-    return model.model_dump_json(exclude_defaults=True, by_alias=True, indent=2)
+    interface_model = srl_if.Model(interface=interface_models)
+
+    # Mac-Vrf
+    network_instance_model = srl_ni.Model(network_instance=helper.mac_vrf_payload())
+
+    # return interface_model.model_dump_json(
+    #     exclude_defaults=True, by_alias=True, indent=2
+    # )
+    # return network_instance_model.model_dump_json(
+    #     exclude_defaults=True, by_alias=True, indent=2
+    # )
+    return PyloadData(root=[interface_model, network_instance_model]).model_dump_json(
+        exclude_defaults=True, by_alias=True, indent=2
+    )
