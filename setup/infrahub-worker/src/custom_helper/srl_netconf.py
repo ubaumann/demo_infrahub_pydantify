@@ -127,7 +127,7 @@ class SRLYangPayloadHelper:
         return network_instances
 
 
-class PyloadData(RootModel):
+class PyloadData(RootModel[list[srl_if.Model | srl_ni.Model]]):
     root: list[srl_if.Model | srl_ni.Model]
 
 
