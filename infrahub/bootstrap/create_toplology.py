@@ -151,7 +151,7 @@ async def create_loopback_interface(
 
     interface = await client.create(
         NetworkInterface,
-        name="Loopback0",
+        name="lo0",
         status="up",
         device=device.hfid,
         mode="routed",
