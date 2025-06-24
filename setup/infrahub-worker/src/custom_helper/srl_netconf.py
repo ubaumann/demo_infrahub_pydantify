@@ -7,7 +7,12 @@ import pydantic_srlinux.models.network_instance as srl_ni
 
 if TYPE_CHECKING:
     from ipaddress import IPv4Interface
-    from custom_helper.protocols import NetworkDevice, NetworkInterface, NetworkVlan
+    from custom_helper.protocols import (
+        NetworkDevice,
+        NetworkInterface,
+        NetworkVlan,
+        RelatedNode,
+    )
 
 
 class SRLYangPayloadHelper:
@@ -38,7 +43,7 @@ class SRLYangPayloadHelper:
         self, vlan: "NetworkVlan", interface_name: str
     ) -> "srl_if.SubinterfaceListEntry":
         # Add interface to the mac_vrf to be able to create the network-instance later
-        self.mac_vrfs[vlan.peer.vlan_id.value].append(f"{interface_name}.0")
+        self.mac_vrfs[vlan.vlan_id.value].append(f"{interface_name}.0")
 
         return srl_if.SubinterfaceListEntry(
             index=0,
@@ -50,7 +55,7 @@ class SRLYangPayloadHelper:
 
     def trunk_subinterface_payload(
         self,
-        vlans: list["NetworkVlan"],
+        vlans: list["RelatedNode"],
         interface_name: str,
     ) -> list["srl_if.SubinterfaceListEntry"]:
         subinterfaces: list["srl_if.SubinterfaceListEntry"] = []
@@ -95,7 +100,8 @@ class SRLYangPayloadHelper:
             case "access":
                 subinterfaces = [
                     self.access_subinterface_payload(
-                        interface.vlan.peers[0], interface_name=interface.name.value
+                        interface.vlan.peers[0].peer,
+                        interface_name=interface.name.value,
                     )
                 ]
             case "trunk":
