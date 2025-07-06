@@ -1,4 +1,5 @@
 from typing import Annotated, Any, Optional
+from collections import defaultdict
 
 import httpx
 from infrahub_sdk.transforms import InfrahubTransform
@@ -77,11 +78,16 @@ class TransformTopologySVGGraphviz(InfrahubTransform):
     graphiz_template = """
 graph {
  node [shape=box, style="rounded,filled"]
-{% for device in devices %}
+{% for role, devices in groups.items() %}
+subgraph cluster_{{ role }} {
+{%    for device in devices %}
  "{{ device.name }}"
+{%-   endfor %}
+}
 {%- endfor %}
+
 {% for endpoint1, endpoint2 in links %}
- "{{ endpoint1[0] }}" -- "{{ endpoint2[0] }}" [label="{{ endpoint1[1] }} - {{ endpoint2[1] }}"]
+ "{{ endpoint1[0] }}" -- "{{ endpoint2[0] }}" [label="{{ endpoint1[1] }}|{{ endpoint2[1] }}"]
 {%- endfor %}
 }
 """
@@ -90,6 +96,7 @@ graph {
         m = Topology.model_validate(data)
 
         links = []
+        groups = defaultdict(list)
 
         for device in m.devices:
             for interface in device.interfaces:
@@ -98,9 +105,10 @@ graph {
                     endpoints.sort()
                     if endpoints not in links:
                         links.append(endpoints)
+            groups[device.role].append(device.name)
 
         graphiz = Template(self.graphiz_template).render(
-            devices=m.devices,
+            groups=groups,
             links=links,
         )
         try:
