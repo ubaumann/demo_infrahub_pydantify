@@ -7,16 +7,16 @@ from pydantic import BaseModel, AliasPath, Field, BeforeValidator
 from jinja2 import Template
 
 
-
 # Remove the 2 digits at the end of the device name to get the role
 DeviceRole = Annotated[str, BeforeValidator(lambda x: x[:-2])]
 
 
 class Neighbor(BaseModel):
-    device_name: str = Field(validation_alias=AliasPath("device", "node", "name", "value"))
-    interface_name: str = Field(
-        None, validation_alias=AliasPath("name", "value")
+    device_name: str = Field(
+        validation_alias=AliasPath("device", "node", "name", "value")
     )
+    interface_name: str = Field(None, validation_alias=AliasPath("name", "value"))
+
 
 class Interface(BaseModel):
     name: str = Field(validation_alias=AliasPath("node", "name", "value"))
@@ -101,11 +101,17 @@ subgraph cluster_{{ role }} {
         for device in m.devices:
             for interface in device.interfaces:
                 if interface.neighbor:
-                    endpoints = [(device.name, interface.name), (interface.neighbor.device_name,interface.neighbor.interface_name)]
+                    endpoints = [
+                        (device.name, interface.name),
+                        (
+                            interface.neighbor.device_name,
+                            interface.neighbor.interface_name,
+                        ),
+                    ]
                     endpoints.sort()
                     if endpoints not in links:
                         links.append(endpoints)
-            groups[device.role].append(device.name)
+            groups[device.role].append(device)
 
         graphiz = Template(self.graphiz_template).render(
             groups=groups,
@@ -113,7 +119,9 @@ subgraph cluster_{{ role }} {
         )
         try:
             async with httpx.AsyncClient() as client:
-                response = await client.post("https://kroki.io/graphviz/svg/", data=graphiz)
+                response = await client.post(
+                    "https://kroki.io/graphviz/svg/", data=graphiz
+                )
                 response.raise_for_status()
 
         except httpx.HTTPError as exc:
@@ -138,19 +146,25 @@ class TransformTopologySVGD2(InfrahubTransform):
         for device in m.devices:
             for interface in device.interfaces:
                 if interface.neighbor:
-                    endpoints = [(device.name, interface.name), (interface.neighbor.device_name,interface.neighbor.interface_name)]
+                    endpoints = [
+                        (device.name, interface.name),
+                        (
+                            interface.neighbor.device_name,
+                            interface.neighbor.interface_name,
+                        ),
+                    ]
                     endpoints.sort()
                     if endpoints not in links:
                         links.append(endpoints)
             groups[device.role].append(device.name)
 
-        graphiz = Template(self.d2_template).render(
+        d2 = Template(self.d2_template).render(
             groups=groups,
             links=links,
         )
         try:
             async with httpx.AsyncClient() as client:
-                response = await client.post("https://kroki.io/d2/svg/", data=graphiz)
+                response = await client.post("https://kroki.io/d2/svg/", data=d2)
                 response.raise_for_status()
 
         except httpx.HTTPError as exc:
