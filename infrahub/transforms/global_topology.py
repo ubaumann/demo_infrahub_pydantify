@@ -87,7 +87,7 @@ subgraph cluster_{{ role }} {
 {%- endfor %}
 
 {% for endpoint1, endpoint2 in links %}
- "{{ endpoint1[0] }}" -- "{{ endpoint2[0] }}" [label="{{ endpoint1[1] }}|{{ endpoint2[1] }}"]
+ "{{ endpoint1[0] }}" -- "{{ endpoint2[0] }}"{# [label="{{ endpoint1[1] }}|{{ endpoint2[1] }}"] #}
 {%- endfor %}
 }
 """
@@ -120,3 +120,39 @@ subgraph cluster_{{ role }} {
             raise Exception(f"Failed to generate SVG: {exc}") from exc
         return response.text
 
+
+class TransformTopologySVGD2(InfrahubTransform):
+    query = "GetNetworkDevices"
+    d2_template = """
+{% for endpoint1, endpoint2 in links %}
+ {{ endpoint1[0][:-2] }}.{{ endpoint1[0] }} -- {{ endpoint2[0][:-2] }}.{{ endpoint2[0] }}
+{%- endfor %}
+"""
+
+    async def transform(self, data):
+        m = Topology.model_validate(data)
+
+        links = []
+        groups = defaultdict(list)
+
+        for device in m.devices:
+            for interface in device.interfaces:
+                if interface.neighbor:
+                    endpoints = [(device.name, interface.name), (interface.neighbor.device_name,interface.neighbor.interface_name)]
+                    endpoints.sort()
+                    if endpoints not in links:
+                        links.append(endpoints)
+            groups[device.role].append(device.name)
+
+        graphiz = Template(self.d2_template).render(
+            groups=groups,
+            links=links,
+        )
+        try:
+            async with httpx.AsyncClient() as client:
+                response = await client.post("https://kroki.io/d2/svg/", data=graphiz)
+                response.raise_for_status()
+
+        except httpx.HTTPError as exc:
+            raise Exception(f"Failed to generate SVG: {exc}") from exc
+        return response.text

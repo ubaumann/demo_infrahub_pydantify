@@ -20,6 +20,9 @@ python_transforms:
   - name: TransformTopologySVGGraphviz
     class_name: TransformTopologySVGGraphviz
     file_path: "infrahub/transforms/global_topology.py"
+  - name: TransformTopologySVGD2
+    class_name: TransformTopologySVGD2
+    file_path: "infrahub/transforms/global_topology.py"
   - name: TransformContainerlabTopology
     class_name: TransformContainerlabTopology
     file_path: "infrahub/transforms/containerlab.py"
@@ -56,6 +59,12 @@ artifact_definitions:
     content_type: "image/svg+xml"
     targets: "GlobalArtifactTarget"
     transformation: "TransformTopologySVGGraphviz"
+  - name: "TopologySVGD2-Artifact"
+    artifact_name: "TopologySVGD2_Artifact"
+    parameters: {}
+    content_type: "image/svg+xml"
+    targets: "GlobalArtifactTarget"
+    transformation: "TransformTopologySVGD2"
   - name: "ContainerlabTopology-Artifact"
     artifact_name: "ContainerlabTopology_Artifact"
     parameters: {}
