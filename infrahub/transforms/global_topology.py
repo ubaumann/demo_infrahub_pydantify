@@ -2,6 +2,7 @@ from typing import Annotated, Any, Optional
 
 from infrahub_sdk.transforms import InfrahubTransform
 from pydantic import BaseModel, AliasPath, Field, BeforeValidator
+from jinja2 import Template
 
 
 # Remove the 2 digits at the end of the device name to get the role
@@ -58,3 +59,27 @@ class TransformTopologyMarkdown(InfrahubTransform):
             ]
         )
         return markdown
+
+
+class TransformTopologySVG(InfrahubTransform):
+    query = "GetNetworkDevices"
+    graphiz_template = """
+graph {
+ node [shape=box, style="rounded,filled"]
+{% for device in devices %}
+ "{{ device }}"
+
+
+{% endfor %}
+
+}
+"""
+
+    async def transform(self, data):
+        m = Topology.model_validate(data)
+
+        graphiz = Template(self.graphiz_template).render(
+            devices=[x.name for x in m.devices]
+        )
+        return graphiz
+

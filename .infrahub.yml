@@ -17,6 +17,9 @@ python_transforms:
   - name: TransformTopologyMarkdown
     class_name: TransformTopologyMarkdown
     file_path: "infrahub/transforms/global_topology.py"
+  - name: TransformTopologySVG
+    class_name: TransformTopologySVG
+    file_path: "infrahub/transforms/global_topology.py"
   - name: TransformContainerlabTopology
     class_name: TransformContainerlabTopology
     file_path: "infrahub/transforms/containerlab.py"
@@ -47,6 +50,12 @@ artifact_definitions:
     content_type: "text/markdown"
     targets: "GlobalArtifactTarget"
     transformation: "TransformTopologyMarkdown"
+  - name: "TopologySVG-Artifact"
+    artifact_name: "TopologySVG_Artifact"
+    parameters: {}
+    content_type: "text/markdown"
+    targets: "GlobalArtifactTarget"
+    transformation: "TransformTopologySVG"
   - name: "ContainerlabTopology-Artifact"
     artifact_name: "ContainerlabTopology_Artifact"
     parameters: {}
