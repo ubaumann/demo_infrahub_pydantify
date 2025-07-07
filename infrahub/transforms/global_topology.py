@@ -154,19 +154,19 @@ direction: left
 classes: {
   router_green: {
     shape: image
-    icon: https://svg.infrastructureascode.ch/square/green/sq_router2_green.svg
+    icon: https://svg.infrastructureascode.ch/square/green/sq_router2.svg
   }
   router_red: {
     shape: image
-    icon: https://svg.infrastructureascode.ch/square/red/sq_router2_red.svg
+    icon: https://svg.infrastructureascode.ch/square/red/sq_router2.svg
   }
   switch_green: {
     shape: image
-    icon: https://svg.infrastructureascode.ch/square/green/sq_switch_green.svg
+    icon: https://svg.infrastructureascode.ch/square/green/sq_switch.svg
   }
   switch_red: {
     shape: image
-    icon: https://svg.infrastructureascode.ch/square/red/sq_switch_red.svg
+    icon: https://svg.infrastructureascode.ch/square/red/sq_switch.svg
   }
   link: {
     style.animated: true
