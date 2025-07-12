@@ -63,6 +63,23 @@ def _kroki_get_url(base_url: str, diagram: str):
     return f"{base_url}{encoded_diagram.decode()}"
 
 
+def short_intface_name(name: str) -> str:
+    if "-" in name:
+        # Remove the first part of the name before the dash
+        return name.split("-")[1]
+    name = name.replace("FourHundredGigabitEthernet", "Fh")
+    name = name.replace("TwoHundredGigabitEthernet", "Th")
+    name = name.replace("HundredGigabitEthernet", "Hu")
+    name = name.replace("FiftyGigabitEthernet", "Fi")
+    name = name.replace("FortyGigabitEthernet", "Fo")
+    name = name.replace("TwentyFiveGigE", "Tf")
+    name = name.replace("TenGigabitEthernetm", "Te")
+    name = name.replace("TwoGigabitEthernet", "Tw")
+    name = name.replace("GigabitEthernet", "Gi")
+    name = name.replace("Ethernet", "E")
+    return name
+
+
 class TransformTopologyMarkdown(InfrahubTransform):
     query = "GetNetworkDevices"
 
@@ -214,10 +231,10 @@ title: |md
             for interface in device.interfaces:
                 if interface.neighbor:
                     endpoints = [
-                        (device.name, interface.name.split("-")[1]),  # Todo
+                        (device.name, short_intface_name(interface.name)),
                         (
                             interface.neighbor.device_name,
-                            interface.neighbor.interface_name.split("-")[1],  # Todo
+                            short_intface_name(interface.neighbor.interface_name),
                         ),
                     ]
                     endpoints.sort()
